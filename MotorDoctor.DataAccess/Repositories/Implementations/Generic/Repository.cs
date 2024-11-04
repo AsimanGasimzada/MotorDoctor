@@ -95,6 +95,12 @@ public abstract class Repository<T> : IRepository<T> where T : BaseEntity
         return result;
     }
 
+    public IQueryable<T> OrderByDescending(IQueryable<T> query, Expression<Func<T, object>> expression)
+    {
+        IQueryable<T> result = query.OrderByDescending(expression);
+        return result;
+    }
+
     public IQueryable<T> Paginate(IQueryable<T> query, int limit, int page = 1)
     {
         IQueryable<T> result = query.Skip((page - 1) * limit).Take(limit);

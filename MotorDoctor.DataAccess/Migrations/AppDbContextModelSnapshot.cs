@@ -22,6 +22,58 @@ namespace MotorDoctor.DataAccess.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Brand", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Brands");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.BrandDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("LanguageId", "BrandId")
+                        .IsUnique();
+
+                    b.ToTable("BrandDetails");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -40,6 +92,9 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Property<string>("ImagePath")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("ParentId")
                         .HasColumnType("int");
@@ -141,6 +196,145 @@ namespace MotorDoctor.DataAccess.Migrations
                             ImagePath = "https://res.cloudinary.com/dlilcwizx/image/upload/v1730241623/motordoctor.az/upkqfbyfpy7rvmjdwfsm.png",
                             Name = "Russian"
                         });
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.ProductDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("ProductId", "LanguageId")
+                        .IsUnique();
+
+                    b.ToTable("ProductDetails");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.ProductImage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsMain")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Path")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId", "IsMain")
+                        .IsUnique()
+                        .HasFilter("[IsMain] = 1");
+
+                    b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.ProductSize", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Size")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId", "Size")
+                        .IsUnique();
+
+                    b.ToTable("ProductSizes");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Setting", b =>
@@ -431,6 +625,25 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.ToTable("SliderDetails");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.BrandDetail", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Brand", "Brand")
+                        .WithMany("BrandDetails")
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Language", "Language")
+                        .WithMany("BrandDetails")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Category", b =>
                 {
                     b.HasOne("MotorDoctor.Core.Entities.Category", "Parent")
@@ -457,6 +670,66 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Product", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.ProductDetail", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Product", "Product")
+                        .WithMany("ProductDetails")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.ProductImage", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Product", "Product")
+                        .WithMany("ProductImages")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.ProductSize", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Product", "Product")
+                        .WithMany("ProductSizes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.SettingDetail", b =>
@@ -497,6 +770,11 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Slider");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Brand", b =>
+                {
+                    b.Navigation("BrandDetails");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Category", b =>
                 {
                     b.Navigation("CategoryDetails");
@@ -506,9 +784,20 @@ namespace MotorDoctor.DataAccess.Migrations
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Language", b =>
                 {
+                    b.Navigation("BrandDetails");
+
                     b.Navigation("CategoryDetails");
 
                     b.Navigation("SliderDetails");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Product", b =>
+                {
+                    b.Navigation("ProductDetails");
+
+                    b.Navigation("ProductImages");
+
+                    b.Navigation("ProductSizes");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Setting", b =>

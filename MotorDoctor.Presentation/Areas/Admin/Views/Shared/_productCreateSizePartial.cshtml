@@ -1,0 +1,32 @@
+﻿@model ProductCreateDto
+
+
+@{
+    int index = (int)ViewBag.SizeCount;
+}
+<div class="product-size-group" data-index="@index">
+
+    <hr />
+
+    <div class="form-group">
+        <label>Ölçü</label>
+        <input class="form-control" asp-for="ProductSizes[index].Size" type="text" required />
+    </div>
+
+    <div class="form-group">
+        <label>Qiymət</label>
+        <input class="form-control" asp-for="ProductSizes[index].Price" type="number" required />
+    </div>
+
+    <div class="form-group">
+        <label>Say</label>
+        <input class="form-control" asp-for="ProductSizes[index].Count" type="number" required />
+    </div>
+    @if (index != 0)
+    {
+        <button type="button" style="display:none" class="btn btn-danger remove-product-size text-white">Ölçünü sil</button>
+    }
+
+    <br />
+    <br />
+</div>

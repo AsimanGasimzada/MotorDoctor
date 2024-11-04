@@ -3,6 +3,8 @@ using MotorDoctor.Business.ServiceRegistrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDataAccessServices(builder.Configuration);

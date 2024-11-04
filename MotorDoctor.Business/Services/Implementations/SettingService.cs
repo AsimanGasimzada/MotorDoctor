@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
+using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
-using MotorDoctor.Business.Exceptions;
 
 namespace MotorDoctor.Business.Services.Implementations;
 

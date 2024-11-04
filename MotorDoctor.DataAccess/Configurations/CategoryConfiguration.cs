@@ -10,12 +10,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
         builder.Property(x => x.ParentId).IsRequired(false);
         builder.Property(x => x.ImagePath).IsRequired(false).HasMaxLength(256);
 
-        //builder.HasMany(x => x.Children)
-        //    .WithOne(x => x.Parent)
-        //      .HasForeignKey(x => x.ParentId)
-        //      .OnDelete(DeleteBehavior.SetNull)
-        //      .IsRequired(false);
-
+        
 
     }
 }

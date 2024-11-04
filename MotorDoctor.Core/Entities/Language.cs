@@ -7,4 +7,6 @@ public class Language : BaseEntity
     public string ImagePath { get; set; } = null!;
     public ICollection<CategoryDetail> CategoryDetails { get; set; } = [];
     public ICollection<SliderDetail> SliderDetails { get; set; } = [];
+    public ICollection<BrandDetail> BrandDetails { get; set; } = [];
+
 }

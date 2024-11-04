@@ -11,7 +11,10 @@ public class CategoryAutoMapper : Profile
         CreateMap<Category, CategoryCreateDto>().ReverseMap();
         CreateMap<Category, CategoryUpdateDto>().ReverseMap().ForMember(x => x.ImagePath, x => x.Ignore());
         CreateMap<Category, CategoryGetDto>()
-                            .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault()!.Name))
-                            .ForMember(x => x.Description, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault()!.Description));
+                            .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Name : string.Empty))
+                            .ForMember(x => x.Description, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Description : string.Empty));
+
+        CreateMap<Category, CategoryForProductGetDto>()
+            .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Name : string.Empty));
     }
 }

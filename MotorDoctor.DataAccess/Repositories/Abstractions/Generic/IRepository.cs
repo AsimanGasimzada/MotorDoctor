@@ -16,5 +16,6 @@ public interface IRepository<T> where T : BaseEntity
     T Delete(T entity);
     Task<int> SaveChangesAsync();
     IQueryable<T> OrderBy(IQueryable<T> query, Expression<Func<T, object>> expression);
+    IQueryable<T> OrderByDescending(IQueryable<T> query, Expression<Func<T, object>> expression);
     IQueryable<T> Paginate(IQueryable<T> query, int limit, int page = 1);
 }

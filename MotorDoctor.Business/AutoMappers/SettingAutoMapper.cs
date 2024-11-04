@@ -10,6 +10,6 @@ public class SettingAutoMapper : Profile
         CreateMap<Setting, SettingCreateDto>().ReverseMap();
         CreateMap<Setting, SettingUpdateDto>().ReverseMap().ForMember(x => x.Key, x => x.Ignore());
         CreateMap<Setting, SettingGetDto>()
-            .ForMember(x => x.Value, x => x.MapFrom(x => x.SettingDetails.FirstOrDefault()!.Value));
+            .ForMember(x => x.Value, x => x.MapFrom(x => x.SettingDetails.FirstOrDefault() != null ? x.SettingDetails.FirstOrDefault()!.Value : string.Empty));
     }
 }

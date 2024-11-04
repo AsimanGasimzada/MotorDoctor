@@ -88,6 +88,12 @@ public class CategoryService : ICategoryService
         if (category is null)
             throw new NotFoundException("Bu Id-də kategoriya tapılmadı");
 
+        foreach (var child in category.Children)
+            child.ParentId = null;
+
+        if (!string.IsNullOrEmpty(category.ImagePath))
+            await _cloudinaryService.FileDeleteAsync(category.ImagePath);
+
         _repository.Delete(category);
         await _repository.SaveChangesAsync();
     }
@@ -98,6 +104,15 @@ public class CategoryService : ICategoryService
         var categories = await _repository.GetAll(_getIncludeFunc(language)).ToListAsync();
 
         var dtos = _mapper.Map<List<CategoryGetDto>>(categories);
+
+        return dtos;
+    }
+
+    public async Task<List<CategoryForProductGetDto>> GetAllForProductAsync()
+    {
+        var categories = await _repository.GetFilter(x => x.ParentId != null, _getIncludeFunc(Languages.Azerbaijan)).ToListAsync();
+
+        var dtos = _mapper.Map<List<CategoryForProductGetDto>>(categories);
 
         return dtos;
     }
@@ -124,6 +139,13 @@ public class CategoryService : ICategoryService
         var dto = _mapper.Map<CategoryUpdateDto>(category);
 
         return dto;
+    }
+
+    public async Task<bool> IsExistAsync(int id) //for productService
+    {
+        var isExist = await _repository.IsExistAsync(x => x.Id == id && x.ParentId != null);
+
+        return isExist;
     }
 
     public async Task<bool> UpdateAsync(CategoryUpdateDto dto, ModelStateDictionary ModelState)

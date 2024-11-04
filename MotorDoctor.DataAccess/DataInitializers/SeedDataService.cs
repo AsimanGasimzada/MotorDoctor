@@ -10,6 +10,8 @@ public static class SeedDataService
     {
         builder.AddLanguages();
         builder.AddSettings();
+
+
     }
 
     private static void AddLanguages(this ModelBuilder builder)
