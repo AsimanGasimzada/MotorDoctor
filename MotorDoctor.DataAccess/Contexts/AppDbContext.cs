@@ -1,11 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using MotorDoctor.DataAccess.DataInitializers;
 using MotorDoctor.DataAccess.Interceptors;
 using System.Reflection;
 
 namespace MotorDoctor.DataAccess.Contexts;
 
-public class AppDbContext : DbContext
+public class AppDbContext : IdentityDbContext<AppUser>
 {
     private readonly BaseEntityInterceptor _baseEntityInterceptor;
     public AppDbContext(DbContextOptions<AppDbContext> options, BaseEntityInterceptor baseEntityInterceptor) : base(options)
@@ -17,13 +18,17 @@ public class AppDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         modelBuilder.AddSeedData();
-        modelBuilder.Entity<Product>().HasQueryFilter(x=>!x.IsDeleted);
+
+        modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<ProductSize>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
+
         base.OnModelCreating(modelBuilder);
     }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(_baseEntityInterceptor);
-        
+
         base.OnConfiguring(optionsBuilder);
     }
 
@@ -40,4 +45,7 @@ public class AppDbContext : DbContext
     public DbSet<ProductSize> ProductSizes { get; set; } = null!;
     public DbSet<ProductImage> ProductImages { get; set; } = null!;
     public DbSet<ProductDetail> ProductDetails { get; set; } = null!;
+    public DbSet<Branch> Branches { get; set; } = null!;
+    public DbSet<BranchDetail> BranchDetails { get; set; } = null!;
+
 }

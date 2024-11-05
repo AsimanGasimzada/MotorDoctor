@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34928.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorDoctor.Presentation", "MotorDoctor.Presentation\MotorDoctor.Presentation.csproj", "{959AE622-FBAD-4A60-862D-8E6C9FA37EF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorDoctor.Presentation", "MotorDoctor.Presentation\MotorDoctor.Presentation.csproj", "{959AE622-FBAD-4A60-862D-8E6C9FA37EF9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorDoctor.Core", "MotorDoctor.Core\MotorDoctor.Core.csproj", "{095B0C0E-3B24-42D5-B563-2FBE87240125}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorDoctor.Core", "MotorDoctor.Core\MotorDoctor.Core.csproj", "{095B0C0E-3B24-42D5-B563-2FBE87240125}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorDoctor.DataAccess", "MotorDoctor.DataAccess\MotorDoctor.DataAccess.csproj", "{AFD0F59A-ECF0-4B50-9895-57200076768D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorDoctor.DataAccess", "MotorDoctor.DataAccess\MotorDoctor.DataAccess.csproj", "{AFD0F59A-ECF0-4B50-9895-57200076768D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MotorDoctor.Business", "MotorDoctor.Business\MotorDoctor.Business.csproj", "{0EC33C8E-792D-4C20-B076-D5A51FC8E3DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MotorDoctor.Business", "MotorDoctor.Business\MotorDoctor.Business.csproj", "{0EC33C8E-792D-4C20-B076-D5A51FC8E3DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

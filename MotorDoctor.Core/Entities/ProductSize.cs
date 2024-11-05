@@ -1,6 +1,6 @@
 ﻿namespace MotorDoctor.Core.Entities;
 
-public class ProductSize : BaseEntity
+public class ProductSize : BaseAuditableEntity
 {
     public string Size { get; set; } = null!;
     public decimal Price { get; set; }

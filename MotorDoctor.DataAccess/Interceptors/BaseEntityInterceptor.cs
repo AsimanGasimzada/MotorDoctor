@@ -30,27 +30,39 @@ public class BaseEntityInterceptor : SaveChangesInterceptor
 
         foreach (var entry in context.ChangeTracker.Entries<BaseAuditableEntity>())
         {
-            if (entry.State is EntityState.Added)
+            var username = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value ?? "undefined";
+
+            if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedAt = DateTime.UtcNow;
                 entry.Entity.UpdatedAt = DateTime.UtcNow;
-                entry.Entity.CreatedBy = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value ?? "undifined";
-                entry.Entity.UpdatedBy = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value ?? "undifined"; ;
+                entry.Entity.CreatedBy = username;
+                entry.Entity.UpdatedBy = username;
                 entry.Entity.IsDeleted = false;
             }
-            if (entry.State is EntityState.Modified)
+            else if (entry.State == EntityState.Modified)
             {
-                entry.Entity.UpdatedBy = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value ?? "undifined";
+                entry.Entity.UpdatedBy = username;
                 entry.Entity.UpdatedAt = DateTime.UtcNow;
             }
-            if (entry.State is EntityState.Deleted)
+            else if (entry.State == EntityState.Deleted)
             {
-                entry.State = EntityState.Modified; // soft delete
-                entry.Entity.IsDeleted = true;
-                entry.Entity.UpdatedBy = _contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.Name)?.Value ?? "undifined";
-                entry.Entity.UpdatedAt = DateTime.UtcNow;
+                var existingEntry = context.ChangeTracker.Entries<BaseAuditableEntity>()
+                    .FirstOrDefault(e => e.Entity.Id == entry.Entity.Id && e != entry);
 
+                if (existingEntry is { })
+                {
+                    context.Entry(existingEntry.Entity).State = EntityState.Detached;
+                }
+
+                entry.State = EntityState.Modified;
+
+                entry.Entity.IsDeleted = true;
+                entry.Entity.UpdatedBy = username;
+                entry.Entity.UpdatedAt = DateTime.UtcNow;
             }
         }
     }
+
 }
+

@@ -16,6 +16,11 @@ namespace MotorDoctor.Presentation.Controllers
             return View();
         }
 
+        public IActionResult Lang()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();

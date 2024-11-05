@@ -19,7 +19,9 @@ public static class BusinessServiceRegistration
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBrandService, BrandService>();
+        services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         return services;
     }

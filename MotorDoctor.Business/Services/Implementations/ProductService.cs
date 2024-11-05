@@ -336,7 +336,30 @@ public class ProductService : IProductService
 
         existProduct = _mapper.Map(dto, existProduct);
 
-        //existProduct.ProductSizes = _mapper.Map(dto.ProductSizes, existProduct.ProductSizes);
+        //removeSizes
+        foreach (var productSize in existProduct.ProductSizes.ToList())
+        {
+            if (dto.ProductSizes.Any(x => x.Id == productSize.Id))
+                continue;
+
+            existProduct.ProductSizes.Remove(productSize);
+        }
+
+        //updateSizes
+        foreach (var sizeDto in dto.ProductSizes)
+        {
+           var existSize = existProduct.ProductSizes.FirstOrDefault(x => x.Id == sizeDto.Id);
+
+            if(existSize is null)
+            {
+                var newSize = _mapper.Map<ProductSize>(sizeDto);
+                existProduct.ProductSizes.Add(newSize);
+                continue;
+            }
+
+            existSize = _mapper.Map(sizeDto, existSize);
+        }
+
 
         //remove deletedImages
         foreach (var image in existProduct.ProductImages.ToList())
@@ -379,6 +402,7 @@ public class ProductService : IProductService
 
         return true;
     }
+
 
     private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFunc(Languages language)
     {

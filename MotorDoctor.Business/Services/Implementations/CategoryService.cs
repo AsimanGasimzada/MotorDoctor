@@ -100,7 +100,7 @@ public class CategoryService : ICategoryService
 
     public async Task<List<CategoryGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
     {
-        LanguageHelper.CheckLanguageId(ref language);
+ 
         var categories = await _repository.GetAll(_getIncludeFunc(language)).ToListAsync();
 
         var dtos = _mapper.Map<List<CategoryGetDto>>(categories);
@@ -218,6 +218,7 @@ public class CategoryService : ICategoryService
 
     private Func<IQueryable<Category>, IIncludableQueryable<Category, object>> _getIncludeFunc(Languages language)
     {
+        LanguageHelper.CheckLanguageId(ref language);
 
         return x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language)).ThenInclude(x => x.Language);
     }
