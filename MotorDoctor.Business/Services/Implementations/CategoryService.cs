@@ -219,7 +219,6 @@ public class CategoryService : ICategoryService
     private Func<IQueryable<Category>, IIncludableQueryable<Category, object>> _getIncludeFunc(Languages language)
     {
         LanguageHelper.CheckLanguageId(ref language);
-
         return x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language)).ThenInclude(x => x.Language);
     }
 }

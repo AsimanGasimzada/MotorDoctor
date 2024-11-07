@@ -1,6 +1,7 @@
 using MotorDoctor.DataAccess.ServiceRegistrations;
 using MotorDoctor.Business.ServiceRegistrations;
 using Microsoft.AspNetCore.Mvc.Razor;
+using MotorDoctor.Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,12 +18,15 @@ var app = builder.Build();
 
 var supportedCultures = new[] { "az", "en", "ru" };
 
-var localizationOptions = new RequestLocalizationOptions().SetDefaultCulture(supportedCultures[0])
+var localizationOptions = new RequestLocalizationOptions()
+                                                .SetDefaultCulture(supportedCultures[0])
                                                 .AddSupportedCultures(supportedCultures)
                                                 .AddSupportedUICultures(supportedCultures);
 
 
 app.UseRequestLocalization(localizationOptions);
+
+await app.InitDatabaseAsync();
 
 if (!app.Environment.IsDevelopment())
 {
@@ -45,4 +49,4 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.Run();
+await app.RunAsync();

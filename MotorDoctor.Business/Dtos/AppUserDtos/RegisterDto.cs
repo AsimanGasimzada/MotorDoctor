@@ -19,4 +19,10 @@ public class RegisterDto : IDto
     [DataType(DataType.Password)]
     [Compare(nameof(Password), ErrorMessage = "Təsdiq edilmiş şifrə ilə şifrə eyni olmalıdır.")]
     public string ConfirmPassword { get; set; } = null!;
+
+    [Required(ErrorMessage = " Ad sahəsi boş ola bilməz.")]
+    public string Name { get; set; } = null!;
+
+    [Required(ErrorMessage = " Soyad sahəsi boş ola bilməz.")]
+    public string Surname { get; set; } = null!;
 }

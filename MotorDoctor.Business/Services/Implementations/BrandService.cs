@@ -83,7 +83,6 @@ public class BrandService : IBrandService
 
     public async Task<List<BrandGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
     {
-        LanguageHelper.CheckLanguageId(ref language);
         var brands = await _repository.GetAll(_getIncludeFunc(language)).ToListAsync();
 
         var dtos = _mapper.Map<List<BrandGetDto>>(brands);
@@ -102,7 +101,6 @@ public class BrandService : IBrandService
 
     public async Task<BrandGetDto> GetAsync(int id, Languages language = Languages.Azerbaijan)
     {
-        LanguageHelper.CheckLanguageId(ref language);
         var brand = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (brand is null)
@@ -191,7 +189,7 @@ public class BrandService : IBrandService
 
     private Func<IQueryable<Brand>, IIncludableQueryable<Brand, object>> _getIncludeFunc(Languages language)
     {
-
+        LanguageHelper.CheckLanguageId(ref language);
         return x => x.Include(x => x.BrandDetails.Where(x => x.LanguageId == (int)language)).ThenInclude(x => x.Language);
     }
 }

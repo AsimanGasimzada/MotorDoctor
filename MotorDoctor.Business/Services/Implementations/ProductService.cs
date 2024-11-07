@@ -151,7 +151,6 @@ public class ProductService : IProductService
 
     public async Task<PaginateDto<ProductGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan, int page = 1)
     {
-        LanguageHelper.CheckLanguageId(ref language);
         var query = _repository.GetAll(_getIncludeFunc(language));
 
         int count = query.Count();
@@ -184,7 +183,6 @@ public class ProductService : IProductService
 
     public async Task<ProductGetDto> GetAsync(int id, Languages language = Languages.Azerbaijan)
     {
-        LanguageHelper.CheckLanguageId(ref language);
         var product = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (product is null)
@@ -406,12 +404,11 @@ public class ProductService : IProductService
 
     private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFunc(Languages language)
     {
-
+        LanguageHelper.CheckLanguageId(ref language);
         return x => x.Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.Category).Include(x => x.Brand);
     }
     private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFunc()
     {
-
         return x => x.Include(x => x.ProductDetails).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.Category).Include(x => x.Brand);
     }
 }

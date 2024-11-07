@@ -86,7 +86,6 @@ public class SettingService : ISettingService
 
     public async Task<SettingGetDto> GetAsync(int id, Languages language = Languages.Azerbaijan)
     {
-        LanguageHelper.CheckLanguageId(ref language);
         var setting = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (setting is null)
@@ -99,7 +98,6 @@ public class SettingService : ISettingService
 
     public async Task<Dictionary<string, string>> GetSettingsWithDictionaryAsync(Languages language)
     {
-        LanguageHelper.CheckLanguageId(ref language);
         var settings = await _repository.GetAll(_getIncludeFunc(language))
                                         .ToDictionaryAsync(x => x.Key, x => x.SettingDetails.FirstOrDefault()?.Value ?? "");
 
@@ -158,7 +156,7 @@ public class SettingService : ISettingService
 
     private Func<IQueryable<Setting>, IIncludableQueryable<Setting, object>> _getIncludeFunc(Languages language)
     {
-
+        LanguageHelper.CheckLanguageId(ref language);
         return x => x.Include(x => x.SettingDetails.Where(x => x.LanguageId == (int)language)).ThenInclude(x => x.Language);
     }
 }

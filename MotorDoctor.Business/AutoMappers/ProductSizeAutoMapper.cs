@@ -10,5 +10,6 @@ public class ProductSizeAutoMapper : Profile
         CreateMap<ProductSize, ProductSizeCreateDto>().ReverseMap();
         CreateMap<ProductSize, ProductSizeUpdateDto>().ReverseMap();
         CreateMap<ProductSize, ProductSizeGetDto>().ReverseMap();
+        CreateMap<ProductSize, ProductSizeWithBasketGetDto>().ReverseMap();
     }
 }

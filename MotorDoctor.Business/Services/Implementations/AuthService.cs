@@ -1,15 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.EntityFrameworkCore;
+using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Mvc.Routing;
 using MotorDoctor.Core.Enum;
-using MotorDoctor.Business.Exceptions;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using MotorDoctor.DataAccess.Localizers;
 
 namespace MotorDoctor.Business.Services.Implementations;
 
@@ -22,9 +22,9 @@ public class AuthService : IAuthService
     private readonly IEmailService _emailService;
     private readonly string _staticFilesPath;
     private readonly IUrlHelper _urlHelper;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-
-    public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IHttpContextAccessor contextAccessor, IMapper mapper, IEmailService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor)
+    public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IHttpContextAccessor contextAccessor, IMapper mapper, IEmailService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor, ErrorLocalizer errorLocalizer)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -33,6 +33,7 @@ public class AuthService : IAuthService
         _emailService = emailService;
         _staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Connex.Business", "StaticFiles");
         _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+        _errorLocalizer = errorLocalizer;
     }
 
     public async Task<bool> LoginAsync(LoginDto dto, ModelStateDictionary ModelState)
@@ -47,13 +48,13 @@ public class AuthService : IAuthService
 
         if (user is null)
         {
-            ModelState.AddModelError("", "İstifadəçi adı və ya parol yanlışdır");
+            ModelState.AddModelError("", _errorLocalizer.GetValue("InvalidCredentials"));
             return false;
         }
 
         if (user.EmailConfirmed is false)
         {
-            ModelState.AddModelError("", "Hesaba daxil olmaq üçün mail hesabınızı təsdiqləməlisiniz. Təsdiqləmə maili yenidən göndərilmişdir.");
+            ModelState.AddModelError("", _errorLocalizer.GetValue("UnconfirmedEmail"));
             await _sendConfirmEmailToken(user);
             return false;
         }
@@ -64,11 +65,11 @@ public class AuthService : IAuthService
         {
             if (result.IsLockedOut)
             {
-                ModelState.AddModelError("", "İstifadəçi bloklanıb,zəhmət olmasa 10 dəqiqə sonra yenidən yoxlayın.");
+                ModelState.AddModelError("", _errorLocalizer.GetValue("BlockedUser"));
                 return false;
             }
 
-            ModelState.AddModelError("", "İstifadəçi adı və ya parol yanlışdır");
+            ModelState.AddModelError("", _errorLocalizer.GetValue("InvalidCredentials"));
             return false;
         }
 
@@ -95,7 +96,7 @@ public class AuthService : IAuthService
 
         if (isExist)
         {
-            ModelState.AddModelError("", "Bu emaildə artıq istifadəçi mövcuddur.");
+            ModelState.AddModelError("", _errorLocalizer.GetValue("DuplicateEmail"));
             return false;
         }
 
@@ -103,7 +104,7 @@ public class AuthService : IAuthService
 
         if (isExist)
         {
-            ModelState.AddModelError("", "Bu username-də artıq istifadəçi mövcuddur.");
+            ModelState.AddModelError("", _errorLocalizer.GetValue("DuplicateUserName"));
             return false;
         }
 
@@ -113,7 +114,7 @@ public class AuthService : IAuthService
 
         if (!result.Succeeded)
         {
-            ModelState.AddModelError("", string.Join(",", result.Errors));
+            ModelState.AddModelError("", string.Join(",", result.Errors.Select(x => x.Description)));
             return false;
         }
 
@@ -129,13 +130,13 @@ public class AuthService : IAuthService
     public async Task<bool> VerifyEmailAsync(VerifyEmailDto dto, ModelStateDictionary ModelState)
     {
         if (!ModelState.IsValid)
-            throw new InvalidInputException("Gözlənilməz xəta baş verdi yenidən sınayın.");
+            throw new InvalidInputException(_errorLocalizer.GetValue(nameof(InvalidInputException)));
 
 
         var user = await _userManager.FindByEmailAsync(dto.Email);
 
         if (user is null)
-            throw new InvalidInputException("Gözlənilməz xəta baş verdi yenidən sınayın.");
+            throw new InvalidInputException(_errorLocalizer.GetValue(nameof(InvalidInputException)));
 
         var result = await _userManager.ConfirmEmailAsync(user, dto.Token);
 
@@ -143,7 +144,8 @@ public class AuthService : IAuthService
         if (!result.Succeeded)
         {
             await _sendConfirmEmailToken(user);
-            throw new InvalidInputException("Gözlənilməz xəta baş verdi yenidən sınayın.Təsdiqləmə linki yenidən göndərilmişdir.");
+
+            throw new InvalidInputException(_errorLocalizer.GetValue("UnconfirmedEmail"));
         }
 
 

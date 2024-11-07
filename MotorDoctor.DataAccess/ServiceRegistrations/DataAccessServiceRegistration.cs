@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MotorDoctor.DataAccess.Contexts;
+using MotorDoctor.DataAccess.DataInitializers;
 using MotorDoctor.DataAccess.Helpers;
 using MotorDoctor.DataAccess.Interceptors;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 using MotorDoctor.DataAccess.Repositories.Implementations;
+using MotorDoctor.DataAccess.Localizers;
 
 namespace MotorDoctor.DataAccess.ServiceRegistrations;
 
@@ -19,6 +21,8 @@ public static class DataAccessServiceRegistration
         services.AddScoped<BaseEntityInterceptor>();
         _addIdentity(services);
 
+        services.AddScoped<DbContextInitalizer>();
+
         return services;
     }
 
@@ -26,11 +30,15 @@ public static class DataAccessServiceRegistration
     {
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
+        services.AddScoped<IBasketItemRepository, BasketItemRepository>();
         services.AddScoped<ILanguageRepository, LanguageRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ISliderRepository, SliderRepository>();
         services.AddScoped<ISettingRepository, SettingRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
+
+        services.AddSingleton<ErrorLocalizer>();
     }
 
     private static void _addIdentity(IServiceCollection services)

@@ -88,8 +88,6 @@ public class SliderService : ISliderService
 
     public async Task<List<SliderGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
     {
-        LanguageHelper.CheckLanguageId(ref language);
-
         var sliders = await _repository.GetAll(_getIncludeFunc(language)).ToListAsync();
 
         var dtos = _mapper.Map<List<SliderGetDto>>(sliders);
@@ -99,8 +97,6 @@ public class SliderService : ISliderService
 
     public async Task<SliderGetDto> GetAsync(int id, Languages language = Languages.Azerbaijan)
     {
-        LanguageHelper.CheckLanguageId(ref language);
-
         var slider = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (slider is null)
@@ -187,7 +183,7 @@ public class SliderService : ISliderService
 
     private Func<IQueryable<Slider>, IIncludableQueryable<Slider, object>> _getIncludeFunc(Languages language)
     {
-
+        LanguageHelper.CheckLanguageId(ref language);
         return x => x.Include(x => x.SliderDetails.Where(x => x.LanguageId == (int)language)).ThenInclude(x => x.Language);
     }
 }

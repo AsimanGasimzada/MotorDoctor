@@ -119,9 +119,65 @@ public class BranchService : IBranchService
         return dto;
     }
 
-    public Task<bool> UpdateAsync(BranchUpdateDto dto, ModelStateDictionary ModelState)
+    public async Task<bool> UpdateAsync(BranchUpdateDto dto, ModelStateDictionary ModelState)
     {
-        throw new NotImplementedException();
+        if (!ModelState.IsValid)
+            return false;
+
+        var existBranch=await _repository.GetAsync(dto.Id,x=>x.Include(x=>x.BranchDetails));
+
+        if(existBranch is null)
+            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+
+        if (!dto.Image?.ValidateType() ?? false)
+        {
+            ModelState.AddModelError("Image", "Yalnız şəkil formatında dəyər daxil edə bilərsiniz");
+            return false;
+        }
+
+        if (!dto.Image?.ValidateSize(2) ?? false)
+        {
+            ModelState.AddModelError("Image", "Şəkilin ölçüsü 2 mb dan artıq ola bilməz");
+            return false;
+        }
+
+        foreach (var detail in dto.BranchDetails)
+        {
+            var isExistLanguage = LanguageHelper.CheckLanguageId(detail.LanguageId);
+
+            if (!isExistLanguage)
+            {
+                ModelState.AddModelError("", "Nə isə yanlış oldu, yenidən sınayın");
+                return false;
+            }
+
+            isExistLanguage = dto.BranchDetails.Any(x => x.LanguageId == detail.LanguageId && x != detail);
+
+            if (isExistLanguage)
+            {
+                ModelState.AddModelError("", "Nə isə yanlış oldu, yenidən sınayın");
+                return false;
+            }
+        }
+
+        existBranch=_mapper.Map(dto,existBranch);
+
+        if(dto.Image is { })
+        {
+            string newImagePath=await _cloudinaryService.FileCreateAsync(dto.Image);
+
+            if(!string.IsNullOrEmpty(existBranch.ImagePath))
+            {
+                await _cloudinaryService.FileDeleteAsync(existBranch.ImagePath);
+            }
+
+            existBranch.ImagePath = newImagePath;
+        }
+
+        _repository.Update(existBranch);
+        await _repository.SaveChangesAsync();   
+
+        return true;
     }
 
     private Func<IQueryable<Branch>, IIncludableQueryable<Branch, object>> _getIncludeFunc(Languages language)

@@ -1,8 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Business.Services.Implementations;
-using MotorDoctor.DataAccess.Repositories.Abstractions;
-using MotorDoctor.DataAccess.Repositories.Implementations;
 using System.Reflection;
 
 namespace MotorDoctor.Business.ServiceRegistrations;
@@ -14,6 +13,7 @@ public static class BusinessServiceRegistration
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 
+        services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
         services.AddScoped<ISliderService, SliderService>();
         services.AddScoped<ISettingService, SettingService>();
@@ -21,7 +21,13 @@ public static class BusinessServiceRegistration
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IProductSizeService, ProductSizeService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IBasketService, BasketService>();
+
+
+        services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+        services.AddHttpContextAccessor();
 
         return services;
     }

@@ -228,6 +228,34 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.BasketItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductSizeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductSizeId");
+
+                    b.HasIndex("AppUserId", "ProductSizeId")
+                        .IsUnique();
+
+                    b.ToTable("BasketItems");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Branch", b =>
                 {
                     b.Property<int>("Id")
@@ -958,6 +986,25 @@ namespace MotorDoctor.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.BasketItem", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.ProductSize", "ProductSize")
+                        .WithMany()
+                        .HasForeignKey("ProductSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("ProductSize");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.BranchDetail", b =>
