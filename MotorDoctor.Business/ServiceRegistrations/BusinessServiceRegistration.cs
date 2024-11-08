@@ -14,6 +14,7 @@ public static class BusinessServiceRegistration
 
 
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IAttendanceService, AttendanceService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
         services.AddScoped<ISliderService, SliderService>();
         services.AddScoped<ISettingService, SettingService>();

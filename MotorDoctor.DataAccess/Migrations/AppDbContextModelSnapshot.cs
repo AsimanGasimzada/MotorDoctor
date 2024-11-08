@@ -228,6 +228,57 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.AttendanceDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AttedanceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AttedanceId");
+
+                    b.HasIndex("LanguageId", "AttedanceId")
+                        .IsUnique();
+
+                    b.ToTable("AttendanceDetails");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Attendance", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Attendances");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.BasketItem", b =>
                 {
                     b.Property<int>("Id")
@@ -988,6 +1039,25 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.AttendanceDetail", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Attendance", "Attedance")
+                        .WithMany("AttendanceDetails")
+                        .HasForeignKey("AttedanceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Language", "Language")
+                        .WithMany("AttendanceDetails")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Attedance");
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.BasketItem", b =>
                 {
                     b.HasOne("MotorDoctor.Core.Entities.AppUser", "AppUser")
@@ -1171,6 +1241,11 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Slider");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Attendance", b =>
+                {
+                    b.Navigation("AttendanceDetails");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Branch", b =>
                 {
                     b.Navigation("BranchDetails");
@@ -1190,6 +1265,8 @@ namespace MotorDoctor.DataAccess.Migrations
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Language", b =>
                 {
+                    b.Navigation("AttendanceDetails");
+
                     b.Navigation("BranchDetails");
 
                     b.Navigation("BrandDetails");

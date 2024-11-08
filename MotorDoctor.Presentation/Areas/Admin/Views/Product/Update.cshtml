@@ -236,6 +236,7 @@
                 <div class="form-group">
                     <label for="exampleInputUsername1">Əsas şəkili seçin</label>
                     <img src="@Model.MainImagePath" width="150" height="150" alt="MainImage" />
+                    <input type="hidden" asp-for="MainImagePath"/>
                     <input class="form-control" asp-for="MainImage">
                     <span asp-validation-for="MainImage" class="text-danger"></span>
                 </div>

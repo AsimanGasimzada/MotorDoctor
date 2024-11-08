@@ -2,7 +2,7 @@
 
 public interface IBrandService : IModifyService<BrandCreateDto, BrandUpdateDto>, IGetServiceWithLanguage<BrandGetDto>
 {
-    Task<List<BrandForProductGetDto>> GetAllForProductAsync();
+    Task<List<BrandRelationDto>> GetAllForProductAsync();
     Task<bool> IsExistAsync(int id);
 
 }

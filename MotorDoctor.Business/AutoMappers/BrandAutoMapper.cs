@@ -13,7 +13,11 @@ public class BrandAutoMapper : Profile
                          .ForMember(x => x.Name, x => x.MapFrom(src => src.BrandDetails.FirstOrDefault() != null ? src.BrandDetails.FirstOrDefault()!.Name : string.Empty))
                          .ForMember(x => x.Description, x => x.MapFrom(src => src.BrandDetails.FirstOrDefault() != null ? src.BrandDetails.FirstOrDefault()!.Description : string.Empty));
 
-        CreateMap<Brand, BrandForProductGetDto>()
+        CreateMap<Brand, BrandRelationDto>()
                          .ForMember(x => x.Name, x => x.MapFrom(src => src.BrandDetails.FirstOrDefault() != null ? src.BrandDetails.FirstOrDefault()!.Name : string.Empty));
+
+
+        CreateMap<Brand, BrandRelationDto>()
+                        .ForMember(x => x.Name, x => x.MapFrom(src => src.BrandDetails.FirstOrDefault() != null ? src.BrandDetails.FirstOrDefault()!.Name : string.Empty));
     }
 }

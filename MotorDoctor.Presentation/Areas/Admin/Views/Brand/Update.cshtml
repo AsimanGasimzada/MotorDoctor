@@ -1,0 +1,94 @@
+﻿@model BrandUpdateDto
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description">
+                Brend yarat
+            </p>
+            <form method="post" class="forms-sample" enctype="multipart/form-data">
+
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.BrandDetails[0].LanguageId" value="1" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca ad</label>
+                        <input class="form-control" required asp-for="@Model.BrandDetails[0].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.BrandDetails[0].Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca açıqlama</label>
+                        <input class="form-control" required asp-for="@Model.BrandDetails[0].Description" placeholder="Açıqlama daxil edin">
+                        <span asp-validation-for="@Model.BrandDetails[0].Description" class="text-danger"></span>
+                    </div>
+
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.BrandDetails[1].LanguageId" value="2" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə ad</label>
+                        <input class="form-control" required asp-for="@Model.BrandDetails[1].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.BrandDetails[1].Name" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə açıqlama</label>
+                        <input class="form-control" required asp-for="@Model.BrandDetails[1].Description" placeholder="Açıqlama daxil edin">
+                        <span asp-validation-for="@Model.BrandDetails[1].Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.BrandDetails[2].LanguageId" value="3" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca ad</label>
+                        <input class="form-control" required asp-for="@Model.BrandDetails[2].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.BrandDetails[2].Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca açıqlama</label>
+                        <input class="form-control" required asp-for="@Model.BrandDetails[2].Description" placeholder="Açıqlama daxil edin">
+                        <span asp-validation-for="@Model.BrandDetails[2].Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+
+                <div class="form-group">
+                    <img src="@Model.ImagePath" width="100" height="100" />
+                    <input asp-for="ImagePath" type="hidden" />
+                    <label for="exampleInputUsername1"> Şəkil seçin</label>
+                    <input class="form-control" asp-for="Image">
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+
+
+                <button type="submit" class="btn btn-primary mr-2">Yarat</button>
+                <a class="btn btn-light" asp-action="Index">Ləğv et</a>
+            </form>
+        </div>
+    </div>
+</div>

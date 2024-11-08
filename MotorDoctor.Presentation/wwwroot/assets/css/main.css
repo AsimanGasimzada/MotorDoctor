@@ -122,6 +122,142 @@ body.no-scroll {
   }
 }
 
+#main .mainSwiper .swiper-button-next:after,
+#main .mainSwiper .swiper-button-prev:after {
+  color: #000;
+  font-size: 20px;
+}
+
+#header .discount-message {
+  background-color: #fff;
+  height: 100%;
+}
+
+#header .discount-message .message {
+  text-align: center;
+  display: block;
+  font-size: 12px;
+  color: #727272;
+  line-height: 40px;
+}
+
+#header .discount-message .close-btn {
+  position: absolute;
+  font-size: 25px;
+  top: 2px;
+  right: 15px;
+  color: #000;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+#main .mainSwiper .swiper-wrapper {
+  height: 95vh;
+}
+
+#main .mainSwiper .swiper-slide {
+  height: 100%;
+  overflow: hidden;
+}
+
+#main .mainSwiper .swiper-slide .slider-title {
+  transform: translateY(-50%);
+  top: 50%;
+  position: absolute;
+  left: 8%;
+}
+
+#main .mainSwiper .swiper-slide .slider-title .slider-heading {
+  text-transform: uppercase;
+  color: #000;
+  font-weight: 700;
+  font-size: clamp(2.5rem, 4vw, 4.9rem);
+  max-width: 90%;
+  transition: all 0.5s;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+#main .mainSwiper .swiper-slide .slider-title .slider-heading .char {
+  transform: translateY(210px);
+  transition: all 0.5s;
+  will-change: transform;
+}
+
+#main .mainSwiper .swiper-slide .slider-title p {
+  animation: slideTitle 0.8s ease both;
+}
+
+#main .mainSwiper .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+#main .mainSwiper .autoplay-progress {
+  position: absolute;
+  right: 12px;
+  bottom: 44px;
+  z-index: 10;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #000;
+}
+
+#main .mainSwiper .autoplay-progress svg {
+  --progress: 0;
+  position: absolute;
+  left: 0;
+  top: 0px;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  stroke-width: 4px;
+  stroke: #000;
+  fill: none;
+  stroke-dashoffset: calc(125.6 * (1 - var(--progress)));
+  stroke-dasharray: 125.6;
+  transform: rotate(-90deg);
+}
+
+@media only screen and (max-width: 992px) {
+  #main .mainSwiper .swiper-slide .slider-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    z-index: 2;
+  }
+
+
+  #main .mainSwiper .swiper-slide .slider-title .slider-heading {
+    color: #fff;
+  }
+
+  #main .mainSwiper .swiper-slide .slider-title .custom-button {
+    border-color: #fff;
+  }
+
+  #main .mainSwiper .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+}
+
 @media screen and (max-width: 480px) {
   .overlay-content {
     top: 10%;
@@ -615,6 +751,7 @@ body.no-scroll {
     position: relative;
     font-weight: 700;
     font-size: 15px;
+
     &::before {
       content: "";
       position: absolute;
@@ -747,141 +884,7 @@ body.no-scroll {
   font-weight: 700;
 }
 
-#header .swiper-button-next:after,
-#header .swiper-button-prev:after {
-  color: #000;
-  font-size: 20px;
-}
 
-#header .discount-message {
-  background-color: #fff;
-  height: 100%;
-}
-
-#header .discount-message .message {
-  text-align: center;
-  display: block;
-  font-size: 12px;
-  color: #727272;
-  line-height: 40px;
-}
-
-#header .discount-message .close-btn {
-  position: absolute;
-  font-size: 25px;
-  top: 2px;
-  right: 15px;
-  color: #000;
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-
-#header .swiper-wrapper {
-  height: 95vh;
-}
-
-#header .swiper-slide {
-  height: 100%;
-  overflow: hidden;
-}
-
-#header .swiper-slide .slider-title {
-  transform: translateY(-50%);
-  top: 50%;
-  position: absolute;
-  left: 8%;
-}
-
-#header .swiper-slide .slider-title .slider-heading {
-  text-transform: uppercase;
-  color: #000;
-  font-weight: 700;
-  font-size: clamp(2.5rem, 4vw, 4.9rem);
-  max-width: 90%;
-  transition: all 0.5s;
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-}
-
-#header .swiper-slide .slider-title .slider-heading .char {
-  transform: translateY(210px);
-  transition: all 0.5s;
-  will-change: transform;
-}
-
-#header .swiper-slide .slider-title p {
-  animation: slideTitle 0.8s ease both;
-}
-
-#header .swiper-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
-
-#header .autoplay-progress {
-  position: absolute;
-  right: 12px;
-  bottom: 44px;
-  z-index: 10;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  color: #000;
-}
-
-#header .autoplay-progress svg {
-  --progress: 0;
-  position: absolute;
-  left: 0;
-  top: 0px;
-  z-index: 10;
-  width: 100%;
-  height: 100%;
-  stroke-width: 4px;
-  stroke: #000;
-  fill: none;
-  stroke-dashoffset: calc(125.6 * (1 - var(--progress)));
-  stroke-dasharray: 125.6;
-  transform: rotate(-90deg);
-}
-
-@media only screen and (max-width: 992px) {
-  #header .swiper-slide .slider-title {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #fff;
-    z-index: 2;
-  }
-
-
-  #header .swiper-slide .slider-title .slider-heading {
-    color: #fff;
-  }
-
-  #header .swiper-slide .slider-title .custom-button {
-    border-color: #fff;
-  }
-
-  #header .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-  }
-}
 
 #nav {
   position: absolute;
@@ -2406,14 +2409,14 @@ body.no-scroll {
 }
 
 @media only screen and (max-width: 550px) {
-  #header .swiper-slide .slider-title {
+  #main .mainSwiper .swiper-slide .slider-title {
     width: 55% !important;
   }
 
 }
 
 @media only screen and (max-width: 480px) {
-  #header .swiper-slide .slider-title {
+  #main .mainSwiper .swiper-slide .slider-title {
     width: 60% !important;
   }
 
@@ -2443,21 +2446,21 @@ body.no-scroll {
 }
 
 @media only screen and (max-width: 441px) {
-  #header .swiper-slide .slider-title {
+  #main .mainSwiper .swiper-slide .slider-title {
     width: 70% !important;
   }
 
 }
 
 @media only screen and (max-width: 380px) {
-  #header .swiper-slide .slider-title {
+  #main .mainSwiper .swiper-slide .slider-title {
     width: 80% !important;
   }
 
 }
 
 @media only screen and (max-width: 325px) {
-  #header .swiper-slide .slider-title {
+  #main .mainSwiper .swiper-slide .slider-title {
     width: 85% !important;
   }
 
@@ -2527,6 +2530,26 @@ body.no-scroll {
 
 
 
+.container-scroller {
+    padding: 100px 50px;
+}
+
+@media screen and (max-width:480px) {
+    .container-scroller {
+        padding: 100px 20px !important;
+    }
+
+    .auth-form-light {
+        padding: 2rem 1.3rem !important;
+    }
+}
+
+@media screen and (max-width:330px) {
+    .container-scroller {
+        padding: 100px 5px !important;
+    }
+}
+
 .auth-form-light {
     background-color: #ffffff;
     border: 1px solid #e0e0e0;
@@ -2568,36 +2591,10 @@ body.no-scroll {
     margin-bottom: 1.5rem;
 }
 
-.btn-custom {
-    background: black !important;
-    color: white !important;
+.my-3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
-
-    .btn-custom:hover {
-        background: gray !important;
-        color: white !important;
-    }
-
-.pt-3 {
-    padding-top: 1rem;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.content-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-.row {
-    display: flex;
-    justify-content: center;
-}
-
 
 .position-relative {
     position: relative;
@@ -2606,7 +2603,8 @@ body.no-scroll {
 .btn-icon {
     position: absolute;
     top: 50%;
-    right: 10px;
+    right: 7px;
+    margin-top: 14px;
     transform: translateY(-50%);
     background: transparent;
     border: none;
@@ -2623,5 +2621,29 @@ body.no-scroll {
     padding-right: 40px;
 }
 
+.custom-button2 {
+    color: black;
+    font-size: 16px;
+    border: 2px solid #000;
+    padding: 10px 55px;
+    background: transparent;
+    transition: 0.4s ease-in;
+    font-weight: 600;
+    cursor: pointer;
+}
 
+    .custom-button2:hover {
+        color: white;
+        background-color: #000;
+    }
 
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.centered-button {
+    margin-top: 1rem;
+}

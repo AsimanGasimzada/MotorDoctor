@@ -83,13 +83,17 @@ public class CategoryService : ICategoryService
 
     public async Task DeleteAsync(int id)
     {
-        var category = await _repository.GetAsync(id, x => x.Include(x => x.Children));
+        var category = await _repository.GetAsync(id, x => x.Include(x => x.Children).Include(x => x.Products));
 
         if (category is null)
             throw new NotFoundException("Bu Id-də kategoriya tapılmadı");
 
-        foreach (var child in category.Children)
-            child.ParentId = null;
+        if (category.Children.Count > 0)
+            throw new InvalidInputException("Alt kategoriyaları olan kategoriyanı silə bilməzsiniz");
+
+        if (category.Products.Count > 0)
+            throw new InvalidInputException("Məhsulları olan kategoriyanı silə bilməzsiniz");
+
 
         if (!string.IsNullOrEmpty(category.ImagePath))
             await _cloudinaryService.FileDeleteAsync(category.ImagePath);
@@ -100,31 +104,56 @@ public class CategoryService : ICategoryService
 
     public async Task<List<CategoryGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
     {
- 
-        var categories = await _repository.GetAll(_getIncludeFunc(language)).ToListAsync();
+        LanguageHelper.CheckLanguageId(ref language);
+        var categories = await _repository.GetAll(x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language)).ThenInclude(x => x.Language)
+                                                                                                .Include(x => x.Children).Include(x => x.Parent!).Include(x => x.Products)).ToListAsync();
 
         var dtos = _mapper.Map<List<CategoryGetDto>>(categories);
 
         return dtos;
     }
 
-    public async Task<List<CategoryForProductGetDto>> GetAllForProductAsync()
+    public async Task<List<CategoryRelationDto>> GetAllForProductAsync()
     {
         var categories = await _repository.GetFilter(x => x.ParentId != null, _getIncludeFunc(Languages.Azerbaijan)).ToListAsync();
 
-        var dtos = _mapper.Map<List<CategoryForProductGetDto>>(categories);
+        var dtos = _mapper.Map<List<CategoryRelationDto>>(categories);
 
         return dtos;
     }
 
     public async Task<CategoryGetDto> GetAsync(int id, Languages language = Languages.Azerbaijan)
     {
-        var category = await _repository.GetAsync(id, x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.Children));
+        LanguageHelper.CheckLanguageId(ref language);
+        var category = await _repository.GetAsync(id, x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.Children).Include(x => x.Parent!));
 
         if (category is null)
             throw new NotFoundException("Bu Id-də kategoriya tapılmadı");
 
         var dto = _mapper.Map<CategoryGetDto>(category);
+
+        return dto;
+    }
+
+    public async Task<CategoryCreateDto> GetCreateDtoAsync()
+    {
+        var parentCategories = await _repository.GetFilter(x => x.ParentId == null, x => x.Include(x => x.CategoryDetails)).ToListAsync();
+
+        var dtos = _mapper.Map<List<CategoryRelationDto>>(parentCategories);
+
+        var dto = new CategoryCreateDto() { Categories = dtos, CategoryDetails = [new(), new(), new()] };
+
+
+        return dto;
+    }
+
+    public async Task<CategoryCreateDto> GetCreateDtoAsync(CategoryCreateDto dto)
+    {
+        var parentCategories = await _repository.GetFilter(x => x.ParentId == null, x => x.Include(x => x.CategoryDetails)).ToListAsync();
+
+        var dtos = _mapper.Map<List<CategoryRelationDto>>(parentCategories);
+
+        dto.Categories = dtos;
 
         return dto;
     }
@@ -137,6 +166,23 @@ public class CategoryService : ICategoryService
             throw new NotFoundException("Bu Id-də kategoriya tapılmadı");
 
         var dto = _mapper.Map<CategoryUpdateDto>(category);
+
+        var parentCategories = await _repository.GetFilter(x => x.ParentId == null, x => x.Include(x => x.CategoryDetails)).ToListAsync();
+
+        var dtos = _mapper.Map<List<CategoryRelationDto>>(parentCategories);
+
+        dto.Categories = dtos;
+
+        return dto;
+    }
+
+    public async Task<CategoryUpdateDto> GetUpdatedDtoAsync(CategoryUpdateDto dto)
+    {
+        var parentCategories = await _repository.GetFilter(x => x.ParentId == null, x => x.Include(x => x.CategoryDetails)).ToListAsync();
+
+        var dtos = _mapper.Map<List<CategoryRelationDto>>(parentCategories);
+
+        dto.Categories = dtos;
 
         return dto;
     }

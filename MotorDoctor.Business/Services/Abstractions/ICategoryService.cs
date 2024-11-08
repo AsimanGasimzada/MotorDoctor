@@ -2,6 +2,9 @@
 
 public interface ICategoryService : IModifyService<CategoryCreateDto, CategoryUpdateDto>, IGetServiceWithLanguage<CategoryGetDto>
 {
-    Task<List<CategoryForProductGetDto>> GetAllForProductAsync();
+    Task<List<CategoryRelationDto>> GetAllForProductAsync();
     Task<bool> IsExistAsync(int id);
+    Task<CategoryCreateDto> GetCreateDtoAsync();
+    Task<CategoryCreateDto> GetCreateDtoAsync(CategoryCreateDto dto);
+    Task<CategoryUpdateDto> GetUpdatedDtoAsync(CategoryUpdateDto dto);
 }

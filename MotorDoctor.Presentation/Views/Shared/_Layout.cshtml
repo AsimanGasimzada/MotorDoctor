@@ -21,9 +21,6 @@
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <!-- CSS -->
     <link rel="stylesheet" href="~/assets/css/main.css" />
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <style>
     </style>
 </head>
@@ -308,60 +305,13 @@
             </div>
         </div>
 
-        <!-- Hero Slider -->
-        <div class="swiper mySwiper">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="slider-title">
-                        <h1 class="slider-heading">LIMITED EDITION SPORTSWEAR</h1>
-                        <p class="pb-4">
-                            Search the Dunker and find the ideal pieces for you
-                        </p>
-                        <a href="#" class="custom-button">SHOP NOW</a>
-                    </div>
-                    <div class="overlay"></div>
-                    <img src="~/assets/img/slider1.jpg" />
-                </div>
-                <div class="swiper-slide">
-                    <div class="slider-title">
-                        <h1 class="slider-heading">LIMITED EDITION SPORTSWEAR</h1>
-                        <p class="pb-4">
-                            Search the Dunker and find the ideal pieces for you
-                        </p>
-                        <a href="#" class="custom-button">SHOP NOW</a>
-                    </div>
-                    <div class="overlay"></div>
-                    <img src="~/assets/img/slider2.jpg" />
-                </div>
-                <div class="swiper-slide">
-                    <div class="slider-title">
-                        <h1 class="slider-heading">uv protective clothes</h1>
-                        <p class="pb-4">
-                            Search the Dunker and find the ideal pieces for you
-                        </p>
-                        <a href="#" class="custom-button">SHOP NOW</a>
-                    </div>
-                    <div class="overlay"></div>
-                    <img src="~/assets/img/slider3.jpg" />
-                </div>
-            </div>
-            <button class="border-0">
-                <div class="swiper-button-next"></div>
-            </button>
-            <button class="border-0">
-                <div class="swiper-button-prev"></div>
-            </button>
-            <div class="autoplay-progress d-lg-flex d-none">
-                <svg viewBox="0 0 48 48">
-                    <circle cx="24" cy="24" r="20"></circle>
-                </svg>
-                <span></span>
-            </div>
-            <!-- <div class="swiper-pagination"></div> -->
-        </div>
+
     </header>
     <!-- Header Section End -->
+
     @RenderBody()
+
+
 
     <!-- Footer Start -->
     <footer id="footer">
@@ -623,21 +573,28 @@
             </div>
         </div>
     </footer>
+    <!-- Footer End -->
+    <!-- SwiperJS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script src="~/assets/js/productCardSlider.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+    <!-- Split Type  -->
+    <script src="
+    https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js
+    "></script>
 
+    <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
+    <!-- GSAP JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
             integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <!-- axios cdn  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js"></script>
 
+    <!-- generate card js  -->
     <script src="~/assets/js/basket.js"></script>
     <script src="~/assets/js/generateCard.js"></script>
     <script src="~/assets/js/wishlist.js"></script>

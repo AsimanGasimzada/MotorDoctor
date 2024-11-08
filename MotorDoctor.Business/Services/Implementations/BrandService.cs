@@ -90,11 +90,11 @@ public class BrandService : IBrandService
         return dtos;
     }
 
-    public async Task<List<BrandForProductGetDto>> GetAllForProductAsync()
+    public async Task<List<BrandRelationDto>> GetAllForProductAsync()
     {
         var brands = await _repository.GetAll(_getIncludeFunc(Languages.Azerbaijan)).ToListAsync();
 
-        var dtos = _mapper.Map<List<BrandForProductGetDto>>(brands);
+        var dtos = _mapper.Map<List<BrandRelationDto>>(brands);
 
         return dtos;
     }

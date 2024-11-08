@@ -8,5 +8,6 @@ public class CategoryUpdateDto : IDto
     public int? ParentId { get; set; }
     public IFormFile? Image { get; set; }
     public string? ImagePath { get; set; }
+    public List<CategoryRelationDto> Categories { get; set; } = [];
     public List<CategoryDetailUpdateDto> CategoryDetails { get; set; } = [];
 }

@@ -6,8 +6,8 @@ public class ProductGetDto : IDto
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string Code { get; set; } = null!;
-    public int CategoryId { get; set; } // configure dto
-    public int BrandId { get; set; } // configure dto
+    public CategoryRelationDto Category { get; set; } = null!;
+    public BrandRelationDto Brand { get; set; } = null!;
     public string MainImagePath { get; set; } = null!;
     public List<string> ImagePaths { get; set; } = [];
 

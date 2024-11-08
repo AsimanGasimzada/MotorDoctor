@@ -8,4 +8,6 @@ public class CategoryGetDto : IDto
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string? ImagePath { get; set; }
+    public List<CategoryRelationDto> Children { get; set; } = [];
+    public List<ProductRelationDto> Products { get; set; } = [];
 }

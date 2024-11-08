@@ -16,7 +16,7 @@ public class ProductController : Controller
 
     public async Task<IActionResult> Index(int page = 1)
     {
-        var products = await _service.GetAllAsync(page: page);
+        var products = await _service.GetAllWithPageAsync(page: page);
 
         return View(products);
     }

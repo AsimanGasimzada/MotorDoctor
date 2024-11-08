@@ -1,0 +1,135 @@
+﻿@model BranchUpdateDto
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description">
+                Filial dəyişdir
+            </p>
+            <form method="post" class="forms-sample" enctype="multipart/form-data">
+
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.BranchDetails[0].LanguageId" value="1" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca ad</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[0].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[0].Name" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca ünvan</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[0].Location" placeholder="Ünvan daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[0].Location" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca telefon nömrəsi</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[0].PhoneNumber" placeholder="Telefon nömrəsi daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[0].PhoneNumber" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca iş saatları</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[0].WorkHours" placeholder="İş saatları daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[0].WorkHours" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.BranchDetails[1].LanguageId" value="2" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə ad</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[1].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[1].Name" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə ünvan</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[1].Location" placeholder="Ünvan daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[1].Location" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə telefon nömrəsi</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[1].PhoneNumber" placeholder="Telefon nömrəsi daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[1].PhoneNumber" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə iş saatları</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[1].WorkHours" placeholder="İş saatları daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[1].WorkHours" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.BranchDetails[2].LanguageId" value="3" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca ad</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[2].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[2].Name" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca ünvan</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[2].Location" placeholder="Ünvan daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[2].Location" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca telefon nömrəsi</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[2].PhoneNumber" placeholder="Telefon nömrəsi daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[2].PhoneNumber" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca iş saatları</label>
+                        <input class="form-control" required asp-for="@Model.BranchDetails[2].WorkHours" placeholder="İş saatları daxil edin">
+                        <span asp-validation-for="@Model.BranchDetails[2].WorkHours" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1"> Şəkil seçin,əgər varsa</label>
+                    <input class="form-control" asp-for="Image">
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+
+
+                <button type="submit" class="btn btn-primary mr-2">Dəyişdir</button>
+                <a class="btn btn-light" asp-action="Index">Ləğv et</a>
+            </form>
+        </div>
+    </div>
+</div>

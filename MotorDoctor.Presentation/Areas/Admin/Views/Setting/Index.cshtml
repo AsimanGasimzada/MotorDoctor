@@ -1,0 +1,56 @@
+﻿@model List<SettingGetDto>
+@{
+    int count = 1;
+}
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Parametrlər</h4>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Açar söz
+                            </th>
+                            <th>
+                                Dəyər
+                            </th>
+
+                            <th>
+                                Proseslər
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var setting in Model)
+                        {
+                            <tr>
+                                <td class="py-1">
+                                    @(count++)
+                                </td>
+                                <td>
+                                    @setting.Key
+                                </td>
+                                <td>
+                                    @setting.Value
+                                </td>
+
+                                <td>
+                                    <a asp-action="Update" asp-route-id="@setting.Id" class="btn btn-warning"><i class="mdi mdi-grease-pencil"></i></a>
+                                </td>
+
+                            </tr>
+
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

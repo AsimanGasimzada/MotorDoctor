@@ -149,7 +149,7 @@ public class ProductService : IProductService
         return dtos;
     }
 
-    public async Task<PaginateDto<ProductGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan, int page = 1)
+    public async Task<PaginateDto<ProductGetDto>> GetAllWithPageAsync(Languages language = Languages.Azerbaijan, int page = 1)
     {
         var query = _repository.GetAll(_getIncludeFunc(language));
 

@@ -8,7 +8,7 @@ public class CategoryDetailAutoMapper : Profile
 {
     public CategoryDetailAutoMapper()
     {
-        CreateMap<CategoryDetail, CategoryDetailCreateDto>();
-        CreateMap<CategoryDetail, CategoryDetailUpdateDto>();
+        CreateMap<CategoryDetail, CategoryDetailCreateDto>().ReverseMap();
+        CreateMap<CategoryDetail, CategoryDetailUpdateDto>().ReverseMap();
     }
 }

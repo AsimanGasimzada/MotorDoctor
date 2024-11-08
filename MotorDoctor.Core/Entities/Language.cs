@@ -9,4 +9,6 @@ public class Language : BaseEntity
     public ICollection<SliderDetail> SliderDetails { get; set; } = [];
     public ICollection<BrandDetail> BrandDetails { get; set; } = [];
     public ICollection<BranchDetail> BranchDetails { get; set; } = [];
+    public ICollection<AttendanceDetail> AttedanceDetails { get; set; } = [];
+
 }

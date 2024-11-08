@@ -6,9 +6,9 @@ public class ProductUpdateDto : IDto
 {
     public int Id { get; set; }
     public string Code { get; set; } = null!;
-    public List<CategoryForProductGetDto>? Categories { get; set; } = [];
+    public List<CategoryRelationDto>? Categories { get; set; } = [];
     public int CategoryId { get; set; }
-    public List<BrandForProductGetDto>? Brands { get; set; } = [];
+    public List<BrandRelationDto>? Brands { get; set; } = [];
     public int BrandId { get; set; }
 
     public string? MainImagePath { get; set; }

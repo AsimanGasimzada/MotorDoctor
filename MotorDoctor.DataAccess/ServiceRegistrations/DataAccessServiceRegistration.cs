@@ -37,6 +37,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<ISettingRepository, SettingRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
+        services.AddScoped<IAttedanceRepository, AttedanceRepository>();
 
         services.AddSingleton<ErrorLocalizer>();
     }

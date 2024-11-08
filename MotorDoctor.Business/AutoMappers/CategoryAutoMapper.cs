@@ -14,7 +14,7 @@ public class CategoryAutoMapper : Profile
                             .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Name : string.Empty))
                             .ForMember(x => x.Description, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Description : string.Empty));
 
-        CreateMap<Category, CategoryForProductGetDto>()
+        CreateMap<Category, CategoryRelationDto>()
             .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Name : string.Empty));
     }
 }

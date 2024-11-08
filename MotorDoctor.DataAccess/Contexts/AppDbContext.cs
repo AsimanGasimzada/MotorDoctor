@@ -32,6 +32,8 @@ public class AppDbContext : IdentityDbContext<AppUser>
         base.OnConfiguring(optionsBuilder);
     }
 
+    public DbSet<Attendance> Attendances { get; set; } = null!;
+    public DbSet<AttendanceDetail> AttendanceDetails { get; set; } = null!;
     public DbSet<Language> Languages { get; set; } = null!;
     public DbSet<Brand> Brands { get; set; } = null!;
     public DbSet<BrandDetail> BrandDetails { get; set; } = null!;

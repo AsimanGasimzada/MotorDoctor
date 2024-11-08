@@ -1,4 +1,6 @@
 ﻿@model LoginDto
+
+<!-- Main Start -->
 <main id="main">
 
     <div class="container-scroller">
@@ -7,33 +9,37 @@
                 <div class="col-lg-12 col-12 mx-auto">
                     <div class="auth-form-light text-left p-5 border rounded shadow-lg">
                         <div class="brand-logo mb-4 text-center">
-                            <img src="~/assets/img/Dunker-logo-dark.png" alt="Dunker Logo" class="img-fluid">
+                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/02/Dunker-logo-dark.png" alt="Dunker Logo" class="img-fluid">
                         </div>
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
                         <h4 class="mb-4 text-center">Hello! Let's get started</h4>
                         <h6 class="font-weight-light mb-4 text-center">Sign up to continue.</h6>
                         <form class="pt-3" method="post">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label for="username">Username</label>
-                                <input asp-for="EmailOrUsername" class="form-control" id="username" aria-describedby="emailHelp">
+                                <input asp-for="EmailOrUsername" class="form-control" id="username"
+                                       aria-describedby="emailHelp">
                                 <span class="text-danger" asp-validation-for="EmailOrUsername"></span>
                             </div>
-                            <div class="form-group position-relative">
+                            <div class="form-group position-relative mb-2">
                                 <label for="password">Password</label>
                                 <input asp-for="Password" class="form-control" id="password" type="password">
                                 <span class="text-danger" asp-validation-for="Password"></span>
-                                <button type="button" style="margin-top: 14px;" class="btn btn-icon" id="togglePassword">
+                                <button type="button" style="margin-top: 14px;" class="btn btn-icon"
+                                        id="togglePassword">
                                     <i class="fa fa-eye" id="passwordIcon"></i>
                                 </button>
                             </div>
                             <div class="text-center my-3">
-                                <a asp-action="ForgetPassword" asp-controller="Account" class="auth-link text-dark">Forgot password?</a>
+                                <a asp-action="ForgetPassword" asp-controller="Account"
+                                   class="auth-link text-dark">Forgot password?</a>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn custom-button">Submit</button>
+                                <button type="submit" class="btn custom-button2">Submit</button>
                             </div>
                             <div class="text-center mt-4 font-weight-light">
-                                Don't have an account? <a asp-action="Register" asp-controller="Account" class="text-primary">Create</a>
+                                Don't have an account? <a asp-action="Register" asp-controller="Account"
+                                                          class="text-primary">Create</a>
                             </div>
                         </form>
                     </div>
@@ -42,6 +48,7 @@
         </div>
     </div>
 </main>
+<!-- Main End -->
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
