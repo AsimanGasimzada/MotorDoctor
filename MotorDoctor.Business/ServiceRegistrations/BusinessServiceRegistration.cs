@@ -25,6 +25,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<IProductSizeService, ProductSizeService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IBasketService, BasketService>();
+        services.AddScoped<ISubscriberService, SubscriberService>();
 
 
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();

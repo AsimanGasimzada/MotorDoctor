@@ -2,12 +2,13 @@
 using MotorDoctor.Business.Dtos;
 
 namespace MotorDoctor.Presentation.Areas.Admin.Controllers;
-[Area("Admin")]
-public class CategoryController : Controller
-{
-    private readonly ICategoryService _service;
 
-    public CategoryController(ICategoryService service)
+[Area("Admin")]
+public class SubscriberController : Controller
+{
+    private readonly ISubscriberService _service;
+
+    public SubscriberController(ISubscriberService service)
     {
         _service = service;
     }
@@ -19,31 +20,18 @@ public class CategoryController : Controller
         return View(result);
     }
 
-    public async Task<IActionResult> Create()
+    public IActionResult Create()
     {
-        var result = await _service.GetCreateDtoAsync();
-
-        return View(result);
+        return View();
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(CategoryCreateDto dto)
+    public async Task<IActionResult> Create(SubscriberCreateDto dto)
     {
         var result = await _service.CreateAsync(dto, ModelState);
 
         if (result is false)
-        {
-            dto = await _service.GetCreateDtoAsync(dto);
             return View(dto);
-        }
-
-        return RedirectToAction(nameof(Index));
-    }
-
-
-    public async Task<IActionResult> Delete(int id)
-    {
-        await _service.DeleteAsync(id);
 
         return RedirectToAction(nameof(Index));
     }
@@ -52,23 +40,23 @@ public class CategoryController : Controller
     {
         var result = await _service.GetUpdatedDtoAsync(id);
 
-        if (result is null)
-            return NotFound();
-
         return View(result);
     }
 
     [HttpPost]
-    public async Task<IActionResult> Update(CategoryUpdateDto dto)
+    public async Task<IActionResult> Update(SubscriberUpdateDto dto)
     {
         var result = await _service.UpdateAsync(dto, ModelState);
 
-
         if (result is false)
-        {
-            dto = await _service.GetUpdatedDtoAsync(dto);
             return View(dto);
-        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _service.DeleteAsync(id);
 
         return RedirectToAction(nameof(Index));
     }
