@@ -544,6 +544,116 @@ namespace MotorDoctor.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<decimal>("TotalPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("StatusId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductSizeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("StaticPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductSizeId");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -988,6 +1098,127 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.ToTable("SliderDetails");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Statuses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1
+                        },
+                        new
+                        {
+                            Id = 2
+                        },
+                        new
+                        {
+                            Id = 3
+                        });
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.StatusDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("StatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatusId");
+
+                    b.HasIndex("LanguageId", "StatusId")
+                        .IsUnique();
+
+                    b.ToTable("StatusDetails");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            LanguageId = 1,
+                            Name = "Sifariş edilib",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            LanguageId = 2,
+                            Name = "Ordered",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            LanguageId = 3,
+                            Name = "Заказал",
+                            StatusId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            LanguageId = 1,
+                            Name = "Yolda",
+                            StatusId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            LanguageId = 2,
+                            Name = "On the Way",
+                            StatusId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            LanguageId = 3,
+                            Name = "В пути",
+                            StatusId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            LanguageId = 1,
+                            Name = "Sifariş tamamlandı",
+                            StatusId = 3
+                        },
+                        new
+                        {
+                            Id = 8,
+                            LanguageId = 2,
+                            Name = "Order Is Done",
+                            StatusId = 3
+                        },
+                        new
+                        {
+                            Id = 9,
+                            LanguageId = 3,
+                            Name = "Заказ выполнен",
+                            StatusId = 3
+                        });
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Subscriber", b =>
                 {
                     b.Property<int>("Id")
@@ -1164,6 +1395,44 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Language");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Order", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Status", "Status")
+                        .WithMany("Orders")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Status");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.OrderItem", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.ProductSize", "ProductSize")
+                        .WithMany()
+                        .HasForeignKey("ProductSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("ProductSize");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Product", b =>
                 {
                     b.HasOne("MotorDoctor.Core.Entities.Brand", "Brand")
@@ -1262,6 +1531,25 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Slider");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.StatusDetail", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Status", "Status")
+                        .WithMany("StatusDetails")
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Status");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Attendance", b =>
                 {
                     b.Navigation("AttendanceDetails");
@@ -1316,6 +1604,13 @@ namespace MotorDoctor.DataAccess.Migrations
             modelBuilder.Entity("MotorDoctor.Core.Entities.Slider", b =>
                 {
                     b.Navigation("SliderDetails");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Status", b =>
+                {
+                    b.Navigation("Orders");
+
+                    b.Navigation("StatusDetails");
                 });
 #pragma warning restore 612, 618
         }

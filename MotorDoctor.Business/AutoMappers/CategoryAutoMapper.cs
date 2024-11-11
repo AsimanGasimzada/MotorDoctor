@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using MotorDoctor.Business.Dtos;
-using MotorDoctor.Core.Entities;
+﻿using MotorDoctor.Core.Entities;
 
 namespace MotorDoctor.Business.AutoMappers;
 
-public class CategoryAutoMapper : Profile
+internal class CategoryAutoMapper : Profile
 {
     public CategoryAutoMapper()
     {

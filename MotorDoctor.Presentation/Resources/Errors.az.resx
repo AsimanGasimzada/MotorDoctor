@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="BlockedUser" xml:space="preserve">
+    <value>İstifadəçi bloklanıb,zəhmət olmasa 10 dəqiqə sonra yenidən yoxlayın.</value>
+  </data>
   <data name="ConcurrencyFailure" xml:space="preserve">
     <value>Uyğunlaşma xətası baş verdi.</value>
   </data>
@@ -131,6 +134,9 @@
   </data>
   <data name="DuplicateUserName" xml:space="preserve">
     <value>'{0}' istifadəçi adı artıq götürülüb.</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>İstifadəçi adı və ya parol yanlışdır.</value>
   </data>
   <data name="InvalidEmail" xml:space="preserve">
     <value>'{0}' email etibarsızdır.</value>
@@ -176,6 +182,9 @@
   </data>
   <data name="RecoveryCodeRedemptionFailed" xml:space="preserve">
     <value>Qurtarma kodunun geri alınması baş tutmadı.</value>
+  </data>
+  <data name="UnconfirmedEmail" xml:space="preserve">
+    <value>Hesaba daxil olmaq üçün mail hesabınızı təsdiqləməlisiniz. Təsdiqləmə maili yenidən göndərilmişdir.</value>
   </data>
   <data name="UserAlreadyHasPassword" xml:space="preserve">
     <value>İstifadəçinin artıq bir şifrəsi var.</value>

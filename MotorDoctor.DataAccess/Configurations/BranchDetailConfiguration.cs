@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MotorDoctor.DataAccess.Configurations;
 
-public class BranchDetailConfiguration : IEntityTypeConfiguration<BranchDetail>
+internal class BranchDetailConfiguration : IEntityTypeConfiguration<BranchDetail>
 {
     public void Configure(EntityTypeBuilder<BranchDetail> builder)
     {

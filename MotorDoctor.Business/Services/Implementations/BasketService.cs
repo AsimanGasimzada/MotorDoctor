@@ -1,9 +1,9 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
+using MotorDoctor.Core.Enum;
 using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 using Newtonsoft.Json;
@@ -11,7 +11,7 @@ using System.Security.Claims;
 
 namespace MotorDoctor.Business.Services.Implementations;
 
-public class BasketService : IBasketService
+internal class BasketService : IBasketService
 {
     private readonly IBasketItemRepository _repository;
     private readonly IMapper _mapper;
@@ -158,13 +158,17 @@ public class BasketService : IBasketService
         }
     }
 
-    public async Task<List<BasketItemGetDto>> GetBasketAsync()
+    public async Task<List<BasketItemGetDto>> GetBasketAsync(Languages language = Languages.Azerbaijan)
     {
         if (_checkAuthorized())
         {
             var userId = _getUserId();
 
-            var basketItems = await _repository.GetFilter(x => x.AppUserId == userId, x => x.Include(x => x.ProductSize)).ToListAsync();
+            LanguageHelper.CheckLanguageId(ref language);
+
+            var basketItems = await _repository.GetFilter(x => x.AppUserId == userId,
+                           x => x.Include(x => x.ProductSize).ThenInclude(x => x.Product)
+                                      .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
 
             var dtos = _mapper.Map<List<BasketItemGetDto>>(basketItems);
 
@@ -178,7 +182,7 @@ public class BasketService : IBasketService
 
             foreach (var dto in dtos)
             {
-                var productSize = await _productSizeService.GetAsync(dto.ProductSizeId);
+                var productSize = await _productSizeService.GetAsync(dto.ProductSizeId, language);
 
                 if (productSize is null)
                 {
@@ -193,6 +197,24 @@ public class BasketService : IBasketService
         }
 
     }
+
+    public async Task ClearBasketAsync()
+    {
+        if (!_checkAuthorized())
+            throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
+
+        string userId = _getUserId();
+
+        var basketItems = await _repository.GetFilter(x => x.AppUserId == userId).ToListAsync();
+
+        foreach (var basketItem in basketItems)
+        {
+            _repository.Delete(basketItem);
+        }
+
+        await _repository.SaveChangesAsync();
+    }
+
 
     private List<BasketItem> _readBasketFromCookie()
     {
@@ -220,6 +242,5 @@ public class BasketService : IBasketService
     {
         return _contextAccessor.HttpContext.User.Identity?.IsAuthenticated ?? false;
     }
-
 
 }

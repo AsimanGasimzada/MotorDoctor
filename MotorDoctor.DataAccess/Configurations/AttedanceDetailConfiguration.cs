@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MotorDoctor.DataAccess.Configurations;
 
-public class AttedanceDetailConfiguration : IEntityTypeConfiguration<AttendanceDetail>
+internal class AttedanceDetailConfiguration : IEntityTypeConfiguration<AttendanceDetail>
 {
     public void Configure(EntityTypeBuilder<AttendanceDetail> builder)
     {

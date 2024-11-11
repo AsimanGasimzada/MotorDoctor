@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MotorDoctor.DataAccess.Configurations;
 
-public class SubscriberConfiguration : IEntityTypeConfiguration<Subscriber>
+internal class SubscriberConfiguration : IEntityTypeConfiguration<Subscriber>
 {
     public void Configure(EntityTypeBuilder<Subscriber> builder)
     {

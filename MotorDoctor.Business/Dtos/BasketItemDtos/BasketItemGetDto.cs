@@ -3,7 +3,7 @@
 public class BasketItemGetDto : IDto
 {
     public int ProductSizeId { get; set; }
-    public ProductSizeWithBasketGetDto ProductSize { get; set; } = null!;
+    public ProductSizeRelationDto ProductSize { get; set; } = null!;
     public int Count { get; set; }
 }
 

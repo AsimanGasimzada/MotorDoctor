@@ -1,15 +1,14 @@
-﻿using AutoMapper;
-using MotorDoctor.Core.Entities;
+﻿using MotorDoctor.Core.Entities;
 
 namespace MotorDoctor.Business.AutoMappers;
 
-public class ProductSizeAutoMapper : Profile
+internal class ProductSizeAutoMapper : Profile
 {
     public ProductSizeAutoMapper()
     {
         CreateMap<ProductSize, ProductSizeCreateDto>().ReverseMap();
         CreateMap<ProductSize, ProductSizeUpdateDto>().ReverseMap();
         CreateMap<ProductSize, ProductSizeGetDto>().ReverseMap();
-        CreateMap<ProductSize, ProductSizeWithBasketGetDto>().ReverseMap();
+        CreateMap<ProductSize, ProductSizeRelationDto>().ReverseMap();
     }
 }

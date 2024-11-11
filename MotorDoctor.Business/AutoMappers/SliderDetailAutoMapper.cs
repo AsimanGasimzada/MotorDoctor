@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using MotorDoctor.Core.Entities;
+﻿using MotorDoctor.Core.Entities;
 
 namespace MotorDoctor.Business.AutoMappers;
 
-public class SliderDetailAutoMapper : Profile
+internal class SliderDetailAutoMapper : Profile
 {
     public SliderDetailAutoMapper()
     {

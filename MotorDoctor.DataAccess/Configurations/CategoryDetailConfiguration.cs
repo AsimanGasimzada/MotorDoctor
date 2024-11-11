@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace MotorDoctor.DataAccess.Configurations;
 
-public class CategoryDetailConfiguration : IEntityTypeConfiguration<CategoryDetail>
+internal class CategoryDetailConfiguration : IEntityTypeConfiguration<CategoryDetail>
 {
     public void Configure(EntityTypeBuilder<CategoryDetail> builder)
     {

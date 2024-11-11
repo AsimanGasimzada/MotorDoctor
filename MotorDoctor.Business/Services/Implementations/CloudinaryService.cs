@@ -1,12 +1,12 @@
-﻿using CloudinaryDotNet.Actions;
-using CloudinaryDotNet;
+﻿using CloudinaryDotNet;
+using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using System.Net;
 using MotorDoctor.Business.Services.Abstractions;
+using System.Net;
 
 namespace MotorDoctor.Business.Services.Implementations;
-public class CloudinaryService : ICloudinaryService
+internal class CloudinaryService : ICloudinaryService
 {
     private readonly IConfiguration _configuration;
     private readonly CloudinaryOptionsDto _optionsDto;

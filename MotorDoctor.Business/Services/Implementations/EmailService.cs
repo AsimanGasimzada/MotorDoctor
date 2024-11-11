@@ -1,13 +1,13 @@
 ﻿using MailKit.Net.Smtp;
 using MailKit.Security;
-using MimeKit;
 using Microsoft.Extensions.Configuration;
+using MimeKit;
 using MotorDoctor.Business.Services.Abstractions;
 
 
 namespace MotorDoctor.Business.Services.Implementations;
 
-public class EmailService : IEmailService
+internal class EmailService : IEmailService
 {
     private readonly IConfiguration _configuration;
     private readonly MailKitConfigurationDto _configurationDto;

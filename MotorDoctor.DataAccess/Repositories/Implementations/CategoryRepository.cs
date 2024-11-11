@@ -4,7 +4,7 @@ using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.DataAccess.Repositories.Implementations;
 
-public class CategoryRepository : Repository<Category>, ICategoryRepository
+internal class CategoryRepository : Repository<Category>, ICategoryRepository
 {
     public CategoryRepository(AppDbContext context) : base(context)
     {

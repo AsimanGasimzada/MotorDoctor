@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MotorDoctor.Core.Entities;
-using MotorDoctor.Core.Enum;
 
 namespace MotorDoctor.DataAccess.DataInitializers;
 
@@ -10,10 +8,37 @@ public static class SeedDataService
     {
         builder.AddLanguages();
         builder.AddSettings();
-
-
+        builder.AddStatuses();
     }
 
+
+    private static void AddStatuses(this ModelBuilder builder)
+    {
+
+        Status status1 = new() { Id = 1 };
+        Status status2 = new() { Id = 2 };
+        Status status3 = new() { Id = 3 };
+
+        List<Status> statuses = new List<Status> { status1, status2, status3 };
+
+
+        List<StatusDetail> statusDetails = new()
+        {
+              new() { Id = 1, Name = "Sifariş edilib", LanguageId = 1, StatusId = 1 },
+              new() { Id = 2, Name = "Ordered", LanguageId = 2, StatusId = 1 },
+              new() { Id = 3, Name = "Заказал", LanguageId = 3, StatusId = 1 },
+              new() { Id = 4, Name = "Yolda", LanguageId = 1, StatusId = 2 },
+              new() { Id = 5, Name = "On the Way", LanguageId = 2, StatusId = 2 },
+              new() { Id = 6, Name = "В пути", LanguageId = 3, StatusId = 2 },
+              new() { Id = 7, Name = "Sifariş tamamlandı", LanguageId = 1, StatusId = 3 },
+              new() { Id = 8, Name = "Order Is Done", LanguageId = 2, StatusId = 3 },
+              new() { Id = 9, Name = "Заказ выполнен", LanguageId = 3, StatusId = 3 },
+        };
+
+
+        builder.Entity<Status>().HasData(statuses);
+        builder.Entity<StatusDetail>().HasData(statusDetails);
+    }
     private static void AddLanguages(this ModelBuilder builder)
     {
         Language language1 = new() { Id = 1, Name = "Azerbaijan", Code = "AZE", ImagePath = "https://res.cloudinary.com/dlilcwizx/image/upload/v1730241623/motordoctor.az/fajaznl6ilmlbmo05xbw.png" };

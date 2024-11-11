@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
@@ -9,7 +8,7 @@ using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
 
-public class CategoryService : ICategoryService
+internal class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _repository;
     private readonly IMapper _mapper;

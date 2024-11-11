@@ -1,10 +1,13 @@
-﻿using AutoMapper;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.EntityFrameworkCore;
 using MotorDoctor.Business.Services.Abstractions;
+using MotorDoctor.Core.Entities;
+using MotorDoctor.Core.Enum;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
 
-public class ProductSizeService : IProductSizeService
+internal class ProductSizeService : IProductSizeService
 {
     private readonly IProductSizeRepository _repository;
     private readonly IMapper _mapper;
@@ -15,14 +18,16 @@ public class ProductSizeService : IProductSizeService
         _mapper = mapper;
     }
 
-    public async Task<ProductSizeWithBasketGetDto?> GetAsync(int id)
+    public async Task<ProductSizeRelationDto?> GetAsync(int id, Languages language = Languages.Azerbaijan)
     {
-        var productSize=await _repository.GetAsync(id);
+        LanguageHelper.CheckLanguageId(ref language);
+        var productSize = await _repository.GetAsync(id, x => x.Include(x => x.Product)
+                                                .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)));
 
         if (productSize is null)
             return null;
 
-        var dto=_mapper.Map<ProductSizeWithBasketGetDto>(productSize);
+        var dto = _mapper.Map<ProductSizeRelationDto>(productSize);
 
         return dto;
     }
@@ -31,4 +36,6 @@ public class ProductSizeService : IProductSizeService
     {
         return await _repository.IsExistAsync(x => x.Id == id);
     }
+
+
 }

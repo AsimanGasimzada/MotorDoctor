@@ -1,16 +1,14 @@
-﻿using AutoMapper;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
-using Microsoft.EntityFrameworkCore;
+using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
-using MotorDoctor.Business.Exceptions;
-using MotorDoctor.Business.Extensions;
 
 namespace MotorDoctor.Business.Services.Implementations;
 
-public class SliderService : ISliderService
+internal class SliderService : ISliderService
 {
     private readonly ISliderRepository _repository;
     private readonly IMapper _mapper;

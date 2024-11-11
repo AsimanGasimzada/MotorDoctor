@@ -5,15 +5,21 @@ namespace MotorDoctor.Presentation.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IBasketService _basketService;
+        private readonly IOrderService _orderService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IBasketService basketService, IOrderService orderService)
         {
-            _logger = logger;
+            _basketService = basketService;
+            _orderService = orderService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
+            await _basketService.AddToBasketAsync(65);
+
+            await _orderService.CreateAsync(new() { City = "Test", PhoneNumber = "Test", Region = "Test", Street = "Test" , OrderItems = [] }, ModelState);
+
             return View();
         }
 

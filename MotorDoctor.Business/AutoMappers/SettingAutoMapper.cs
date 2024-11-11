@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using MotorDoctor.Core.Entities;
+﻿using MotorDoctor.Core.Entities;
 
 namespace MotorDoctor.Business.AutoMappers;
 
-public class SettingAutoMapper : Profile
+internal class SettingAutoMapper : Profile
 {
     public SettingAutoMapper()
     {

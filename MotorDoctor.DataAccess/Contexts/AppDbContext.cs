@@ -50,6 +50,9 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<Branch> Branches { get; set; } = null!;
     public DbSet<BranchDetail> BranchDetails { get; set; } = null!;
     public DbSet<BasketItem> BasketItems { get; set; } = null!;
-    public DbSet<Subscriber> Subscribers  { get; set; } = null!;
-
+    public DbSet<Subscriber> Subscribers { get; set; } = null!;
+    public DbSet<Order> Orders { get; set; } = null!;
+    public DbSet<OrderItem> OrderItems { get; set; } = null!;
+    public DbSet<Status> Statuses { get; set; } = null!;
+    public DbSet<StatusDetail> StatusDetails { get; set; } = null!;
 }

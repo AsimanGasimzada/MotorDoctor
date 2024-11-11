@@ -1,6 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
@@ -9,7 +7,7 @@ using MotorDoctor.Core.Enum;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
-public class AttendanceService : IAttendanceService
+internal class AttendanceService : IAttendanceService
 {
     private readonly IAttedanceRepository _repository;
     private readonly IMapper _mapper;

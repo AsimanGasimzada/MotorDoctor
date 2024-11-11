@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using MotorDoctor.Core.Entities;
+﻿using MotorDoctor.Core.Entities;
 
 namespace MotorDoctor.Business.AutoMappers;
 
-public class BranchDetailAutoMapper : Profile
+internal class BranchDetailAutoMapper : Profile
 {
     public BranchDetailAutoMapper()
     {

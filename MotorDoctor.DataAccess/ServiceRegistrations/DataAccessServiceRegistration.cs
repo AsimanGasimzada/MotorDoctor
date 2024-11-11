@@ -9,6 +9,7 @@ using MotorDoctor.DataAccess.Interceptors;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 using MotorDoctor.DataAccess.Repositories.Implementations;
 using MotorDoctor.DataAccess.Localizers;
+using MotorDoctor.DataAccess.Repositories.Abstractions.Generic;
 
 namespace MotorDoctor.DataAccess.ServiceRegistrations;
 
@@ -39,6 +40,9 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
         services.AddScoped<IAttedanceRepository, AttedanceRepository>();
         services.AddScoped<ISubscriberRepository, SubscriberRepository>();
+        services.AddScoped<IStatusRepository, StatusRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
         services.AddSingleton<ErrorLocalizer>();
     }

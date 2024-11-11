@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MotorDoctor.Core.Entities;
 
 namespace MotorDoctor.DataAccess.Configurations;
 
-public class SettingConfigutation : IEntityTypeConfiguration<Setting>
+internal class SettingConfigutation : IEntityTypeConfiguration<Setting>
 {
     public void Configure(EntityTypeBuilder<Setting> builder)
     {

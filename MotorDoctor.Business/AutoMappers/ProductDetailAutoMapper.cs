@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using MotorDoctor.Core.Entities;
+﻿using MotorDoctor.Core.Entities;
 
 namespace MotorDoctor.Business.AutoMappers;
 
-public class ProductDetailAutoMapper : Profile
+internal class ProductDetailAutoMapper : Profile
 {
     public ProductDetailAutoMapper()
     {

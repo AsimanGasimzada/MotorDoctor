@@ -4,7 +4,7 @@ using MotorDoctor.DataAccess.Localizers;
 
 namespace MotorDoctor.DataAccess.Helpers;
 
-public class CustomIdentityErrorDescriber : IdentityErrorDescriber
+internal class CustomIdentityErrorDescriber : IdentityErrorDescriber
 {
     private readonly ErrorLocalizer _localizer;
 
