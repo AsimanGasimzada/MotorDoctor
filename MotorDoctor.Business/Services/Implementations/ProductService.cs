@@ -126,6 +126,23 @@ internal class ProductService : IProductService
         return true;
     }
 
+    public async Task DecreaseSalesCountAsync(int productSizeId, int count = 1)
+    {
+        var product = await _repository.GetAsync(x => x.ProductSizes.Any(x => x.Id == productSizeId), x => x.Include(x => x.ProductSizes));
+
+        if (product is null)
+            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+
+        if (count < 0)
+            count = 0;
+
+        product.SalesCount -= count;
+        product.ProductSizes.FirstOrDefault(x => x.Id == productSizeId)!.Count -= count;
+
+        _repository.Update(product);
+        await _repository.SaveChangesAsync();
+    }
+
     public async Task DeleteAsync(int id)
     {
         var product = await _repository.GetAsync(id);
@@ -192,6 +209,30 @@ internal class ProductService : IProductService
         return dto;
     }
 
+    public async Task<List<BestSellerProductGetDto>> GetBestProductsAsync(Languages language = Languages.Azerbaijan)
+    {
+        var query = _repository.GetAll(x => x.Include(x => x.Category)
+                                    .ThenInclude(x => x.Parent!).Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)));
+
+        query = _repository.OrderBy(query, x => x.SalesCount);
+
+        var bestSellerProduct = await query.FirstOrDefaultAsync();
+
+        if (bestSellerProduct is null)
+            return new();
+
+        var secondBestSellerProduct = await query.FirstOrDefaultAsync(x => x != bestSellerProduct && x.CategoryId != bestSellerProduct.CategoryId && x.Category.ParentId != bestSellerProduct.Category.ParentId);
+
+        if (secondBestSellerProduct is null)
+            return new();
+
+        List<Product> list = [bestSellerProduct, secondBestSellerProduct];
+
+        var dtos = _mapper.Map<List<BestSellerProductGetDto>>(list);
+
+        return dtos;
+    }
+
     public async Task<ProductCreateDto> GetCreatedDtoAsync()
     {
         var categories = await _categoryService.GetAllForProductAsync();
@@ -246,6 +287,24 @@ internal class ProductService : IProductService
         dto.Brands = brands;
 
         return dto;
+    }
+
+    public async Task IncreaseSalesCountAsync(int productSizeId, int count = 1)
+    {
+        var product = await _repository.GetAsync(x => x.ProductSizes.Any(x => x.Id == productSizeId), x => x.Include(x => x.ProductSizes));
+
+        if (product is null)
+            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+
+        if (count < 0)
+            count = 0;
+
+        product.SalesCount += count;
+        product.ProductSizes.FirstOrDefault(x => x.Id == productSizeId)!.Count += count;
+
+        _repository.Update(product);
+        await _repository.SaveChangesAsync();
+
     }
 
     public async Task<bool> UpdateAsync(ProductUpdateDto dto, ModelStateDictionary ModelState)
@@ -345,9 +404,9 @@ internal class ProductService : IProductService
         //updateSizes
         foreach (var sizeDto in dto.ProductSizes)
         {
-           var existSize = existProduct.ProductSizes.FirstOrDefault(x => x.Id == sizeDto.Id);
+            var existSize = existProduct.ProductSizes.FirstOrDefault(x => x.Id == sizeDto.Id);
 
-            if(existSize is null)
+            if (existSize is null)
             {
                 var newSize = _mapper.Map<ProductSize>(sizeDto);
                 existProduct.ProductSizes.Add(newSize);

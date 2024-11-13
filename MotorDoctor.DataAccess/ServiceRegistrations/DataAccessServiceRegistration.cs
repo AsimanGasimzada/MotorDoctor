@@ -43,6 +43,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IStatusRepository, StatusRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+        services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
 
         services.AddSingleton<ErrorLocalizer>();
     }

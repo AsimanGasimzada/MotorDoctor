@@ -5,4 +5,5 @@ namespace MotorDoctor.Business.Services.Abstractions;
 public interface IStatusService : IGetServiceWithLanguage<StatusGetDto>
 {
     Task<StatusGetDto> GetFirstAsync(Languages language = Languages.Azerbaijan);
+    Task<StatusGetDto> GetLastAsync(Languages language = Languages.Azerbaijan);
 }

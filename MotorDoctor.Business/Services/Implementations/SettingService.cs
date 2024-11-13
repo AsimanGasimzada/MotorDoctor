@@ -95,7 +95,7 @@ internal class SettingService : ISettingService
         return dto;
     }
 
-    public async Task<Dictionary<string, string>> GetSettingsWithDictionaryAsync(Languages language)
+    public async Task<Dictionary<string, string>> GetSettingsWithDictionaryAsync(Languages language=Languages.Azerbaijan)
     {
         var settings = await _repository.GetAll(_getIncludeFunc(language))
                                         .ToDictionaryAsync(x => x.Key, x => x.SettingDetails.FirstOrDefault()?.Value ?? "");

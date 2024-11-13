@@ -55,4 +55,5 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public DbSet<OrderItem> OrderItems { get; set; } = null!;
     public DbSet<Status> Statuses { get; set; } = null!;
     public DbSet<StatusDetail> StatusDetails { get; set; } = null!;
+    public DbSet<WishlistItem> WishlistItems { get; set; } = null!;
 }

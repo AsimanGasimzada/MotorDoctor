@@ -55,6 +55,7 @@ internal class CategoryService : ICategoryService
                 return false;
             }
         }
+
         if (dto.ParentId is not null)
         {
             var isExistParent = await _repository.IsExistAsync(x => x.Id == dto.ParentId && x.ParentId == null);
@@ -134,6 +135,22 @@ internal class CategoryService : ICategoryService
         return dto;
     }
 
+    public async Task<List<CategoryGetDto>> GetBestCategoriesAsync(Languages language = Languages.Azerbaijan)
+    {
+        var query = _repository.GetAll(x => x.Include(x => x.Products)
+                         .ThenInclude(p => p.ProductDetails.Where(pd => pd.LanguageId == (int)language))
+                         .Include(x => x.Products)
+                         .ThenInclude(p => p.ProductSizes));
+
+        query = _repository.OrderByDescending(query, x => x.Products.Count());
+
+        var result = await query.Take(2).ToListAsync();
+
+        var dtos = _mapper.Map<List<CategoryGetDto>>(result);
+
+        return dtos;
+    }
+
     public async Task<CategoryCreateDto> GetCreateDtoAsync()
     {
         var parentCategories = await _repository.GetFilter(x => x.ParentId == null, x => x.Include(x => x.CategoryDetails)).ToListAsync();
@@ -155,6 +172,38 @@ internal class CategoryService : ICategoryService
         dto.Categories = dtos;
 
         return dto;
+    }
+
+    public async Task<List<CategoryGetDto>> GetFeaturedCategoriesAsync(Languages language = Languages.Azerbaijan)
+    {
+        var query = _repository.GetFilter(x => x.ParentId != null, x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language))
+                                        .Include(x => x.Products).ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))
+                                        .Include(x => x.Products).ThenInclude(x => x.ProductSizes).Include(x => x.Products)
+                                        .ThenInclude(x => x.ProductImages));
+
+        query = _repository.OrderByDescending(query, x => x.Products.Sum(x => x.SalesCount));
+
+        var categories = await query.Take(3).Include(x => x.Parent).ToListAsync();
+
+        foreach (var category in categories)
+            category.Products = category.Products.Take(4).ToList();
+
+        var dtos = _mapper.Map<List<CategoryGetDto>>(categories);
+
+        return dtos;
+    }
+
+    public async Task<List<ParentCategoryDto>> GetParentCategoriesAsync(Languages language = Languages.Azerbaijan)
+    {
+        var categories = await _repository.GetFilter(x => x.ParentId == null,
+                                    x => x.Include(x => x.Children).ThenInclude(x => x.Products)
+                                    .Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
+
+        categories = categories.Where(x => x.Children.Sum(x => x.Products.Count) > 0).ToList();
+
+        var dtos = _mapper.Map<List<ParentCategoryDto>>(categories);
+
+        return dtos;
     }
 
     public async Task<CategoryUpdateDto> GetUpdatedDtoAsync(int id)

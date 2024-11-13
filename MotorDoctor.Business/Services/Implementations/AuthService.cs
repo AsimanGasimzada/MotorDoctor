@@ -31,7 +31,7 @@ internal class AuthService : IAuthService
         _mapper = mapper;
         _emailService = emailService;
         _staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Connex.Business", "StaticFiles");
-        _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
+        _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext ?? new());
         _errorLocalizer = errorLocalizer;
     }
 
@@ -77,7 +77,7 @@ internal class AuthService : IAuthService
 
     public async Task<bool> LogoutAsync()
     {
-        if (!_contextAccessor.HttpContext.User.Identity?.IsAuthenticated ?? false)
+        if (!_contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false)
             return false;
 
         await _signInManager.SignOutAsync();
@@ -194,13 +194,13 @@ internal class AuthService : IAuthService
             Action = "VerifyEmail",
             Controller = "Account",
             Values = new { token = confirmEmailToken, email = user.Email },
-            Protocol = _contextAccessor.HttpContext.Request.Scheme
+            Protocol = _contextAccessor.HttpContext?.Request.Scheme
         };
 
         var link = _urlHelper.Action(context);
 
 
-        string emailBody = await _getTemplateContentAsync(link, user.UserName ?? "", "ConfirmEmailBody.html");
+        string emailBody = await _getTemplateContentAsync(link ?? "", user.UserName ?? "", "ConfirmEmailBody.html");
 
 
         EmailSendDto emailSendDto = new()

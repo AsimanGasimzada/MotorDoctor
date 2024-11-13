@@ -237,7 +237,7 @@
                     <label for="exampleInputUsername1">Əsas şəkili seçin</label>
                     <img src="@Model.MainImagePath" width="150" height="150" alt="MainImage" />
                     <input type="hidden" asp-for="MainImagePath"/>
-                    <input class="form-control" asp-for="MainImage">
+                    <input class="form-control" accept="image/*" asp-for="MainImage">
                     <span asp-validation-for="MainImage" class="text-danger"></span>
                 </div>
 
@@ -253,7 +253,7 @@
 
                             <div class="image-box" id="imageBox">
                                 <input type="hidden" asp-for="ImagePaths" value="@image" />
-                                <input type="hidden" asp-for="ImageIds[i]" />
+                                <input type="hidden" asp-for="ImageIds" value="@Model.ImageIds[i]" />
                                 <img src="@image" alt="Şəkil" class="image">
                                 <button class="close-button deleteImageBtn">x</button>
                             </div>
@@ -263,7 +263,7 @@
 
                     </div>
                     <label for="exampleInputUsername1">Əlavə şəkilləri seçin</label>
-                    <input class="form-control" asp-for="Images">
+                    <input class="form-control" accept="image/*" asp-for="Images">
                     <span asp-validation-for="Images" class="text-danger"></span>
                 </div>
 

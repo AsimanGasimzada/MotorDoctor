@@ -51,6 +51,20 @@ public class StatusService : IStatusService
         return dto;
     }
 
+    public async Task<StatusGetDto> GetLastAsync(Languages language = Languages.Azerbaijan)
+    {
+        var statuses = await _repository.GetAll(include: _getIncludeFunc(language)).ToListAsync(); ;
+
+        var status = statuses.LastOrDefault();
+
+        if (status is null)
+            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+
+        var dto = _mapper.Map<StatusGetDto>(status);
+
+        return dto;
+    }
+
     private Func<IQueryable<Status>, IIncludableQueryable<Status, object>> _getIncludeFunc(Languages language)
     {
         LanguageHelper.CheckLanguageId(ref language);

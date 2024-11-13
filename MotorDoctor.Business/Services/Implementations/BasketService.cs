@@ -218,7 +218,7 @@ internal class BasketService : IBasketService
 
     private List<BasketItem> _readBasketFromCookie()
     {
-        string json = _contextAccessor.HttpContext.Request.Cookies[BASKET_KEY] ?? "";
+        string json = _contextAccessor.HttpContext?.Request.Cookies[BASKET_KEY] ?? "";
 
         var basketItems = JsonConvert.DeserializeObject<List<BasketItem>>(json) ?? new();
         return basketItems;
@@ -228,19 +228,19 @@ internal class BasketService : IBasketService
     {
         string newJson = JsonConvert.SerializeObject(basketItems);
 
-        _contextAccessor.HttpContext.Response.Cookies.Append(BASKET_KEY, newJson);
+        _contextAccessor.HttpContext?.Response.Cookies.Append(BASKET_KEY, newJson);
     }
 
 
     private string _getUserId()
     {
-        return _contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+        return _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
     }
 
 
     private bool _checkAuthorized()
     {
-        return _contextAccessor.HttpContext.User.Identity?.IsAuthenticated ?? false;
+        return _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
     }
 
 }

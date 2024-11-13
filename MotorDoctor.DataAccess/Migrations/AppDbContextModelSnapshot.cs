@@ -683,6 +683,9 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<int>("SalesCount")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -1122,6 +1125,10 @@ namespace MotorDoctor.DataAccess.Migrations
                         new
                         {
                             Id = 3
+                        },
+                        new
+                        {
+                            Id = 4
                         });
                 });
 
@@ -1216,6 +1223,27 @@ namespace MotorDoctor.DataAccess.Migrations
                             LanguageId = 3,
                             Name = "Заказ выполнен",
                             StatusId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            LanguageId = 1,
+                            Name = "Ləğv edildi",
+                            StatusId = 4
+                        },
+                        new
+                        {
+                            Id = 11,
+                            LanguageId = 2,
+                            Name = "Cancelled",
+                            StatusId = 4
+                        },
+                        new
+                        {
+                            Id = 12,
+                            LanguageId = 3,
+                            Name = "Отменено",
+                            StatusId = 4
                         });
                 });
 
@@ -1238,6 +1266,31 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("Subscribers");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.WishlistItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ProductSizeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductSizeId");
+
+                    b.HasIndex("AppUserId", "ProductSizeId")
+                        .IsUnique();
+
+                    b.ToTable("WishlistItems");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -1397,7 +1450,7 @@ namespace MotorDoctor.DataAccess.Migrations
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Order", b =>
                 {
-                    b.HasOne("MotorDoctor.Core.Entities.AppUser", "User")
+                    b.HasOne("MotorDoctor.Core.Entities.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1409,15 +1462,15 @@ namespace MotorDoctor.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Status");
+                    b.Navigation("AppUser");
 
-                    b.Navigation("User");
+                    b.Navigation("Status");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.OrderItem", b =>
                 {
                     b.HasOne("MotorDoctor.Core.Entities.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1550,6 +1603,25 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Status");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.WishlistItem", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.ProductSize", "ProductSize")
+                        .WithMany()
+                        .HasForeignKey("ProductSizeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("ProductSize");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Attendance", b =>
                 {
                     b.Navigation("AttendanceDetails");
@@ -1585,6 +1657,11 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("CategoryDetails");
 
                     b.Navigation("SliderDetails");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Product", b =>

@@ -2,6 +2,7 @@
 
 public class Product : BaseAuditableEntity
 {
+    public int SalesCount { get; set; } = 0;
     public string Code { get; set; } = null!;
     public Brand Brand { get; set; } = null!;
     public int BrandId { get; set; }

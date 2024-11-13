@@ -6,4 +6,5 @@ public interface IOrderService : IModifyService<OrderCreateDto, OrderUpdateDto>,
 {
     Task<List<OrderGetDto>> GetUserOrdersAsync(Languages language = Languages.Azerbaijan);
     Task<OrderGetDto> GetUserOrderAsync(int id, Languages language = Languages.Azerbaijan);
+    Task CancelOrderAsync(int id);
 }

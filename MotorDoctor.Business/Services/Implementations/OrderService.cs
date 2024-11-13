@@ -15,12 +15,13 @@ internal class OrderService : IOrderService
 {
     private readonly IOrderRepository _repository;
     private readonly IStatusService _statusService;
+    private readonly IProductService _productService;
     private readonly IBasketService _basketService;
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly ErrorLocalizer _errorLocalizer;
     private readonly IMapper _mapper;
 
-    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService)
+    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService, IProductService productService)
     {
         _repository = repository;
         _mapper = mapper;
@@ -28,6 +29,27 @@ internal class OrderService : IOrderService
         _contextAccessor = contextAccessor;
         _errorLocalizer = errorLocalizer;
         _statusService = statusService;
+        _productService = productService;
+    }
+    public async Task CancelOrderAsync(int id)
+    {
+        var order = await _repository.GetAsync(id, x => x.Include(x => x.OrderItems));
+
+        if (order is null)
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+        var status = _statusService.GetLastAsync();
+
+        order.StatusId = status.Id;
+
+        _repository.Update(order);
+        await _repository.SaveChangesAsync();
+
+
+        foreach (var item in order.OrderItems)
+            await _productService.DecreaseSalesCountAsync(item.ProductSizeId, item.Count);
+
+
     }
 
     public async Task<bool> CreateAsync(OrderCreateDto dto, ModelStateDictionary ModelState)
@@ -51,11 +73,13 @@ internal class OrderService : IOrderService
         order.StatusId = status.Id;
 
         string userId = _getUserId();
-        order.AppUserId= userId;
+        order.AppUserId = userId;
 
         await _repository.CreateAsync(order);
         await _repository.SaveChangesAsync();
 
+        foreach (var item in dto.OrderItems)
+            await _productService.IncreaseSalesCountAsync(item.ProductSizeId, item.Count);
 
         await _basketService.ClearBasketAsync();
 
@@ -160,12 +184,12 @@ internal class OrderService : IOrderService
 
     private string _getUserId()
     {
-        return _contextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+        return _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
     }
 
     private bool _checkAuthorized()
     {
-        return _contextAccessor.HttpContext.User.Identity?.IsAuthenticated ?? false;
+        return _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
     }
 
 

@@ -4,5 +4,5 @@ namespace MotorDoctor.Business.Services.Abstractions;
 
 public interface ISettingService : IModifyService<SettingCreateDto, SettingUpdateDto>, IGetServiceWithLanguage<SettingGetDto>
 {
-    Task<Dictionary<string, string>> GetSettingsWithDictionaryAsync(Languages language);
+    Task<Dictionary<string, string>> GetSettingsWithDictionaryAsync(Languages language=Languages.Azerbaijan);
 }
