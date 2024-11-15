@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection.XmlEncryption;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
@@ -165,11 +166,88 @@ internal class ProductService : IProductService
         return dtos;
     }
 
+    public async Task<ShopFilterDto> GetAllWithPageAsync(ProductFilterDto? filterDto, Languages language = Languages.Azerbaijan, int page = 1)
+    {
+        var query = _repository.GetAll(_getIncludeFunc(language));
+
+        query = _repository.OrderByDescending(query, x => x.UpdatedAt);
+
+        if (filterDto is { })
+        {
+            if (!string.IsNullOrWhiteSpace(filterDto.Search))
+                query = query.Where(x => x.ProductDetails.Any(x => x.Name.Contains(filterDto.Search)));
+
+            if (filterDto.CategoryIds.Count is not 0)
+                query = query.Where(x => filterDto.CategoryIds.Any(c => c == x.CategoryId) || filterDto.CategoryIds.Any(c => c == x.Category.ParentId));
+
+            if (filterDto.BrandIds.Count is not 0)
+                query = query.Where(x => filterDto.BrandIds.Any(c => c == x.BrandId));
+
+            if (filterDto.MaxPrice is not 0)
+                query = query.Where(x => x.ProductSizes.Any(x => x.Price < filterDto.MaxPrice));
+
+            if (filterDto.MinPrice is not 0)
+                query = query.Where(x => x.ProductSizes.Any(x => x.Price > filterDto.MinPrice));
+
+            switch (filterDto.SortType)
+            {
+                case SortTypes.Latest:
+                    break;
+
+                case SortTypes.Oldest:
+                    query = query.OrderBy(x => x.UpdatedAt);
+                    break;
+
+                case SortTypes.Popularity:
+                    query = query.OrderByDescending(x => x.SalesCount);
+                    break;
+
+                case SortTypes.PriceDescending:
+                    query = query.OrderByDescending(x => x.ProductSizes.FirstOrDefault() != null ? x.ProductSizes.FirstOrDefault()!.Price : x.Id);
+                    break;
+
+                case SortTypes.PriceAscending:
+                    query = query.OrderBy(x => x.ProductSizes.FirstOrDefault() != null ? x.ProductSizes.FirstOrDefault()!.Price : x.Id);
+                    break;
+            }
+        }
+
+        int count = await query.CountAsync();
+
+        int pageCount = (int)Math.Ceiling((decimal)count / 9);
+
+        if (page > pageCount)
+            page = pageCount;
+
+        if (page < 1)
+            page = 1;
+
+        query = _repository.Paginate(query, 9, page);
+
+        var products = await query.ToListAsync();
+
+        var dtos = _mapper.Map<List<ProductGetDto>>(products);
+
+        PaginateDto<ProductGetDto> paginateDto = new()
+        {
+            Items = dtos,
+            CurrentPage = page,
+            PageCount = pageCount,
+        };
+
+        ShopFilterDto dto = new() { ProductFilterDto = filterDto, Products = paginateDto };
+
+        return dto;
+    }
+
     public async Task<PaginateDto<ProductGetDto>> GetAllWithPageAsync(Languages language = Languages.Azerbaijan, int page = 1)
     {
         var query = _repository.GetAll(_getIncludeFunc(language));
 
-        int count = query.Count();
+        query = _repository.OrderByDescending(query, x => x.UpdatedAt);
+
+
+        int count = await query.CountAsync();
 
         int pageCount = (int)Math.Ceiling((decimal)count / 10);
 
@@ -179,7 +257,6 @@ internal class ProductService : IProductService
         if (page < 1)
             page = 1;
 
-        query = _repository.OrderByDescending(query, x => x.UpdatedAt);
 
         query = _repository.Paginate(query, 10, page);
 
@@ -193,6 +270,7 @@ internal class ProductService : IProductService
             CurrentPage = page,
             PageCount = pageCount,
         };
+
 
         return dto;
     }

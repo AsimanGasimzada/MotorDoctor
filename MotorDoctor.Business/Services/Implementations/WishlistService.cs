@@ -121,6 +121,16 @@ internal class WishlistService : IWishlistService
     }
 
 
+
+    public async Task<bool> IsExistAsync(int id)
+    {
+        var wishlist = await GetWishlistAsync();
+
+        var isExist = wishlist.Any(x => x.ProductSizeId == id);
+
+        return isExist;
+    }
+
     private List<WishlistItem> _readWishlistFromCookie()
     {
         string json = _contextAccessor.HttpContext?.Request.Cookies[WISHLIST_KEY] ?? "";
@@ -147,4 +157,5 @@ internal class WishlistService : IWishlistService
     {
         return _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
     }
+
 }

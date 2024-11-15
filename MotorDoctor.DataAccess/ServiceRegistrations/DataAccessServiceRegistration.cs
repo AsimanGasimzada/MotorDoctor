@@ -6,10 +6,10 @@ using MotorDoctor.DataAccess.Contexts;
 using MotorDoctor.DataAccess.DataInitializers;
 using MotorDoctor.DataAccess.Helpers;
 using MotorDoctor.DataAccess.Interceptors;
-using MotorDoctor.DataAccess.Repositories.Abstractions;
-using MotorDoctor.DataAccess.Repositories.Implementations;
 using MotorDoctor.DataAccess.Localizers;
+using MotorDoctor.DataAccess.Repositories.Abstractions;
 using MotorDoctor.DataAccess.Repositories.Abstractions.Generic;
+using MotorDoctor.DataAccess.Repositories.Implementations;
 
 namespace MotorDoctor.DataAccess.ServiceRegistrations;
 

@@ -186,21 +186,6 @@ const videoContainer = document.getElementById('video-container')
 const closeVideo = document.querySelector('.remove-video')
 const videoFrame = document.getElementById('video-frame')
 
-videoLink.addEventListener('click', e => {
-  e.preventDefault()
-  videoContainer.style.display = 'flex'
-  document.body.style.overflow = 'hidden'
-  videoFrame.src = 'https://player.vimeo.com/video/529300981?h=1154554dda'
-})
-
-closeVideo.addEventListener('click', () => {
-  videoContainer.style.display = 'none'
-  document.body.style.overflow = 'visible'
-
-  videoFrame.src = ''
-})
-
-
 
 // search
 function openSearch() {

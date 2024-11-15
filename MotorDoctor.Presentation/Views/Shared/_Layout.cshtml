@@ -2,6 +2,7 @@
 @{
     var settings = await _layoutService.GetSettingsAsync();
     var attendances = await _layoutService.GetAttendancesAsync();
+    var selectedLanguage = _layoutService.GetSelectedLanguage();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -26,8 +27,8 @@
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
     <!-- CSS -->
     <link rel="stylesheet" href="~/assets/css/main.css" />
-    <style>
-    </style>
+    @await RenderSectionAsync("Styles", false)
+
 </head>
 
 <body>
@@ -47,7 +48,7 @@
             <div class="navbar-container">
                 <div class="leftside-nav">
                     <div class="logo">
-                        <img src="~/assets/img/logo.png" alt="Dark Dunker" />
+                        <img src="./assets/img/logo.png" alt="Dark Dunker" />
                     </div>
                 </div>
                 <div class="middle-nav">
@@ -164,6 +165,29 @@
                         <a href="./wishlist.html">
                             <span class="wish"><i class="fa-regular fa-heart"></i></span>
                         </a>
+                        <div class="account-container2">
+                            <select class="changeCultureInput">
+                                @if (selectedLanguage == "en")
+                                {
+                                    <option value="az">AZE</option>
+                                    <option value="en" selected>ENG</option>
+                                    <option value="ru">RUS</option>
+                                }
+                                else if (selectedLanguage == "ru")
+                                {
+
+                                    <option value="az">AZE</option>
+                                    <option value="en">ENG</option>
+                                    <option value="ru" selected>RUS</option>
+                                }
+                                else
+                                {
+                                    <option value="az" selected>AZE</option>
+                                    <option value="en">ENG</option>
+                                    <option value="ru">RUS</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                     <div class="basket basket-btn">
                         <span class="basket-icon d-flex justify-content-center align-items-center gap-1">
@@ -183,7 +207,7 @@
                     <div class="mobile-nav-left">
                         <a href="./index.html">
                             <div class="dark-logo">
-                                <img src="~/assets/img/Mobile-logo.png" alt="DunkerDark" />
+                                <img src="./assets/img/Mobile-logo.png" alt="DunkerDark" />
                             </div>
                         </a>
                     </div>
@@ -198,6 +222,12 @@
                                     <span class="count-basket">0</span>
                                 </a>
                                 <div class="basket-container"></div>
+                            </div>
+                            <div class="account-container2">
+                                <select name="" id="">
+                                    <option value="Az">Az</option>
+                                    <option value="Eb">En</option>
+                                </select>
                             </div>
                             <div class="menu-btn">
                                 <div class="menu-btn__burger"></div>
@@ -288,7 +318,7 @@
                 <div class="basket-products">
                     <div class="basket-product">
                         <a class="basket-img" href="#">
-                            <img src="~/assets/img/shop-list-filter-1-600x750.jpg" alt="Product" />
+                            <img src="./assets/img/shop-list-filter-1-600x750.jpg" alt="Product" />
                         </a>
                         <div class="basket-product-content">
                             <a href="#" class="product-category">Fitness</a>
@@ -311,8 +341,7 @@
         </div>
 
 
-    </header>
-    <!-- Header Section End -->
+    </header> <!-- Header Section End -->
     @RenderBody()
 
 
@@ -560,31 +589,31 @@
         </div>
     </footer>
     <!-- Footer End -->
-    <!-- SwiperJS -->
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <script src="~/assets/js/productCardSlider.js"></script>
-    <!-- Split Type  -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="./assets/js/productCardSlider.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="
     https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js
     "></script>
-
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <!-- GSAP JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"
             integrity="sha512-16esztaSRplJROstbIIdwX3N97V1+pZvV33ABoG1H2OyTttBxEGkTsoIVsiP1iaTtM8b3+hu2kB6pQ4Clr5yug=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-    <!-- axios cdn  -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.1/axios.min.js"></script>
 
-    <!-- generate card js  -->
-    <script src="~/assets/js/basket.js"></script>
-    <script src="~/assets/js/generateCard.js"></script>
-    <script src="~/assets/js/wishlist.js"></script>
-    <script src="~/assets/js/script.js"></script>
+    <script>
+        const changeLangInput=document.querySelector('.changeCultureInput');
+
+        changeLangInput.addEventListener('change',()=>{
+            window.location.href=`/Home/SelectCulture?culture=${changeLangInput.value}`
+        })
+    </script>
+    <script src="./assets/js/script.js"></script>
+    @await RenderSectionAsync("Scripts", false)
 </body>
 
 </html>

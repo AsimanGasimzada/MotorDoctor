@@ -251,3 +251,63 @@ color: var(--bs-btn-active-color);
 background-color: var(--bs-btn-active-bg);
 border-color: white !important;
 }
+
+
+
+
+
+
+
+
+
+/*//pagination*/
+.pagination-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.pagination {
+    list-style: none;
+    display: inline-flex;
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.page-item {
+    margin: 0 2px;
+}
+
+.page-link {
+    display: block;
+    padding: 10px 15px;
+    color: black;
+    text-decoration: none;
+    background-color: white;
+    border: 1px solid whitesmoke; /* Default border color */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+    .page-link:hover {
+        background-color: black;
+        color: white;
+        border-color: black; /* Border color changes on hover */
+    }
+
+.page-item.active .page-link {
+    background-color: black;
+    color: white;
+    border-color: black; /* Active border color */
+    cursor: default;
+}
+
+.page-item:first-child .page-link {
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.page-item:last-child .page-link {
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}

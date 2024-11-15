@@ -20,6 +20,17 @@ internal class LayoutService : ILayoutService
         return await _attendanceService.GetAllAsync(language);
     }
 
+    public string GetSelectedLanguage()
+    {
+        if (Constants.SelectedLanguage == Languages.English)
+            return "en";
+        else if (Constants.SelectedLanguage == Languages.Russian)
+            return "ru";
+
+        return "az";
+
+    }
+
     public async Task<Dictionary<string, string>> GetSettingsAsync(Languages language = Languages.Azerbaijan)
     {
         return await _settingService.GetSettingsWithDictionaryAsync(language);
