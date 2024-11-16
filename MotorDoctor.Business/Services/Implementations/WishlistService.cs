@@ -17,16 +17,18 @@ internal class WishlistService : IWishlistService
     private readonly IMapper _mapper;
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IProductSizeService _productSizeService;
+    private readonly IProductService _productService;
     private readonly ErrorLocalizer _errorLocalizer;
     private const string WISHLIST_KEY = "MotorDoctorWishlist";
 
-    public WishlistService(IWishlistItemRepository repository, IMapper mapper, IHttpContextAccessor contextAccessor, IProductSizeService productSizeService, ErrorLocalizer errorLocalizer)
+    public WishlistService(IWishlistItemRepository repository, IMapper mapper, IHttpContextAccessor contextAccessor, IProductSizeService productSizeService, ErrorLocalizer errorLocalizer, IProductService productService)
     {
         _repository = repository;
         _mapper = mapper;
         _contextAccessor = contextAccessor;
         _productSizeService = productSizeService;
         _errorLocalizer = errorLocalizer;
+        _productService = productService;
     }
 
     public async Task<bool> ToggleToWishlistAsync(int id)
@@ -62,7 +64,7 @@ internal class WishlistService : IWishlistService
         {
             var wishlistItems = _readWishlistFromCookie();
 
-            var existItem = wishlistItems.FirstOrDefault(x => x.Id == id);
+            var existItem = wishlistItems.FirstOrDefault(x => x.ProductSizeId == id);
 
             if (existItem is { })
                 wishlistItems.Remove(existItem);
@@ -90,7 +92,9 @@ internal class WishlistService : IWishlistService
 
             var wishlistItems = await _repository.GetFilter(x => x.AppUserId == userId,
                            x => x.Include(x => x.ProductSize).ThenInclude(x => x.Product)
-                                      .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
+                                      .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))
+                                      .Include(x => x.ProductSize.Product.ProductImages)
+                                      .Include(x => x.ProductSize.Product.Category.CategoryDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
 
             var dtos = _mapper.Map<List<WishlistItemGetDto>>(wishlistItems);
 
@@ -131,6 +135,15 @@ internal class WishlistService : IWishlistService
         return isExist;
     }
 
+    public async Task<bool> IsExistByProductIdAsync(int id)
+    {
+        var wishlist = await GetWishlistAsync();
+
+        var isExist = wishlist.Any(x => x.ProductSize.ProductId == id);
+
+        return isExist;
+    }
+
     private List<WishlistItem> _readWishlistFromCookie()
     {
         string json = _contextAccessor.HttpContext?.Request.Cookies[WISHLIST_KEY] ?? "";
@@ -157,5 +170,6 @@ internal class WishlistService : IWishlistService
     {
         return _contextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
     }
+
 
 }

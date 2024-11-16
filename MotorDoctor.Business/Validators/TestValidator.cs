@@ -6,8 +6,8 @@ public class TestValidator : AbstractValidator<LoginDto>
 {
     public TestValidator()
     {
-        RuleFor(x => x.EmailOrUsername).NotEmpty().MaximumLength(10);
-        RuleFor(x => x.Password).NotEmpty().MaximumLength(10);
+        //RuleFor(x => x.EmailOrUsername).NotEmpty().MaximumLength(10);
+        //RuleFor(x => x.Password).NotEmpty().MaximumLength(10);
     }
 }
 

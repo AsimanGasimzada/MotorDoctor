@@ -22,7 +22,9 @@ internal class ProductSizeService : IProductSizeService
     {
         LanguageHelper.CheckLanguageId(ref language);
         var productSize = await _repository.GetAsync(id, x => x.Include(x => x.Product)
-                                                .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)));
+                                                .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))
+                                                .Include(x=>x.Product.Category)
+                                                .Include(x=>x.Product.ProductImages));
 
         if (productSize is null)
             return null;

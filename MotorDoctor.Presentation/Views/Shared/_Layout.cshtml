@@ -48,7 +48,7 @@
             <div class="navbar-container">
                 <div class="leftside-nav">
                     <div class="logo">
-                        <img src="./assets/img/logo.png" alt="Dark Dunker" />
+                        <img src="~/assets/img/logo.png" alt="Dark Dunker" />
                     </div>
                 </div>
                 <div class="middle-nav">
@@ -610,6 +610,19 @@
 
         changeLangInput.addEventListener('change',()=>{
             window.location.href=`/Home/SelectCulture?culture=${changeLangInput.value}`
+        })
+    </script>
+    <script>
+          const wishlistButtons = document.querySelectorAll(".add-to-fav-button")
+
+        wishlistButtons.forEach(btn=>{
+            btn.addEventListener("click",async (e)=>{
+                e.preventDefault();
+
+               await fetch(`/Wishlist/AddItem/${btn.dataset.productid}`)
+                btn.children[0].classList.toggle("fa-regular")
+                btn.children[0].classList.toggle("fa-solid")
+            })
         })
     </script>
     <script src="./assets/js/script.js"></script>

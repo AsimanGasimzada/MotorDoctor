@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Extensions;
 using MotorDoctor.Business.UIServices.Abstractions;
+using MotorDoctor.Presentation.Extensions;
 using System.Reflection.Metadata;
 
 namespace MotorDoctor.Presentation.Controllers
@@ -22,9 +23,6 @@ namespace MotorDoctor.Presentation.Controllers
 
         public async Task<IActionResult> Index()
         {
-            //await _basketService.AddToBasketAsync(65);
-
-            //await _orderService.CreateAsync(new() { City = "Test", PhoneNumber = "Test", Region = "Test", Street = "Test" , OrderItems = [] }, ModelState);
             var dto = await _homeService.GetHomeDtoAsync(Constants.SelectedLanguage);
 
             return View(dto);
@@ -34,13 +32,12 @@ namespace MotorDoctor.Presentation.Controllers
         {
             _languageService.SelectCulture(culture);
 
-            string? returnUrl = Request.Headers["Referer"];
-
-            if (string.IsNullOrEmpty(returnUrl))
-                returnUrl = "/";
+            string returnUrl = Request.GetReturnUrl();
 
             return Redirect(returnUrl);
         }
+
+
 
         public IActionResult Privacy()
         {

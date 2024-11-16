@@ -1,0 +1,67 @@
+﻿@model List<WishlistItemGetDto>
+<!-- Main Start -->
+
+<br />
+<br />
+<br />
+<br />
+<main id="main">
+    <!-- Breadcrumb Navigation Start -->
+    <nav id="breadcrumb">
+        <span><a href="./index.html">HOME</a></span>
+        <span class="line">|</span>
+        <span><a href="#" class="text-dark">WISHLIST</a></span>
+    </nav>
+    <!-- Breadcrumb Navigation End -->
+    <!-- Wishlist Section Start -->
+    <section id="wishlist">
+        <div class="product-wishlist">
+            <h2>Product Wishlist</h2>
+        </div>
+
+        <div class="wishlist-items" id="wishlist-container">
+            @if (Model.Count == 0)
+            {
+                <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
+                    <p class="m-0 fw-bold">NO PRODUCTS ADDED TO THE WISHLIST</p>
+                </div>
+            }
+            else
+            {
+                @foreach (var wishlistItem in Model)
+                {
+                    <div class="wishlist-item">
+                        <div class="left-side-wishlist">
+                            <a asp-action="RemoveItem" asp-route-id="@wishlistItem.ProductSizeId">
+                                <i class="fa-solid fa-xmark"></i>
+                            </a>
+                            <div class="wishlist-img">
+                                <img src="@wishlistItem.ProductSize.Product.MainImagePath"
+                                     alt="Product" />
+                            </div>
+                            <div class="wishlist-info">
+                                <a href="#">@wishlistItem.ProductSize.Product.Name</a>
+                                <a href="#"><span>@wishlistItem.ProductSize.Product.Category.Name</span></a>
+                            </div>
+                        </div>
+                        <div class="right-side-wishlist">
+                            <div class="product-price">
+                                <span>$@wishlistItem.ProductSize.Price</span>
+                            </div>
+                            <div class="product-stock-status">
+                                <span>In Stock</span>
+                            </div>
+                            <a href="#" class="custom-button">
+                                ADD TO CART
+                                <i class="fa-solid fa-basket-shopping"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+
+            }
+        </div>
+    </section>
+    <!-- Wishlist Section End -->
+</main>
+<!-- Main End -->

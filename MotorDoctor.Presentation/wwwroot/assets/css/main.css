@@ -635,6 +635,10 @@ body.no-scroll {
         background-color: black;
     }
 
+    .add-to-fav-button:hover i{
+        color:white !important;
+    }
+
 .new-product-icon {
     position: absolute;
     width: 35px;
@@ -2555,3 +2559,122 @@ body.no-scroll {
 
 
 
+/*login and register*/
+
+.container-scroller {
+    padding: 100px 50px;
+}
+
+@media screen and (max-width:480px) {
+    .container-scroller {
+        padding: 100px 20px !important;
+    }
+
+    .auth-form-light {
+        padding: 2rem 1.3rem !important;
+    }
+}
+
+@media screen and (max-width:330px) {
+    .container-scroller {
+        padding: 100px 5px !important;
+    }
+}
+
+.auth-form-light {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+    margin: auto;
+}
+
+.btn-custom {
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    padding: 12px 24px;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+    .btn-custom:hover {
+        background-color: #333333;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    }
+
+.auth-link {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+    .auth-link:hover {
+        text-decoration: underline;
+    }
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.my-3 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.position-relative {
+    position: relative;
+}
+
+.btn-icon {
+    position: absolute;
+    top: 50%;
+    right: 7px;
+    margin-top: 14px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #6c757d;
+}
+
+    .btn-icon:focus {
+        outline: none;
+    }
+
+.form-group input {
+    padding-right: 40px;
+}
+
+.custom-button2 {
+    color: black;
+    font-size: 16px;
+    border: 2px solid #000;
+    padding: 10px 55px;
+    background: transparent;
+    transition: 0.4s ease-in;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+    .custom-button2:hover {
+        color: white;
+        background-color: #000;
+    }
+
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.centered-button {
+    margin-top: 1rem;
+}
