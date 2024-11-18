@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetCoreGeneratedDocument;
+using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
 using MotorDoctor.Business.Extensions;
 
@@ -26,6 +27,7 @@ public class ShopController : Controller
 
         return View(shopFilterDto);
     }
+
     [HttpPost]
     public async Task<IActionResult> Index(ShopFilterDto dto, int page = 1)
     {
@@ -35,5 +37,12 @@ public class ShopController : Controller
         shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
 
         return View(shopFilterDto);
+    }
+
+    public async Task<IActionResult> Detail(int id)
+    {
+        var product = await _productService.GetAsync(id, Constants.SelectedLanguage);
+
+        return View(product);
     }
 }

@@ -1,0 +1,305 @@
+﻿@model ProductGetDto
+@inject IWishlistService wishlistService
+@{
+    var isExistWishlist = await wishlistService.IsExistByProductIdAsync(Model.Id);
+}
+<br />
+<br />
+<br />
+<br />
+<!-- Main Start -->
+<main id="main">
+    <!-- Breadcrumb Navigation Start -->
+    <nav id="breadcrumb">
+        <span><a href="./index.html">SHOP</a></span>
+        <span class="line">|</span>
+        <span><a href="#" class="text-dark">@Model.Name</a></span>
+    </nav>
+    <!-- Breadcrumb Navigation End -->
+    <!-- Detail Product Section Start -->
+    <section id="detail-product">
+        <div class="row g-5">
+            <div class="col-lg-6 col-12">
+                <div class="image-gallery">
+                    <div class="zoom-img">
+                        <div class="zoomist-container">
+                            <!-- zoomist-wrapper is required -->
+                            <div class="zoomist-wrapper">
+                                <!-- zoomist-image is required -->
+                                <div class="zoomist-image">
+                                    <img src="@Model.MainImagePath"
+                                         alt="@Model.Name"
+                                         id="zoom-img" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="gallery-items">
+                        @foreach (var imagePath in Model.ImagePaths)
+                        {
+                            <div class="gallery-item">
+                                <img src="@imagePath"
+                                     alt="@Model.Name"
+                                     class="gallery-img" />
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="product-content">
+                    <div class="product-heading">
+                        <h1>@Model.Name</h1>
+
+                        <p>
+                            Alienum phaedrum torquatos nec eu, vis detraxit periculis ex,
+                            nihil expete mei. Mei an Lorem ipsum dolor sit amet,
+                            consectetur adipiscing elit. Ut nec vulputate massa. Maecenas
+                            dui augue, dictum dictum varius nec, suscipit eu dolor. Duis
+                            tellus.
+                        </p>
+                        <h5 style="display:inline">Size:</h5>
+                        <select class="form-select productSizeSelectInput" aria-label="Default select example" style="text-align:center;max-width:30%;margin:0 10px;display:inline;">
+                            @foreach (var productSize in Model.ProductSizes)
+                            {
+                                <option value="@productSize.Id">@productSize.Size - @productSize.Price ₼</option>
+                            }
+                        </select>
+                        <br />
+                        <br />
+                        <br />
+                    </div>
+                    <div class="product-actions">
+                        <div class="counter">
+                            <button class="decrease-product">-</button>
+                            <span class="product-count">1</span>
+                            <button class="increase-product">+</button>
+                        </div>
+                        <a asp-action="AddToBasket" asp-controller="basket" class="custom-button AddToBasketButton">
+                            ADD TO CART
+                            <span class="basket-product">
+                                <i class="fa-solid fa-basket-shopping"></i>
+                            </span>
+                        </a>
+
+
+                        <button class="addToFavButton wishlist-btn" data-productId="@Model.ProductSizes.FirstOrDefault()?.Id">
+                            <i class="@(isExistWishlist? "fa-solid" : "fa-regular") fa-heart"></i>
+                        </button>
+                    </div>
+                    <div class="product-info">
+                        @* <div class="share">
+                            <a href="#" class="fs-5 py-5 d-inline-block">
+                                <i class="fa-solid fa-square-share-nodes"></i>
+                            </a>
+                        </div> *@
+                        <div class="product-stats">
+                            <div class="sku">
+                                <span>SKU:</span>
+                                <a href="#">232-1-2</a>
+                            </div>
+                            <div class="category">
+                                <span>CATEGORY:</span>
+                                <a href="#">FITNESS</a>
+                            </div>
+                            <div class="tag">
+                                <span>TAG:</span>
+                                <a href="#">SPORT</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 pt-5">
+                <div class="product-description">
+                    <div class="product-description-header">
+                        <ul class="tab-items" id="tabItems">
+                            <li class="tab-item">
+                                <a href="#" class="tab-link" data-tab="description">
+                                    DESCRIPTION
+                                </a>
+                            </li>
+                            <li class="tab-item">
+                                <a href="#" class="tab-link" data-tab="additional-info">
+                                    Reviews (0)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tabs-content pt-4" id="tabContent">
+                        <div class="tab" data-tab="description">
+                            <p class="fs-5">
+                                Alienum phaedrum torquatos nec eu, vis detraxit periculis
+                                ex, nihil expete mei. Mei an Lorem ipsum dolor sit amet,
+                                consectetur adipiscing elit. Ut nec vulputate massa in et.
+                                Maecenas dui augue, dictum dictum varius nec, suscipit eu
+                                dolor. Duis tellus ligula, porta et mauris sit amet,
+                                condimentum sagittis erat. Duis eget nisi velit nunc.
+                                Curabitur dignissim justo tortor. Consequat an. Eius lorem
+                                tincidunt vix at, vel pertinax sensibus id, error epicurei
+                                mea. Donec ut velit mi vitae
+                            </p>
+                        </div>
+                        <div class="tab d-none" data-tab="additional-info">
+                            <div class="product-stats">
+                                <div class="container mt-5">
+                                    <div class="review">
+                                        <div class="d-flex align-items-start">
+                                            <img src="./assets/img/banner1.jpg"
+                                                 style="width: 70px; height: 70px"
+                                                 alt="User Avatar"
+                                                 class="rounded-circle mr-3" />
+                                            <div>
+                                                <p class="mb-1 text-muted">April 12, 2024</p>
+                                                <h5 class="font-weight-bold mb-1">Jason Smith</h5>
+                                                <p>
+                                                    The generated Lorem Ipsum is therefore always free
+                                                    from repetition, injected humour, or
+                                                    non-characteristic words etc. Suspendisse
+                                                    ultricies nisi vel quam suscipit.
+                                                </p>
+                                                <div class="stars">
+                                                    <span class="text-warning">&#9733;</span>
+                                                    <span class="text-warning">&#9733;</span>
+                                                    <span class="text-warning">&#9733;</span>
+                                                    <span class="text-warning">&#9733;</span>
+                                                    <span class="text-secondary">&#9733;</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="review mt-4">
+                                        <div class="d-flex align-items-start">
+                                            <img src="./assets/img/banner1.jpg"
+                                                 style="width: 70px; height: 70px"
+                                                 alt="User Avatar"
+                                                 class="rounded-circle mr-3" />
+                                            <div>
+                                                <p class="mb-1 text-muted">April 12, 2024</p>
+                                                <h5 class="font-weight-bold mb-1">Sam Peters</h5>
+                                                <p>
+                                                    The generated Lorem Ipsum is therefore always free
+                                                    from repetition, injected humour, or
+                                                    non-characteristic words etc. Suspendisse
+                                                    ultricies nisi vel quam suscipit.
+                                                </p>
+                                                <div class="stars">
+                                                    <span class="text-warning">&#9733;</span>
+                                                    <span class="text-warning">&#9733;</span>
+                                                    <span class="text-warning">&#9733;</span>
+                                                    <span class="text-secondary">&#9733;</span>
+                                                    <span class="text-secondary">&#9733;</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mt-5">
+            <h2 class="mb-4">Leave a Reply</h2>
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="name">Your Name *</label>
+                        <input type="text"
+                               class="form-control"
+                               id="name"
+                               placeholder="Your Name" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="email">Your Email *</label>
+                        <input type="email"
+                               class="form-control"
+                               id="email"
+                               placeholder="Your Email" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="review">Your Review *</label>
+                    <textarea class="form-control"
+                              id="review"
+                              rows="4"
+                              placeholder="Your Review"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Please rate:</label>
+                    <div id="rating">
+                        <span class="text-secondary">&#9733;</span>
+                        <span class="text-secondary">&#9733;</span>
+                        <span class="text-secondary">&#9733;</span>
+                        <span class="text-secondary">&#9733;</span>
+                        <span class="text-secondary">&#9733;</span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-success">
+                    Post Comment
+                </button>
+            </form>
+        </div>
+    </section>
+    <!-- Detail Product Section End -->
+    <!-- Related Products Section Start -->
+    <section id="related-products">
+        <div class="title">
+            <h2>RELATED PRODUCTS</h2>
+        </div>
+        <div class="featured-products-container">
+            <div class="row justify-content-center"></div>
+        </div>
+    </section>
+    <!-- Related Products Section End -->
+</main>
+<!-- Main End -->
+
+
+
+
+<script>
+    const decreaseButton=document.querySelector('.decrease-product')
+    const increaseButton=document.querySelector('.increase-product')
+    const productCountInput=document.querySelector('.product-count')
+
+    increaseButton.addEventListener('click',(e)=>{
+        e.preventDefault();
+        let count=parseInt(productCountInput.innerText);
+        if(count>99)
+                   return;
+        productCountInput.innerText=count+1;
+    })
+
+
+      decreaseButton.addEventListener('click',(e)=>{
+        e.preventDefault();
+        let count=parseInt(productCountInput.innerText);
+        if(count<2)
+                   return;
+        productCountInput.innerText=count-1;
+    })
+
+    const wishlistBtn=document.querySelector(".addToFavButton");
+    const sizeInput=document.querySelector('.productSizeSelectInput')
+
+     wishlistBtn.addEventListener("click",async (e)=>{
+                e.preventDefault();
+
+               await fetch(`/Wishlist/AddItem/${wishlistBtn.dataset.productid}`)
+                wishlistBtn.children[0].classList.toggle("fa-regular")
+                wishlistBtn.children[0].classList.toggle("fa-solid")
+            })
+
+
+            const addToBasketBtn=document.querySelector('.AddToBasketButton');
+
+            addToBasketBtn.addEventListener('click',async (e)=>{
+                e.preventDefault();
+                let quantity=parseInt(productCountInput.innerText);
+                await fetch(`${addToBasketBtn.href}/${sizeInput.value}?count=${quantity}`)
+            } )
+</script>

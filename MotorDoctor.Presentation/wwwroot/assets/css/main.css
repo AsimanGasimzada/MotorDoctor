@@ -2678,3 +2678,120 @@ body.no-scroll {
 .centered-button {
     margin-top: 1rem;
 }
+
+
+
+
+
+
+
+
+
+
+
+.counter-container {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.plus-btn {
+    font-size: 15px;
+    padding: 10px;
+    margin: 0 15px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+    .plus-btn:hover {
+        color: rgb(34, 34, 34);
+    }
+
+#value {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+#wishlist .wishlist-items .wishlist-item .right-side-wishlist {
+    gap: 70px !important;
+}
+
+#wishlist .wishlist-items .wishlist-item {
+    justify-content: space-around !important;
+}
+
+.cart-header {
+    display: flex;
+    justify-content: space-around;
+}
+
+.cart-totals {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+}
+
+    .cart-totals h2 {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .cart-totals .totals-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .cart-totals .totals-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-totals .totals-item strong {
+            font-weight: bold;
+        }
+
+        .cart-totals .totals-item .label {
+            text-transform: uppercase;
+            font-size: 12px;
+        }
+
+        .cart-totals .totals-item .value {
+            font-size: 16px;
+        }
+
+    .cart-totals .shipping-options {
+        margin-top: 20px;
+    }
+
+        .cart-totals .shipping-options label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+    .cart-totals .btn-checkout {
+        display: block;
+        width: 100%;
+        margin-top: 30px;
+        padding: 10px;
+        border: 2px solid black;
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: bold;
+        background-color: transparent;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .cart-totals .btn-checkout:hover {
+            background-color: #f0f0f0;
+        }
+      

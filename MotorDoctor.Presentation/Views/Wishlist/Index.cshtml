@@ -32,7 +32,7 @@
                 {
                     <div class="wishlist-item">
                         <div class="left-side-wishlist">
-                            <a asp-action="RemoveItem" asp-route-id="@wishlistItem.ProductSizeId">
+                            <a asp-action="RemoveItem" asp-route-id="@wishlistItem.ProductSizeId" class="removeItemBtn">
                                 <i class="fa-solid fa-xmark"></i>
                             </a>
                             <div class="wishlist-img">
@@ -51,7 +51,7 @@
                             <div class="product-stock-status">
                                 <span>In Stock</span>
                             </div>
-                            <a href="#" class="custom-button">
+                            <a asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@wishlistItem.ProductSizeId" id="add-To-Basket-Button" class="custom-button add-To-Basket-Button">
                                 ADD TO CART
                                 <i class="fa-solid fa-basket-shopping"></i>
                             </a>
@@ -65,3 +65,26 @@
     <!-- Wishlist Section End -->
 </main>
 <!-- Main End -->
+
+<script>
+    const removeBtns=document.querySelectorAll(".removeItemBtn");
+    const wishlistItemsArea=document.querySelector(".wishlist-items");
+
+    removeBtns.forEach(btn=>{
+        btn.addEventListener('click',async (e)=>{
+            e.preventDefault();
+            await fetch(btn.href);
+            btn.parentElement.parentElement.remove();
+
+            if(wishlistItemsArea.children.length==0){
+                wishlistItemsArea.innerHTML=`
+                  <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
+                    <p class="m-0 fw-bold">NO PRODUCTS ADDED TO THE WISHLIST</p>
+                </div>
+                `
+            }
+        })
+    })
+
+
+</script>

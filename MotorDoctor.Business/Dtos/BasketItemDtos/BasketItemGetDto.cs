@@ -6,5 +6,3 @@ public class BasketItemGetDto : IDto
     public ProductSizeRelationDto ProductSize { get; set; } = null!;
     public int Count { get; set; }
 }
-
-

@@ -1,0 +1,50 @@
+﻿@inject ILayoutService _layoutService
+@{
+    var basket = await _layoutService.GetBasketAsync();
+}
+
+
+<div class="basket-sidebar-content">
+    <div class="basket-sidebar-header">
+        <h4>Shopping Cart</h4>
+        <a class="button-close mb-2" onclick="CloseBasket()">
+            <i class="fa-solid fa-x"></i>
+        </a>
+    </div>
+    <div class="basket-products">
+        @foreach (var item in basket.Items)
+        {
+            <div class="basket-product">
+                <a class="basket-img">
+                    <img src="@item.ProductSize.Product.MainImagePath" alt="Product" />
+                </a>
+                <div class="basket-product-content">
+                    <a href="#" class="product-category">@item.ProductSize.Product.Category.Name</a>
+                    <a href="#" class="product-item">@item.ProductSize.Product.Name</a>
+                    <span class="product-cost">₼@item.ProductSize.Price x @item.Count</span>
+                </div>
+                <a asp-action="RemoveToBasket" asp-controller="Basket" asp-route-id="@item.ProductSizeId" class="remove-basket">
+                    <i class="fa-solid fa-x"></i>
+                </a>
+            </div>
+
+        }
+    </div>
+    <div class="basket-total">
+        <span>Subtotal:</span>
+        <span class="amount">@basket.Total</span>
+    </div>
+    <div class="basket-buttons">
+        <a href="#" class="custom-button">View Cart & Checkout</a>
+    </div>
+</div>
+
+
+<script>
+    function RenderBasketCount(){
+           const basketCountoutput=document.querySelector(".count-basket-output");
+           const basketItemList=document.querySelector(".basket-products")
+           basketCountoutput.innerHTML=basketItemList.childElementCount
+    }
+    RenderBasketCount();
+</script>

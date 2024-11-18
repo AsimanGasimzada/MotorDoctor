@@ -29,12 +29,16 @@ internal class BasketService : IBasketService
         _errorLocalizer = errorLocalizer;
     }
 
-    public async Task<bool> AddToBasketAsync(int id)
+    public async Task<bool> AddToBasketAsync(int id, int count = 1)
     {
         var isExistProductSize = await _productSizeService.IsExistAsync(id);
 
         if (isExistProductSize is false)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+
+        if (count < 1)
+            count = 1;
 
         if (_checkAuthorized())
         {
@@ -44,7 +48,7 @@ internal class BasketService : IBasketService
 
             if (existBasketItem is { })
             {
-                existBasketItem.Count++;
+                existBasketItem.Count += count;
 
                 _repository.Update(existBasketItem);
                 await _repository.SaveChangesAsync();
@@ -52,7 +56,7 @@ internal class BasketService : IBasketService
                 return true;
             }
 
-            BasketItem basketItem = new() { AppUserId = userId, ProductSizeId = id, Count = 1 };
+            BasketItem basketItem = new() { AppUserId = userId, ProductSizeId = id, Count = count };
 
             await _repository.CreateAsync(basketItem);
             await _repository.SaveChangesAsync();
@@ -66,10 +70,10 @@ internal class BasketService : IBasketService
             var existItem = basketItems.FirstOrDefault(x => x.Id == id);
 
             if (existItem is { })
-                existItem.Count++;
+                existItem.Count += count;
             else
             {
-                BasketItem newBasketItem = new() { ProductSizeId = id, Count = 1 };
+                BasketItem newBasketItem = new() { ProductSizeId = id, Count = count };
 
                 basketItems.Add(newBasketItem);
             }
@@ -158,7 +162,7 @@ internal class BasketService : IBasketService
         }
     }
 
-    public async Task<List<BasketItemGetDto>> GetBasketAsync(Languages language = Languages.Azerbaijan)
+    public async Task<BasketGetDto> GetBasketAsync(Languages language = Languages.Azerbaijan)
     {
         if (_checkAuthorized())
         {
@@ -168,11 +172,23 @@ internal class BasketService : IBasketService
 
             var basketItems = await _repository.GetFilter(x => x.AppUserId == userId,
                            x => x.Include(x => x.ProductSize).ThenInclude(x => x.Product)
-                                      .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
+                                      .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))
+                                      .Include(x => x.ProductSize.Product.Category.CategoryDetails.Where(x => x.LanguageId == (int)language))
+                                      .Include(x => x.ProductSize.Product.ProductImages)).ToListAsync();
 
             var dtos = _mapper.Map<List<BasketItemGetDto>>(basketItems);
 
-            return dtos;
+            decimal totalPrice = dtos.Sum(x => (x.Count * x.ProductSize.Price));
+            var basketDto = new BasketGetDto()
+            {
+                Items = dtos,
+                Count = dtos.Count,
+                Subtotal = totalPrice,
+                Total = totalPrice,
+                Discount = 0,
+            };
+
+            return basketDto;
         }
         else
         {
@@ -193,7 +209,17 @@ internal class BasketService : IBasketService
                 dto.ProductSize = productSize;
             }
 
-            return dtos;
+            decimal totalPrice = dtos.Sum(x => (x.Count * x.ProductSize.Price));
+            var basketDto = new BasketGetDto()
+            {
+                Items = dtos,
+                Count = dtos.Count,
+                Subtotal = totalPrice,
+                Total = totalPrice,
+                Discount = 0,
+            };
+
+            return basketDto;
         }
 
     }

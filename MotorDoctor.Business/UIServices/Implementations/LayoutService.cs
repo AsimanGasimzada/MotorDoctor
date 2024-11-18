@@ -8,16 +8,23 @@ internal class LayoutService : ILayoutService
 {
     private readonly IAttendanceService _attendanceService;
     private readonly ISettingService _settingService;
+    private readonly IBasketService _basketService;
 
-    public LayoutService(IAttendanceService attendanceService, ISettingService settingService)
+    public LayoutService(IAttendanceService attendanceService, ISettingService settingService, IBasketService basketService)
     {
         _attendanceService = attendanceService;
         _settingService = settingService;
+        _basketService = basketService;
     }
 
     public async Task<List<AttendanceGetDto>> GetAttendancesAsync(Languages language = Languages.Azerbaijan)
     {
         return await _attendanceService.GetAllAsync(language);
+    }
+
+    public async Task<BasketGetDto> GetBasketAsync()
+    {
+        return await _basketService.GetBasketAsync(Constants.SelectedLanguage);
     }
 
     public string GetSelectedLanguage()

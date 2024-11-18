@@ -1,0 +1,176 @@
+﻿@model BasketGetDto
+
+<br />
+<br />
+<br />
+<br />
+<!-- Main Start -->
+<main id="main">
+    <!-- Breadcrumb Navigation Start -->
+    <nav id="breadcrumb">
+        <span><a href="./index.html">HOME</a></span>
+        <span class="line">|</span>
+        <span><a href="#" class="text-dark">CART</a></span>
+    </nav>
+    <!-- Breadcrumb Navigation End -->
+    <!-- Wishlist Section Start -->
+    <section id="wishlist">
+        <div class="product-wishlist">
+            <h2>Product Cart</h2>
+        </div>
+
+        <div class="wishlist-items" id="wishlist-container">
+            @if (Model.Count == 0)
+            {
+                <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
+                    <p class="m-0 fw-bold">NO PRODUCTS ADDED TO THE CART</p>
+                </div>
+                <!-- <><><><><><> -->
+            }
+            else
+            {
+                <table class="wishlist-table" style="width: 100%; border-collapse: collapse;">
+                    @foreach (var basketItem in Model.Items)
+                    {
+                        <tr class=" wishlist-item">
+                            <td class="left-side-wishlist">
+                                <a asp-action="RemoveToBasket" asp-route-id="@basketItem.ProductSizeId">
+                                    <i class="fa-solid fa-xmark"></i>
+                                </a>
+                                <div class="wishlist-img">
+                                    <img src="@basketItem.ProductSize.Product.MainImagePath"
+                                         alt="@basketItem.ProductSize.Product.Name" />
+                                </div>
+                                <div class="wishlist-info">
+                                    <a href="#">@basketItem.ProductSize.Product.Name</a>
+                                    <a href="#"><span>@basketItem.ProductSize.Product.Category.Name - @basketItem.ProductSize.Size</span></a>
+                                </div>
+                            </td>
+                            <td class="right-side-wishlist" style="display:flex; justify-content:space-around; text-align:center;">
+                                <div class="product-price">
+                                    <span>₼<span class="productSizePrice">@basketItem.ProductSize.Price</span></span>
+                                </div>
+
+                                <div class="counter-container">
+                                    <a class="plus-btn" asp-action="DecreaseToBasket" asp-controller="Basket" asp-route-id="@basketItem.ProductSizeId" id="decrement">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </a>
+                                    <span id="value">@basketItem.Count</span>
+                                    <a class="plus-btn" asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@basketItem.ProductSizeId" id="increment">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </a>
+                                </div>
+
+                                <div class="right-side-wishlist">
+                                    <div class="mx-5 product-price">
+                                        <span>₼<span class="productSizeTotalPrice">@(basketItem.Count * basketItem.ProductSize.Price)</span></span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </table>
+
+                <div class="container my-5">
+                    <div class="cart-totals">
+                        <h2>Cart Totals</h2>
+
+                        <!-- Subtotal -->
+                        <div class="totals-item">
+                            <span class="label">Subtotal</span>
+                            <span class="value">₼<span class="subtotalOutput">@Model.Subtotal</span></span>
+                        </div>
+
+                        <!-- Subtotal -->
+                        <div class="totals-item">
+                            <span class="label">Discount</span>
+                            <span class="value">₼@Model.Discount</span>
+                        </div>
+
+                        <!-- Total -->
+                        <div class="totals-item">
+                            <span class="label">Total</span>
+                            <span class="value"><strong>₼<span class="totalOutput">@Model.Total</span></strong></span>
+                        </div>
+                        <button class="btn-checkout">Proceed to Checkout</button>
+                    </div>
+                </div>
+
+            }
+
+
+        </div>
+    </section>
+    <!-- Wishlist Section End -->
+</main>
+<!-- Main End -->
+
+
+
+<script>
+    const decreaseButtons=document.querySelectorAll('#decrement')
+    const increaseButtons=document.querySelectorAll('#increment')
+    const productCountInputs=document.querySelectorAll('#value')
+    const productPrices=document.querySelectorAll(".productSizePrice");
+    const productTotalPrices=document.querySelectorAll(".productSizeTotalPrice");
+    const totalOutput=document.querySelector(".totalOutput");
+    const subtotalOutput=document.querySelector(".subtotalOutput");
+    let itemsTotalPrice=parseFloat(totalOutput.textContent);
+    let subtotalPrice=parseFloat(subtotalOutput.textContent);
+
+
+    increaseButtons.forEach((increaseButton,i)=>{
+         increaseButton.addEventListener('click',async (e)=>{
+        e.preventDefault();
+        let count=parseInt(productCountInputs[i].innerText);
+        if(count>99)
+                   return;
+
+        await fetch(increaseButton.href)
+
+        let price=parseFloat(productPrices[i].innerText);
+        let totalPrice=parseFloat(productTotalPrices[i].innerText);
+        totalPrice = parseFloat((totalPrice + price).toFixed(2));
+
+        subtotalPrice=parseFloat((subtotalPrice+price).toFixed(2))
+        itemsTotalPrice=parseFloat((itemsTotalPrice+price).toFixed(2))
+
+        subtotalOutput.innerHTML=subtotalPrice;
+        totalOutput.innerHTML=itemsTotalPrice;
+
+        productTotalPrices[i].innerText=totalPrice;
+
+
+        productCountInputs[i].innerText=count+1;
+    })
+    })
+
+
+    decreaseButtons.forEach((decreaseButton,i)=>{
+       decreaseButton.addEventListener('click',async (e)=>{
+        e.preventDefault();
+        let count=parseInt(productCountInputs[i].innerText);
+        if(count<2)
+                   return;
+
+                    await fetch(decreaseButton.href)
+
+        let price=parseFloat(productPrices[i].innerText);
+        let totalPrice=parseFloat(productTotalPrices[i].innerText);
+        totalPrice = parseFloat((totalPrice - price).toFixed(2));
+
+         subtotalPrice=parseFloat((subtotalPrice-price).toFixed(2))
+        itemsTotalPrice=parseFloat((itemsTotalPrice-price).toFixed(2))
+
+        subtotalOutput.innerHTML=subtotalPrice;
+        totalOutput.innerHTML=itemsTotalPrice;
+
+
+        productTotalPrices[i].innerText=totalPrice;
+
+        productCountInputs[i].innerText=count-1;
+    })
+    })
+
+
+</script>

@@ -135,7 +135,7 @@
                     </div>
                 </div>
                 <div class="col-lg-9">
-                    <div style="margin-top: 20px; right: 122px; position: absolute; z-index: 111;" class="dropdown">
+                    <div style="margin-top: 20px; right: 122px; position: absolute; z-index: 1;" class="dropdown">
                         <select class="form-select"
                                 style="appearance: none; border: none; outline: none; padding: 5px; background: transparent; color: inherit; font-size: inherit; text-align: center; border-radius: 0px; cursor: pointer;"
                                 id="sortSelect"
@@ -212,11 +212,13 @@
                                                 </div>
                                             </div>
 
-                                            <button class="add-to-basket-button">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17">
-                                                    <path d="M14 3.5h-3a3.5 3.5 0 0 0-7 0H1a1 1 0 0 0-1 1V15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4.5a1 1 0 0 0-1-1ZM7.5 2A1.5 1.5 0 0 1 9 3.5H6A1.5 1.5 0 0 1 7.5 2ZM13 15H2V5.5h2v1a1 1 0 0 0 2 0v-1h3v1a1 1 0 0 0 2 0v-1h2Z">
-                                                    </path>
-                                                </svg>
+                                            <button class="add-to-basket-button" >
+                                                <a asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@product.ProductSizes.FirstOrDefault()?.Id" class="add-To-Basket-Button" style="display:flex;text-align:center;align-items:center;justify-content:center;width:100%;height:100%;">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17">
+                                                        <path d="M14 3.5h-3a3.5 3.5 0 0 0-7 0H1a1 1 0 0 0-1 1V15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4.5a1 1 0 0 0-1-1ZM7.5 2A1.5 1.5 0 0 1 9 3.5H6A1.5 1.5 0 0 1 7.5 2ZM13 15H2V5.5h2v1a1 1 0 0 0 2 0v-1h3v1a1 1 0 0 0 2 0v-1h2Z">
+                                                        </path>
+                                                    </svg>
+                                                </a>
                                             </button>
                                         </div>
                                     }

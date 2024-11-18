@@ -192,7 +192,7 @@
                     <div class="basket basket-btn">
                         <span class="basket-icon d-flex justify-content-center align-items-center gap-1">
                             <i class="fa-solid fa-basket-shopping"></i>
-                            <span class="count-basket">0</span>
+                            <span class="count-basket count-basket-output">0</span>
                         </span>
                         <div class="basket-container"></div>
                     </div>
@@ -224,9 +224,26 @@
                                 <div class="basket-container"></div>
                             </div>
                             <div class="account-container2">
-                                <select name="" id="">
-                                    <option value="Az">Az</option>
-                                    <option value="Eb">En</option>
+                                <select class="changeCultureInput">
+                                    @if (selectedLanguage == "en")
+                                    {
+                                        <option value="az">AZE</option>
+                                        <option value="en" selected>ENG</option>
+                                        <option value="ru">RUS</option>
+                                    }
+                                    else if (selectedLanguage == "ru")
+                                    {
+
+                                        <option value="az">AZE</option>
+                                        <option value="en">ENG</option>
+                                        <option value="ru" selected>RUS</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="az" selected>AZE</option>
+                                        <option value="en">ENG</option>
+                                        <option value="ru">RUS</option>
+                                    }
                                 </select>
                             </div>
                             <div class="menu-btn">
@@ -307,39 +324,9 @@
         </div>
         <!-- Mobile Nav End-->
         <!-- Basket Sidebar -->
-        <div class="basket-sidebar">
-            <div class="basket-sidebar-content">
-                <div class="basket-sidebar-header">
-                    <h4>Shopping Cart</h4>
-                    <a href="#" class="button-close mb-2">
-                        <i class="fa-solid fa-x"></i>
-                    </a>
-                </div>
-                <div class="basket-products">
-                    <div class="basket-product">
-                        <a class="basket-img" href="#">
-                            <img src="./assets/img/shop-list-filter-1-600x750.jpg" alt="Product" />
-                        </a>
-                        <div class="basket-product-content">
-                            <a href="#" class="product-category">Fitness</a>
-                            <a href="#" class="product-item">WHITE SHIRT</a>
-                            <span class="product-cost">$45</span>
-                        </div>
-                        <a href="#" class="remove-basket">
-                            <i class="fa-solid fa-x"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="basket-total">
-                    <span>Subtotal:</span>
-                    <span class="amount">0</span>
-                </div>
-                <div class="basket-buttons">
-                    <a href="#" class="custom-button">View Cart & Checkout</a>
-                </div>
-            </div>
+        <div class="basket-sidebar" style="background-color:white;z-index:100;">
+            <partial name="_basketModalPartial"></partial>
         </div>
-
 
     </header> <!-- Header Section End -->
     @RenderBody()
@@ -622,6 +609,36 @@
                await fetch(`/Wishlist/AddItem/${btn.dataset.productid}`)
                 btn.children[0].classList.toggle("fa-regular")
                 btn.children[0].classList.toggle("fa-solid")
+            })
+        })
+
+
+    </script>
+
+
+
+
+    <script>
+
+        const addToBasketButtons=document.querySelectorAll('.add-To-Basket-Button');
+        const basketPartialSection=document.querySelector('.basket-sidebar');
+
+        addToBasketButtons.forEach(btn=>{
+            btn.addEventListener('click',async (e)=>{
+                e.preventDefault();
+               const response= await fetch(btn.href);
+               const basketPartial=await response.text();
+               basketPartialSection.innerHTML=basketPartial;
+
+                    Swal.fire({
+          position: "center",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+
+                RenderBasketCount();
             })
         })
     </script>
