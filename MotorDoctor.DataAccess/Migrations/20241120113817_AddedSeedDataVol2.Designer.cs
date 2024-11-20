@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotorDoctor.DataAccess.Contexts;
 
@@ -11,9 +12,11 @@ using MotorDoctor.DataAccess.Contexts;
 namespace MotorDoctor.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241120113817_AddedSeedDataVol2")]
+    partial class AddedSeedDataVol2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -873,11 +876,6 @@ namespace MotorDoctor.DataAccess.Migrations
                         {
                             Id = 8,
                             Key = "IsSaatlari"
-                        },
-                        new
-                        {
-                            Id = 9,
-                            Key = "Copyright"
                         });
                 });
 
@@ -1077,27 +1075,6 @@ namespace MotorDoctor.DataAccess.Migrations
                             LanguageId = 3,
                             SettingId = 8,
                             Value = "MON-SAT: 09:00-19:00"
-                        },
-                        new
-                        {
-                            Id = 25,
-                            LanguageId = 1,
-                            SettingId = 9,
-                            Value = "© 2023 Qode Interactive , All Rights Reserved"
-                        },
-                        new
-                        {
-                            Id = 26,
-                            LanguageId = 2,
-                            SettingId = 9,
-                            Value = "© 2023 Qode Interactive , All Rights Reserved"
-                        },
-                        new
-                        {
-                            Id = 27,
-                            LanguageId = 3,
-                            SettingId = 9,
-                            Value = "© 2023 Qode Interactive , All Rights Reserved"
                         });
                 });
 

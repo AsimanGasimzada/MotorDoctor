@@ -1,4 +1,5 @@
 ﻿@inject ILayoutService _layoutService
+@inject LayoutLocalizer _localizer
 @{
     var settings = await _layoutService.GetSettingsAsync();
     var attendances = await _layoutService.GetAttendancesAsync();
@@ -10,7 +11,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dunker – Fashion and Clothing Shop Theme</title>
+    <title>@_localizer.GetValue("Title")</title>
     <link rel="shortcut icon" href="~/assets/img/cropped-favicon-32x32.png" type="image/x-icon" />
     <link rel="shortcut icon" href="~/assets/img/cropped-favicon-32x32.png" type="image/x-icon" />
     <!-- Font Awesome -->
@@ -36,8 +37,7 @@
     <header id="header">
         <div class="discount-message d-lg-block d-none">
             <a href="#" class="message">
-                10% DISCOUNT FOR REGISTERED USERS & FREE SHIPPING FOR ORDERS OVER $70
-                PLUS FREE RETURNS
+                @_localizer.GetValue("DiscountMessage")
             </a>
             <button class="close-btn">
                 <i class="fa-solid fa-xmark"></i>
@@ -54,83 +54,14 @@
                 <div class="middle-nav">
                     <ul class="navbar-items">
                         <li class="navbar-item active">
-                            <a href="#" class="navbar-link">HOME</a>
+                            <a asp-action="Index" asp-controller="Home" class="navbar-link">@_localizer.GetValue("Home")</a>
                         </li>
                         <li class="navbar-item">
-                            <a href="#" class="navbar-link">SHOP</a>
-                            <div class="multiple">
-                                <ul class="multiple-subMenu text-uppercase">
-                                    <li class="multiple-subMenu-items">
-                                        <span href="#" class="multiple-subMenu-heading">
-                                            Product Types
-                                        </span>
-                                        <ul class="multiple-subMenu-item text-uppercase">
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">STANDARD</a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">NEW PRODUCT</a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">SALE PRODUCT</a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">SOLD PRODUCT</a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">FIXED INFO</a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">VIRTUAL</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="multiple-subMenu-items">
-                                        <span href="#" class="multiple-subMenu-heading">
-                                            Contact Us
-                                        </span>
-                                        <ul class="multiple-subMenu-item text-uppercase">
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">Contact Us</a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">Our Brands</a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">
-                                                    Terms & Conditions
-                                                </a>
-                                            </li>
-                                            <li class="multiple-item">
-                                                <a href="#" class="multiple-link">About Us</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
+                            <a asp-action="Index" asp-controller="Shop" class="navbar-link">@_localizer.GetValue("Shop")</a>
                         </li>
+
                         <li class="navbar-item">
-                            <a href="#" class="navbar-link">OUR TEAM</a>
-                            <ul class="subMenu text-uppercase">
-                                <li class="subMenu-item">
-                                    <a href="#" class="subMenu-link">Contact Us</a>
-                                </li>
-                                <li class="subMenu-item">
-                                    <a href="#" class="subMenu-link">Our Brands</a>
-                                </li>
-                                <li class="subMenu-item">
-                                    <a href="#" class="subMenu-link">Terms & Conditions</a>
-                                </li>
-                                <li class="subMenu-item">
-                                    <a href="#" class="subMenu-link">About Us</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="navbar-item">
-                            <a href="#" class="navbar-link">BLOG</a>
-                        </li>
-                        <li class="navbar-item">
-                            <a href="#" class="navbar-link">FAQ</a>
+                            <a asp-action="Index" asp-controller="Contact" class="navbar-link">@_localizer.GetValue("Contact")</a>
                         </li>
                     </ul>
                 </div>
@@ -143,10 +74,10 @@
                         <div id="searchOverlay" class="overlay">
                             <span class="closebtn" onclick="closeSearch()"><i class="fa-solid fa-xmark"></i></span>
                             <div class="overlay-content">
-                                <h1>What are you looking for?</h1>
-                                <input id="searchInput" type="text" placeholder="Search..." onkeydown="checkEnter(event)" />
+                                <h1>@_localizer.GetValue("SearchText")</h1>
+                                <input id="searchInput" type="text" placeholder="@_localizer.GetValue("SearchButton")..." onkeydown="checkEnter(event)" />
                                 <button type="button" onclick="performSearch()">
-                                    Search
+                                    @_localizer.GetValue("SearchButton")
                                 </button>
                             </div>
                         </div>
@@ -155,14 +86,24 @@
                             <span style="cursor: pointer" class="account">
                                 <i class="fa-regular fa-user"></i>
                             </span>
-                            <div class="account-dropdown">
-                                <p class="name">John Doe</p>
-                                <p class="position">Software Engineer</p>
-                                <button class="btn">View Profile</button>
-                            </div>
+                            @if (User.Identity?.IsAuthenticated ?? false)
+                            {
+                                <div class="account-dropdown">
+                                    <p class="name">@User.Identity.Name</p>
+                                    <a asp-action="Logout" asp-controller="Account" class="btn">@_localizer.GetValue("Logout")</a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="account-dropdown" style="text-align:center">
+                                    <a asp-action="Login" asp-controller="Account" class="btn">@_localizer.GetValue("Login")</a>
+                                    <p class="position">@_localizer.GetValue("Or")</p>
+                                    <a asp-action="Register" asp-controller="Account" class="btn">@_localizer.GetValue("Register")</a>
+                                </div>
+                            }
                         </div>
 
-                        <a href="./wishlist.html">
+                        <a asp-action="Index" asp-controller="Wishlist">
                             <span class="wish"><i class="fa-regular fa-heart"></i></span>
                         </a>
                         <div class="account-container2">
@@ -207,7 +148,7 @@
                     <div class="mobile-nav-left">
                         <a href="./index.html">
                             <div class="dark-logo">
-                                <img src="./assets/img/Mobile-logo.png" alt="DunkerDark" />
+                                <img src="~/assets/img/Mobile-logo.png" alt="DunkerDark" />
                             </div>
                         </a>
                     </div>
@@ -219,12 +160,12 @@
                             <div class="mobile-nav-basket">
                                 <a href="#" class="basket-btn basket-icon d-flex justify-content-center align-items-center gap-1">
                                     <i class="fa-solid fa-basket-shopping"></i>
-                                    <span class="count-basket">0</span>
+                                    <span class="count-basket count-basket-output">0</span>
                                 </a>
                                 <div class="basket-container"></div>
                             </div>
                             <div class="account-container2">
-                                <select class="changeCultureInput">
+                                <select class="changeCultureInputMobile">
                                     @if (selectedLanguage == "en")
                                     {
                                         <option value="az">AZE</option>
@@ -256,69 +197,30 @@
             <nav id="mobile-nav" class="mobile-navbar">
                 <ul class="mobile-navbar-items">
                     <li class="mobile-navbar-item text-uppercase">
-                        <a href="#" class="mobile-navbar-link">
-                            Home
+                        <a asp-action="Index" asp-controller="Home" class="mobile-navbar-link">
+                            @_localizer.GetValue("Home")
                             <span class="right-chevron">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </span>
                         </a>
                     </li>
                     <li class="mobile-navbar-item text-uppercase">
-                        <a href="#" class="mobile-navbar-link">
-                            Shop
-                            <span class="right-chevron">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                        <ul class="mobile-subMenu-items">
-                            <li class="mobile-subMenu-item text-uppercase">
-                                <a href="#" id="sup" class="mobile-subMenu-link">
-                                    Product Types
-                                </a>
-                            </li>
-                            <li class="mobile-subMenu-item text-uppercase">
-                                <a href="#" class="mobile-subMenu-link">Contact Us</a>
-                            </li>
-                            <li class="mobile-subMenu-item text-uppercase">
-                                <a href="#" class="mobile-subMenu-link">Terms & Conditions</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="mobile-navbar-item text-uppercase">
-                        <a href="#" class="mobile-navbar-link">
-                            Our Team
-                            <span class="right-chevron">
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </span>
-                        </a>
-                        <ul class="mobile-subMenu-items">
-                            <li class="mobile-subMenu-item">
-                                <a href="#" class="mobile-subMenu-link">Contact Us</a>
-                            </li>
-                            <li class="mobile-subMenu-item text-uppercase">
-                                <a href="#" class="mobile-subMenu-link">Our Brands</a>
-                            </li>
-                            <li class="mobile-subMenu-item text-uppercase">
-                                <a href="#" class="mobile-subMenu-link">Terms & Conditions</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="mobile-navbar-item text-uppercase">
-                        <a href="#" class="mobile-navbar-link">
-                            Blog
+                        <a asp-action="Index" asp-controller="Shop" class="mobile-navbar-link">
+                            @_localizer.GetValue("Shop")
                             <span class="right-chevron">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </span>
                         </a>
                     </li>
                     <li class="mobile-navbar-item text-uppercase">
-                        <a href="#" class="mobile-navbar-link">
-                            Faq
+                        <a asp-action="Index" asp-controller="Contact" class="mobile-navbar-link">
+                            @_localizer.GetValue("Contact")
                             <span class="right-chevron">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </span>
                         </a>
                     </li>
+
                 </ul>
             </nav>
         </div>
@@ -357,209 +259,56 @@
         <div class="footer-middle">
             <div class="row align-items-center">
                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                    <h5>Information</h5>
-                    <ul>
+                    <ul style="display:flex;width:100%;justify-content:space-between">
                         <li>
-                            <a href="#">Privacy Policy</a>
+                            <a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a>
                         </li>
                         <li>
-                            <a href="#">
-                                Terms of Sale
+                            <a asp-action="Index" asp-controller="Shop">@_localizer.GetValue("Shop")</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="Contact">@_localizer.GetValue("Contact")</a>
+                        </li>
 
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                PI Collection Notice
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Do Not Sell My Info
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Accessibility Commitment
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Investor Relations
-
-                            </a>
-                        </li>
                     </ul>
                 </div>
-                <div class="col-lg-3 col-md-6 col-12 mb-4">
-                    <h5>Information</h5>
-                    <ul>
-                        <li>
-                            <a href="#">Privacy Policy</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Terms of Sale
 
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                PI Collection Notice
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Do Not Sell My Info
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Accessibility Commitment
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Investor Relations
-
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 col-12 mb-4">
-                    <h5>Information</h5>
-                    <ul>
-                        <li>
-                            <a href="#">Privacy Policy</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Terms of Sale
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                PI Collection Notice
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Do Not Sell My Info
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Accessibility Commitment
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Investor Relations
-
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 col-md-6 col-12 mb-4">
-                    <h5>Information</h5>
-                    <ul>
-                        <li>
-                            <a href="#">Privacy Policy</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Terms of Sale
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                PI Collection Notice
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Do Not Sell My Info
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Accessibility Commitment
-
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                Investor Relations
-
-                            </a>
-                        </li>
-                    </ul>
-                </div>
             </div>
         </div>
         <div class="section-container">
             <div class="middle-footer">
                 <div class="row">
                     <div class="col-lg-6 col-12 p-lg-0 pb-5">
-                        <div class="footer-form">
-                            <h5>NEWSLETTER</h5>
+                        <form class="footer-form" method="post" asp-action="AddSubscriber" asp-controller="Home">
+                            <h5>@_localizer.GetValue("Newsletter")</h5>
                             <p>
-                                Dunker has all of the best products from all of the top
-                                brands.
+                                @_localizer.GetValue("NewsletterDescription")
                             </p>
                             <div class="form-email">
-                                <input type="email" class="send-email" placeholder="YOUR EMAIL" />
+                                <input type="email" required name="Email" class="send-email" placeholder="@_localizer.GetValue("NewsletterPlaceholder")" />
                                 <span class="arrow-right">
-                                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                                    <button style="background:none;border:none;outline:none;" type="submit"> <i class="fa fa-arrow-right" aria-hidden="true"></i></button>
                                 </span>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <div class="location col-lg-3 col-md-6 col-12">
-                        <h5>LOS ANGELES</h5>
+                        <h5>@_localizer.GetValue("Info")</h5>
                         <address>
                             <h6 class="footer-heading">
-                                <a href="tel:+738115709479">7(382)157-09-474</a>
+                                <a href="tel:@settings["Telefon1"]">@settings["Telefon1"]</a>
                             </h6>
                             <h6 class="footer-heading">
-                                <a href="#">
-                                    90A TOLBUHINA LOREM ORIGINAL LOS ANGELES, CA 200153
+                                <a>
+                                    @settings["Unvan"]
                                 </a>
                             </h6>
                             <h6 class="footer-heading">
-                                <a href="#">MON-SAT: 09:00-19:00</a>
+                                <a>@settings["IsSaatlari"]</a>
                             </h6>
                         </address>
                     </div>
-                    <div class="location col-lg-3 col-md-6 col-12">
-                        <h5>LOS ANGELES</h5>
-                        <address>
-                            <h6 class="footer-heading">
-                                <a href="tel:+738115709479">7(382)157-09-474</a>
-                            </h6>
-                            <h6 class="footer-heading">
-                                <a href="#">
-                                    90A TOLBUHINA LOREM ORIGINAL LOS ANGELES, CA 200153
-                                </a>
-                            </h6>
-                            <h6 class="footer-heading">
-                                <a href="#">MON-SAT: 09:00-19:00</a>
-                            </h6>
-                        </address>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -567,9 +316,7 @@
             <div class="container">
                 <div class="copyright">
                     <span>
-                        © 2023
-                        <a href="#">Qode Interactive</a>
-                        , All Rights Reserved
+                        @settings["Copyright"]
                     </span>
                 </div>
             </div>
@@ -582,7 +329,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="./assets/js/productCardSlider.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="
     https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js
@@ -594,8 +340,12 @@
 
     <script>
         const changeLangInput=document.querySelector('.changeCultureInput');
+        const changeLangInputMobile=document.querySelector('.changeCultureInputMobile');
 
         changeLangInput.addEventListener('change',()=>{
+            window.location.href=`/Home/SelectCulture?culture=${changeLangInput.value}`
+        })
+        changeLangInputMobile.addEventListener('change',()=>{
             window.location.href=`/Home/SelectCulture?culture=${changeLangInput.value}`
         })
     </script>
@@ -642,7 +392,22 @@
             })
         })
     </script>
-    <script src="./assets/js/script.js"></script>
+
+    <script>
+        window.addEventListener('scroll', () => {
+                sessionStorage.setItem(`scrollPosition-${window.location.pathname}`, window.scrollY);
+
+        });
+
+        window.addEventListener('load', () => {
+            const scrollPosition = sessionStorage.getItem(`scrollPosition-${window.location.pathname}`);
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition, 10));
+            }
+        });
+    </script>
+
+    <script src="~/assets/js/script.js"></script>
     @await RenderSectionAsync("Scripts", false)
 </body>
 

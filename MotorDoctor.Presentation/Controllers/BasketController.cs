@@ -18,11 +18,14 @@ public class BasketController : Controller
         var result = await _service.GetBasketAsync(Constants.SelectedLanguage);
         return View(result);
     }
-
+    public async Task<IActionResult> GetBasketSection()
+    {
+        var basket = await _service.GetBasketAsync();
+        return PartialView("_basketSectionPartial", basket);
+    }
     public async Task<IActionResult> RemoveToBasket(int id)
     {
         await _service.RemoveToBasketAsync(id);
-
 
         string returnUrl = Request.GetReturnUrl();
 
@@ -33,6 +36,10 @@ public class BasketController : Controller
     {
         await _service.AddToBasketAsync(id, count);
 
+        return RedirectToAction(nameof(RedirectForBasket));
+    }
+    public IActionResult RedirectForBasket()
+    {
         return PartialView("_basketModalPartial");
     }
 
@@ -40,6 +47,6 @@ public class BasketController : Controller
     {
         await _service.DecreaseToBasketAsync(id);
 
-        return PartialView("_basketModalPartial");
+        return RedirectToAction(nameof(RedirectForBasket));
     }
 }

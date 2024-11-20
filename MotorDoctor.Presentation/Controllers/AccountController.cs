@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
+using MotorDoctor.Presentation.Extensions;
 
 namespace MotorDoctor.Presentation.Controllers;
 
@@ -42,5 +44,15 @@ public class AccountController : Controller
             return View(dto);
 
         return RedirectToAction(nameof(Login));
+    }
+
+    [Authorize]
+    public async Task<IActionResult> Logout()
+    {
+        await _authService.LogoutAsync();
+
+        var returnUrl = Request.GetReturnUrl();
+
+        return Redirect(returnUrl);
     }
 }

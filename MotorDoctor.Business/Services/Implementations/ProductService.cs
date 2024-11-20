@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.DataProtection.XmlEncryption;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;

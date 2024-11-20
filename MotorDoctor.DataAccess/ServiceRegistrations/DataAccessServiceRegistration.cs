@@ -18,11 +18,13 @@ public static class DataAccessServiceRegistration
     public static IServiceCollection AddDataAccessServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("Default")));
-        _addRepositories(services);
-        services.AddScoped<BaseEntityInterceptor>();
-        _addIdentity(services);
 
+        services.AddScoped<BaseEntityInterceptor>();
         services.AddScoped<DbContextInitalizer>();
+
+        _addRepositories(services);
+        _addIdentity(services);
+        _addLocalizers(services);
 
         return services;
     }
@@ -44,8 +46,12 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<IOrderItemRepository, OrderItemRepository>();
         services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
+    }
 
+    private static void _addLocalizers(IServiceCollection services)
+    {
         services.AddSingleton<ErrorLocalizer>();
+        services.AddSingleton<LayoutLocalizer>();
     }
 
     private static void _addIdentity(IServiceCollection services)

@@ -67,7 +67,7 @@ internal class BasketService : IBasketService
         {
             var basketItems = _readBasketFromCookie();
 
-            var existItem = basketItems.FirstOrDefault(x => x.Id == id);
+            var existItem = basketItems.FirstOrDefault(x => x.ProductSizeId == id);
 
             if (existItem is { })
                 existItem.Count += count;
@@ -101,6 +101,8 @@ internal class BasketService : IBasketService
             if (existBasketItem is null)
                 throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
+            if (existBasketItem.Count <= 1)
+                return true;
 
             existBasketItem.Count--;
 
@@ -114,11 +116,13 @@ internal class BasketService : IBasketService
         {
             var basketItems = _readBasketFromCookie();
 
-            var existItem = basketItems.FirstOrDefault(x => x.Id == id);
+            var existItem = basketItems.FirstOrDefault(x => x.ProductSizeId == id);
 
             if (existItem is null)
                 throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
+            if (existItem.Count <= 1)
+                return true;
 
             existItem.Count--;
 
@@ -151,7 +155,7 @@ internal class BasketService : IBasketService
         {
             List<BasketItem> basketItems = _readBasketFromCookie();
 
-            var existItem = basketItems.FirstOrDefault(x => x.Id == id);
+            var existItem = basketItems.FirstOrDefault(x => x.ProductSizeId == id);
 
             if (existItem is null)
                 throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
