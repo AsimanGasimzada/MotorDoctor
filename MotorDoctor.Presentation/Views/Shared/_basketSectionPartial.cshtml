@@ -1,14 +1,14 @@
 ﻿@model BasketGetDto
-
+@inject BasketLocalizer _localizer
 <div class="product-wishlist">
-    <h2>Product Cart</h2>
+    <h2>@_localizer.GetValue("Basket")</h2>
 </div>
 
 <div class="wishlist-items" id="wishlist-container">
     @if (Model.Count == 0)
     {
         <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
-            <p class="m-0 fw-bold">NO PRODUCTS ADDED TO THE CART</p>
+            <p class="m-0 fw-bold">@_localizer.GetValue("NotFoundProduct")</p>
         </div>
         <!-- <><><><><><> -->
     }
@@ -27,8 +27,8 @@
                                  alt="@basketItem.ProductSize.Product.Name" />
                         </div>
                         <div class="wishlist-info">
-                            <a href="#">@basketItem.ProductSize.Product.Name</a>
-                            <a href="#"><span>@basketItem.ProductSize.Product.Category.Name - @basketItem.ProductSize.Size</span></a>
+                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@basketItem.ProductSize.ProductId">@basketItem.ProductSize.Product.Name</a>
+                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@basketItem.ProductSize.ProductId"><span>@basketItem.ProductSize.Product.Category.Name - @basketItem.ProductSize.Size</span></a>
                         </div>
                     </td>
                     <td class="right-side-wishlist" style="display:flex; justify-content:space-around; text-align:center;">
@@ -58,26 +58,27 @@
 
         <div class="container my-5">
             <div class="cart-totals">
-                <h2>Cart Totals</h2>
+                <h2>@_localizer.GetValue("CartTotals")</h2>
 
                 <!-- Subtotal -->
                 <div class="totals-item">
-                    <span class="label">Subtotal</span>
+                    <span class="label">@_localizer.GetValue("Subtotal")</span>
                     <span class="value">₼<span class="subtotalOutput">@Model.Subtotal</span></span>
                 </div>
 
                 <!-- Subtotal -->
                 <div class="totals-item">
-                    <span class="label">Discount</span>
+                    <span class="label">@_localizer.GetValue("Discount")</span>
                     <span class="value">₼@Model.Discount</span>
                 </div>
 
                 <!-- Total -->
                 <div class="totals-item">
-                    <span class="label">Total</span>
+                    <span class="label">@_localizer.GetValue("Total")</span>
                     <span class="value"><strong>₼<span class="totalOutput">@Model.Total</span></strong></span>
                 </div>
-                <button class="btn-checkout">Proceed to Checkout</button>
+
+                <a asp-action="Index" asp-controller="Order" class="btn-checkout">@_localizer.GetValue("SubmitOrder")</a>
             </div>
         </div>
 

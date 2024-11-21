@@ -1,5 +1,6 @@
 ﻿@model HomeDto
 @inject IWishlistService wishlistService;
+@inject HomeLocalizer _localizer;
 
 <!-- Main Start -->
 <main id="main">
@@ -48,16 +49,16 @@
 
                     <div class="product-card col-lg-6 col-md-12 col-12" data="fashion">
 
-                        <a href="./product-detail.html?id=15">
+                        <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
                             <span style="mix-blend-mode: difference;color:white;" id="">@product.ParentCategory?.Name</span>
                             <img src="@product.ParentCategory?.ImagePath" alt="product" />
                         </a>
                         <div class="product-card-details">
                             <div class="product-detail-content">
                                 <div class="product-detail-content-left">
-                                    <a href="./product-detail.html?id=15"> </a><a href="#">@product.Brand?.Name</a>
+                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a >@product.Brand?.Name</a>
                                     <a class="product-detail-title">@product.Name</a>
-                                    <a href="#">@product.Category.Name</a>
+                                    <a >@product.Category.Name</a>
                                 </div>
                                 <div class="product-detail-content-right">
 
@@ -69,7 +70,7 @@
                                     </button>
                                 </div>
                             </div>
-                            <p>$@product.ProductSizes.FirstOrDefault()?.Price</p>
+                            <p>₼@product.ProductSizes.FirstOrDefault()?.Price</p>
                         </div>
                         <button class="add-to-basket-button">
 
@@ -89,11 +90,11 @@
     <!-- featured-products start -->
     <section id="featured-products">
         <div class="section-title">
-            <span>dunker collection</span>
-            <h2>Featured Products</h2>
+            <span>@_localizer.GetValue("Collection")</span>
+            <h2>@_localizer.GetValue("FeaturedProducts")</h2>
         </div>
         <div class="featured-products-filter">
-            <button class="show-all-btn">show all</button>
+            <button class="show-all-btn">@_localizer.GetValue("ShowAll")</button>
             @foreach (var category in Model.FeaturedCategories)
             {
                 <button class="filter-btn" data-category="@category.ParentId">@category.Parent?.Name</button>
@@ -115,7 +116,7 @@
                             <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
                         </button>
 
-                        <a href="./product-detail.html?id=1">
+                        <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
                             <span class=""></span>
                             <span class=""></span>
 
@@ -147,11 +148,11 @@
                             </div>
                         </a>
                         <div class="product-card-content">
-                            <a href="./product-detail.html?id=1"> </a><a href="#">@product.Brand.Name</a>
-                            <a href="#" class="product-title">@product.Name</a>
-                            <a href="#" class="product-category">@product.Category.Name</a>
+                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a >@product.Brand.Name</a>
+                            <a  class="product-title">@product.Name</a>
+                            <a  class="product-category">@product.Category.Name</a>
                             <div>
-                                <span>$@product.ProductSizes.FirstOrDefault()?.Price</span>
+                                <span>₼@product.ProductSizes.FirstOrDefault()?.Price</span>
 
                                 <span style="color: #727272; text-decoration: line-through"></span>
                             </div>
@@ -176,7 +177,7 @@
     <!-- Categories Section Start -->
     <section id="categories">
         <div class="section-title">
-            <span>BUY BEST FASHION</span>
+            <span>@_localizer.GetValue("FeaturedCategories")</span>
         </div>
         <div class="categories-container">
             <div class="categories-content text-center">
@@ -185,7 +186,7 @@
                     <div class="category-items">
                         <img src="@category.ImagePath"
                              alt="Image 3" class="product-image" />
-                        <a href="#" class="category-item">
+                        <a  class="category-item">
                             <span class="category-title">
                                 @category.Name
                                 <span class="category-count">(@category.ProductCount)</span>
@@ -198,28 +199,6 @@
         </div>
     </section>
     <!-- Categories Section End -->
-    <!-- Banner Section Start -->
-    <section id="banner">
-        <div class="row g-0">
-            <div class="col-lg-6 col-12">
-                <div class="banner-new">
-                    <div class="new-title">
-                        <p>New</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6 col-12">
-                <div class="banner-sale">
-                    <div class="sale-title">
-                        <p class="sale-text">Sale</p>
-                        <p class="discount">20% Off all Hoodies</p>
-                        <a href="#" class="custom-button">SHOP NOW</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Banner Section End -->
     <!-- Elementor Section Start -->
     <section id="elementor-section">
         <div class="row">
@@ -242,8 +221,8 @@
     <!-- Trending Section Start  -->
     <section id="trending" class="pb-5">
         <div class="section-title">
-            <span>FIND WHAT IS</span>
-            <h2>TRENDING NOW</h2>
+            <span>@_localizer.GetValue("WhyChooseUs")</span>
+            <h2>@_localizer.GetValue("WhyChooseUsTitle")</h2>
         </div>
         <div class="featured-products-container">
             <div class="row justify-content-center"></div>
@@ -260,7 +239,7 @@
                 esque eget massa ac urna finibus fringilla nonpon mauris sit amet
                 nisl in nunc pharetra.
             </p>
-            <a href="#" class="custom-button">SHOP NOW</a>
+            <a  class="custom-button">SHOP NOW</a>
         </div>
     </section>
     <!-- Street Vibe Section End -->
@@ -268,78 +247,18 @@
     <section style="margin-top: 100px;" id="categories-slider">
         <div class="swiper categoriesSwiper">
             <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>ADIDAS</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-7.jpg"
-                                 alt="Adidas" />
+                @foreach (var category in Model.ParentCategories)
+                {
+                    <div class="swiper-slide">
+                        <div class="category-element">
+                            <h5>@category.Name</h5>
+                            <div class="category-image" style="width:200px;height:200px;overflow:hidden">
+                                <img src="@category.ImagePath"
+                                     alt="@category.Name"  style="object-fit:cover;width:100%;height:auto;"/>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>Nike</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-2.jpg"
-                                 alt="Nike" />
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>North Face</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-5.jpg"
-                                 alt="North Face" />
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>New Balance</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-1.jpg"
-                                 alt="New Balance" />
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>PUMA</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-3.jpg"
-                                 alt="Puma" />
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>Kickz</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-7.jpg"
-                                 alt="Kickz" />
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>ADIDAS</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-3.jpg"
-                                 alt="Adidas" />
-                        </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <div class="category-element">
-                        <h5>Puma</h5>
-                        <div class="category-image">
-                            <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/01/main-home-brand-3.jpg"
-                                 alt="Puma" />
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </section>

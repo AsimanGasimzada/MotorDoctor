@@ -10,5 +10,6 @@ public class OrderGetDto : IDto
     public List<OrderItemGetDto> OrderItems { get; set; } = [];
     public decimal TotalPrice { get; set; }
     public StatusGetDto Status { get; set; } = null!;
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 }

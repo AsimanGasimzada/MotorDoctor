@@ -50,8 +50,15 @@ public static class DataAccessServiceRegistration
 
     private static void _addLocalizers(IServiceCollection services)
     {
+        services.AddSingleton<AccountLocalizer>();
+        services.AddSingleton<BasketLocalizer>();
+        services.AddSingleton<ContactLocalizer>();
         services.AddSingleton<ErrorLocalizer>();
+        services.AddSingleton<HomeLocalizer>();
         services.AddSingleton<LayoutLocalizer>();
+        services.AddSingleton<OrderLocalizer>();
+        services.AddSingleton<ShopLocalizer>();
+        services.AddSingleton<WishlistLocalizer>();
     }
 
     private static void _addIdentity(IServiceCollection services)

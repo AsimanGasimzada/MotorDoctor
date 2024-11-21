@@ -1,6 +1,6 @@
-using MotorDoctor.DataAccess.ServiceRegistrations;
-using MotorDoctor.Business.ServiceRegistrations;
 using Microsoft.AspNetCore.Mvc.Razor;
+using MotorDoctor.Business.ServiceRegistrations;
+using MotorDoctor.DataAccess.ServiceRegistrations;
 using MotorDoctor.Presentation.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);

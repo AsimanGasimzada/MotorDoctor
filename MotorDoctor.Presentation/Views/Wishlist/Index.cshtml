@@ -1,4 +1,5 @@
 ﻿@model List<WishlistItemGetDto>
+@inject WishlistLocalizer _localizer
 <!-- Main Start -->
 
 <br />
@@ -8,22 +9,22 @@
 <main id="main">
     <!-- Breadcrumb Navigation Start -->
     <nav id="breadcrumb">
-        <span><a href="./index.html">HOME</a></span>
+        <span><a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a></span>
         <span class="line">|</span>
-        <span><a href="#" class="text-dark">WISHLIST</a></span>
+        <span><a asp-action="Index" class="text-dark">@_localizer.GetValue("Wishlist")</a></span>
     </nav>
     <!-- Breadcrumb Navigation End -->
     <!-- Wishlist Section Start -->
     <section id="wishlist">
         <div class="product-wishlist">
-            <h2>Product Wishlist</h2>
+            <h2>@_localizer.GetValue("WishlistTitle")</h2>
         </div>
 
         <div class="wishlist-items" id="wishlist-container">
             @if (Model.Count == 0)
             {
                 <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
-                    <p class="m-0 fw-bold">NO PRODUCTS ADDED TO THE WISHLIST</p>
+                    <p class="m-0 fw-bold">@_localizer.GetValue("NotFoundProduct")</p>
                 </div>
             }
             else
@@ -39,20 +40,20 @@
                                 <img src="@wishlistItem.ProductSize.Product.MainImagePath"
                                      alt="Product" />
                             </div>
-                            <div class="wishlist-info">
+                            <div class="wishlist-info" style="width:150px">
                                 <a href="#">@wishlistItem.ProductSize.Product.Name</a>
                                 <a href="#"><span>@wishlistItem.ProductSize.Product.Category.Name</span></a>
                             </div>
                         </div>
                         <div class="right-side-wishlist">
-                            <div class="product-price">
+                            <div class="product-price" style="width:100px">
                                 <span>$@wishlistItem.ProductSize.Price</span>
                             </div>
                             <div class="product-stock-status">
-                                <span>In Stock</span>
+                                <span>@_localizer.GetValue("InStock")</span>
                             </div>
                             <a asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@wishlistItem.ProductSizeId" id="add-To-Basket-Button" class="custom-button add-To-Basket-Button">
-                                ADD TO CART
+                                @_localizer.GetValue("AddToCart")
                                 <i class="fa-solid fa-basket-shopping"></i>
                             </a>
                         </div>

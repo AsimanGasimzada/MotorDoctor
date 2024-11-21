@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Yantramanav:wght@100;300;400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Noto Sans:wght@100;300;400;500;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
 
 * {
     margin: 0;
@@ -7,7 +8,7 @@
 }
 
 body {
-    font-family: "Yantramanav", sans-serif;
+    font-family: "Noto Sans", sans-serif;
     background-color: #fff;
 }
 
@@ -402,13 +403,13 @@ body.no-scroll {
         }
 
         #featured-products .featured-products-content h2 {
-            font-family: "Yantramanav", sans-serif;
+            font-family: "Noto Sans", sans-serif;
             font-size: 60px;
             font-weight: 700;
         }
 
     #featured-products .featured-products-filter button {
-        font-family: "Yantramanav", sans-serif;
+        font-family: "Noto Sans", sans-serif;
         font-weight: 900;
         color: black;
         font-size: 12px;
@@ -423,7 +424,7 @@ body.no-scroll {
     }
 
     #featured-products .featured-products-container .product-card-content .product-title {
-        font-family: "Yantramanav", sans-serif;
+        font-family: "Noto Sans", sans-serif;
         font-size: 17px;
         color: black;
         font-weight: 600;
@@ -436,7 +437,7 @@ body.no-scroll {
     }
 
     #featured-products .featured-products-container .product-card-content span {
-        font-family: "Yantramanav", sans-serif;
+        font-family: "Noto Sans", sans-serif;
         font-size: 14px;
         font-weight: 800;
     }
@@ -453,7 +454,7 @@ body.no-scroll {
     }
 
     #trending .featured-products-container .product-card-content .product-title {
-        font-family: "Yantramanav", sans-serif;
+        font-family: "Noto Sans", sans-serif;
         font-size: 17px;
         color: black;
         font-weight: 600;
@@ -466,7 +467,7 @@ body.no-scroll {
     }
 
     #trending .featured-products-container .product-card-content span {
-        font-family: "Yantramanav", sans-serif;
+        font-family: "Noto Sans", sans-serif;
         font-size: 14px;
         font-weight: 800;
     }
@@ -697,7 +698,7 @@ body.no-scroll {
     }
 
     .section-title h2 {
-        font-family: "Yantramanav", sans-serif;
+        font-family: "Noto Sans", sans-serif;
         font-size: clamp(41px, 5vw, 60px);
         font-weight: 700;
     }
@@ -2794,4 +2795,166 @@ body.no-scroll {
         .cart-totals .btn-checkout:hover {
             background-color: #f0f0f0;
         }
-      
+
+
+
+
+
+
+/* General Styles for the Checkout Page */
+.checkout-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 20px;
+    width: 100%;
+    flex-wrap: wrap; /* Allows wrapping for smaller screens */
+}
+
+.checkout-form-section,
+.order-summary-section {
+    border: 2px solid black;
+    padding: 20px;
+    flex: 1;
+    border-radius: 0;
+    height: fit-content;
+    min-width: 300px; /* Ensures sections have a minimum width */
+}
+
+.order-summary-section {
+    margin-right: 20px;
+}
+
+    .order-summary-section h1,
+    .checkout-form-section h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid black;
+        padding-bottom: 10px;
+    }
+
+.order-summary-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+}
+
+    .order-item img {
+        width: 80px;
+        height: 80px;
+        border: 2px solid black;
+        margin-right: 10px;
+    }
+
+    .order-item .product-details {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .order-item .price {
+        font-weight: bold;
+    }
+
+.total {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+}
+
+.checkout-form {
+    display: flex;
+    flex-direction: column;
+}
+
+    .checkout-form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .checkout-form label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .checkout-form input,
+    .checkout-form textarea,
+    .checkout-form button {
+        width: 100%;
+        border: 2px solid black;
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 0;
+        outline: none;
+    }
+
+    .checkout-form textarea {
+        resize: none;
+        height: 60px;
+    }
+
+        .checkout-form input::placeholder,
+        .checkout-form textarea::placeholder {
+            color: #888;
+        }
+
+    .checkout-form button {
+        background-color: black;
+        color: white;
+        border: 2px solid black;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+        .checkout-form button:hover {
+            background-color: white;
+            color: black;
+        }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .checkout-container {
+        flex-direction: column; /* Stacks sections vertically on smaller screens */
+        gap: 30px;
+    }
+
+    .order-summary-section,
+    .checkout-form-section {
+        margin-right: 0; /* Removes margin when stacked */
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-form-section h1,
+    .order-summary-section h1 {
+        font-size: 20px;
+    }
+
+    .checkout-form input,
+    .checkout-form textarea,
+    .checkout-form button {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .order-item img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .total {
+        font-size: 16px;
+    }
+}

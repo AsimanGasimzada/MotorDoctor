@@ -540,7 +540,7 @@ internal class ProductService : IProductService
     private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFunc(Languages language)
     {
         LanguageHelper.CheckLanguageId(ref language);
-        return x => x.Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.Category).Include(x => x.Brand);
+        return x => x.Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.Category.CategoryDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.Brand.BrandDetails.Where(x => x.LanguageId == (int)language));
     }
     private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFunc()
     {

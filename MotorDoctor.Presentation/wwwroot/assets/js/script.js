@@ -1,12 +1,7 @@
 //Burger Menu Toggle and Close Discount Message
 const menuBtn = document.querySelector('.menu-btn')
 const mobileNavMenu = document.getElementById('mobile-nav')
-const removeBtn = document.querySelector('.close-btn')
-const discountMessage = document.querySelector('.discount-message')
 
-removeBtn.addEventListener('click', e => {
-    discountMessage.classList.remove('d-lg-block')
-})
 
 //Toggle Burger menu and mobile menu navigation
 menuBtn.addEventListener('click', () => {

@@ -878,6 +878,11 @@ namespace MotorDoctor.DataAccess.Migrations
                         {
                             Id = 9,
                             Key = "Copyright"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Key = "Email"
                         });
                 });
 
@@ -1098,6 +1103,27 @@ namespace MotorDoctor.DataAccess.Migrations
                             LanguageId = 3,
                             SettingId = 9,
                             Value = "© 2023 Qode Interactive , All Rights Reserved"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            LanguageId = 1,
+                            SettingId = 10,
+                            Value = "info@motordoctor.az"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            LanguageId = 2,
+                            SettingId = 10,
+                            Value = "info@motordoctor.az"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            LanguageId = 3,
+                            SettingId = 10,
+                            Value = "info@motordoctor.az"
                         });
                 });
 

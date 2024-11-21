@@ -69,7 +69,8 @@ public static class SeedDataService
             new Setting { Id = 6, Key = "LinkedinLink" },
             new Setting { Id = 7, Key = "Unvan" },
             new Setting { Id = 8, Key = "IsSaatlari" },
-            new Setting { Id = 9, Key = "Copyright" }
+            new Setting { Id = 9, Key = "Copyright" },
+            new Setting { Id = 10, Key = "Email" }
         );
 
         modelBuilder.Entity<SettingDetail>().HasData(
@@ -99,7 +100,7 @@ public static class SeedDataService
 
             new SettingDetail { Id = 19, Value = "address.com", LanguageId = 1, SettingId = 7 },
             new SettingDetail { Id = 20, Value = "address.com", LanguageId = 2, SettingId = 7 },
-            new SettingDetail { Id = 21, Value = "addressp.com", LanguageId = 3, SettingId = 7 },
+            new SettingDetail { Id = 21, Value = "address.com", LanguageId = 3, SettingId = 7 },
 
             new SettingDetail { Id = 22, Value = "MON-SAT: 09:00-19:00", LanguageId = 1, SettingId = 8 },
             new SettingDetail { Id = 23, Value = "MON-SAT: 09:00-19:00", LanguageId = 2, SettingId = 8 },
@@ -107,7 +108,13 @@ public static class SeedDataService
 
             new SettingDetail { Id = 25, Value = "© 2023 Qode Interactive , All Rights Reserved", LanguageId = 1, SettingId = 9 },
             new SettingDetail { Id = 26, Value = "© 2023 Qode Interactive , All Rights Reserved", LanguageId = 2, SettingId = 9 },
-            new SettingDetail { Id = 27, Value = "© 2023 Qode Interactive , All Rights Reserved", LanguageId = 3, SettingId = 9 }
+            new SettingDetail { Id = 27, Value = "© 2023 Qode Interactive , All Rights Reserved", LanguageId = 3, SettingId = 9 },
+
+            new SettingDetail { Id = 28, Value = "info@motordoctor.az", LanguageId = 1, SettingId = 10 },
+            new SettingDetail { Id = 29, Value = "info@motordoctor.az", LanguageId = 2, SettingId = 10 },
+            new SettingDetail { Id = 30, Value = "info@motordoctor.az", LanguageId = 3, SettingId = 10 }
+
+
         );
     }
 

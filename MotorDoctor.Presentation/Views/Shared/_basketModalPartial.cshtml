@@ -20,8 +20,8 @@
                     <img src="@item.ProductSize.Product.MainImagePath" alt="Product" />
                 </a>
                 <div class="basket-product-content">
-                    <a href="#" class="product-category">@item.ProductSize.Product.Category.Name</a>
-                    <a href="#" class="product-item">@item.ProductSize.Product.Name</a>
+                    <a class="product-category">@item.ProductSize.Product.Category.Name - @item.ProductSize.Size</a>
+                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId" class="product-item">@item.ProductSize.Product.Name</a>
                     <span class="product-cost">₼@item.ProductSize.Price x @item.Count</span>
                 </div>
                 <a asp-action="RemoveToBasket" asp-controller="Basket" asp-route-id="@item.ProductSizeId" class="remove-basket removeToBasketButton">
@@ -43,6 +43,7 @@
 
 <script>
     function RenderBasketCount(){
+
            const basketCountoutputs=document.querySelectorAll(".count-basket-output");
            const basketItemList=document.querySelector(".basket-products")
            basketCountoutputs.forEach(basketCountoutput=>{

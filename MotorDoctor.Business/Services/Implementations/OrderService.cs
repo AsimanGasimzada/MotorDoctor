@@ -38,7 +38,10 @@ internal class OrderService : IOrderService
         if (order is null)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
-        var status = _statusService.GetLastAsync();
+        var status = await _statusService.GetLastAsync();
+
+        if (order.StatusId == status.Id)
+            return;
 
         order.StatusId = status.Id;
 
@@ -48,6 +51,31 @@ internal class OrderService : IOrderService
 
         foreach (var item in order.OrderItems)
             await _productService.DecreaseSalesCountAsync(item.ProductSizeId, item.Count);
+
+
+    }
+
+
+    public async Task RepairOrderAsync(int id)
+    {
+        var order = await _repository.GetAsync(id, x => x.Include(x => x.OrderItems));
+
+        if (order is null)
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+        var status = await _statusService.GetFirstAsync();
+
+        if (order.StatusId == status.Id)
+            return;
+
+        order.StatusId = status.Id;
+
+        _repository.Update(order);
+        await _repository.SaveChangesAsync();
+
+
+        foreach (var item in order.OrderItems)
+            await _productService.IncreaseSalesCountAsync(item.ProductSizeId, item.Count);
 
 
     }
@@ -65,7 +93,7 @@ internal class OrderService : IOrderService
         if (basket.Count is 0)
             throw new EmptyBasketException(_errorLocalizer.GetValue(nameof(EmptyBasketException)));
 
-        dto.OrderItems = _mapper.Map<List<OrderItemCreateDto>>(basket);
+        dto.OrderItems = _mapper.Map<List<OrderItemCreateDto>>(basket.Items);
 
         var order = _mapper.Map<Order>(dto);
 
@@ -86,6 +114,41 @@ internal class OrderService : IOrderService
         return true;
     }
 
+
+    public async Task NextOrderStatusAsync(int id)
+    {
+        var order = await _repository.GetAsync(id, x => x.Include(x => x.OrderItems));
+
+        if (order is null)
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+        if (order.StatusId == 4)
+            return;
+
+        if (order.StatusId < 3)
+            order.StatusId++;
+
+        _repository.Update(order);
+        await _repository.SaveChangesAsync();
+    }
+
+    public async Task PrevOrderStatusAsync(int id)
+    {
+        var order = await _repository.GetAsync(id, x => x.Include(x => x.OrderItems));
+
+        if (order is null)
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+        if (order.StatusId == 4)
+            return;
+
+        if (order.StatusId > 1)
+            order.StatusId--;
+
+        _repository.Update(order);
+        await _repository.SaveChangesAsync();
+    }
+
     public async Task DeleteAsync(int id)
     {
         var order = await _repository.GetAsync(id);
@@ -99,7 +162,9 @@ internal class OrderService : IOrderService
 
     public async Task<List<OrderGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
     {
-        var orders = await _repository.GetAll(_getIncludeFunc(language)).ToListAsync();
+        var query = _repository.GetAll(_getIncludeFunc(language));
+
+        var orders = await _repository.OrderByDescending(query, x => x.CreatedAt).ToListAsync();
 
         var dtos = _mapper.Map<List<OrderGetDto>>(orders);
 
@@ -181,6 +246,23 @@ internal class OrderService : IOrderService
     }
 
 
+    public async Task<OrderCreateDto> GetUserUnSubmitOrderAsync(Languages language = Languages.Azerbaijan)
+    {
+        if (!_checkAuthorized())
+            throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
+
+        var basket = await _basketService.GetBasketAsync();
+
+        if (basket.Count is 0)
+            throw new EmptyBasketException(_errorLocalizer.GetValue(nameof(EmptyBasketException)));
+
+        OrderCreateDto dto = new();
+
+        dto.OrderItems = _mapper.Map<List<OrderItemCreateDto>>(basket.Items);
+
+        return dto;
+    }
+
 
     private string _getUserId()
     {
@@ -196,7 +278,10 @@ internal class OrderService : IOrderService
     private Func<IQueryable<Order>, IIncludableQueryable<Order, object>> _getIncludeFunc(Languages language)
     {
         LanguageHelper.CheckLanguageId(ref language);
-        return x => x.Include(x => x.OrderItems).ThenInclude(x => x.ProductSize)
-                            .Include(x => x.Status);
+        return x => x.Include(x => x.OrderItems).ThenInclude(x => x.ProductSize.Product.ProductDetails.Where(x => x.LanguageId == (int)language))
+                            .Include(x=>x.OrderItems).ThenInclude(x=>x.ProductSize.Product.ProductImages)
+                            .Include(x => x.Status.StatusDetails.Where(x => x.LanguageId == (int)language));
     }
+
+
 }

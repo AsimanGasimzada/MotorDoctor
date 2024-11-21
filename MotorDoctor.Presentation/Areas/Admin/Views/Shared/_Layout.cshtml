@@ -73,6 +73,7 @@
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Branch">Filiallar</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Category">Kateqoriyalar</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Product">Məhsullar</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Order">Sifarişlər</a></li>
                             </ul>
                         </div>
                     </li>
@@ -182,7 +183,19 @@
 
   
 
-    
+    <script>
+        window.addEventListener('scroll', () => {
+                sessionStorage.setItem(`scrollPositionAdmin-${window.location.pathname}`, window.scrollY);
+
+        });
+
+        window.addEventListener('load', () => {
+            const scrollPosition = sessionStorage.getItem(`scrollPositionAdmin-${window.location.pathname}`);
+            if (scrollPosition) {
+                window.scrollTo(0, parseInt(scrollPosition, 10));
+            }
+        });
+    </script>
 
     <!-- <script src="~/admin/js/Chart.roundedBarCharts.js"></script> -->
     <!-- End custom js for this page-->

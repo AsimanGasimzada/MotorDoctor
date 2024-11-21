@@ -10,5 +10,6 @@ public class OrderItemAutoMapper : Profile
         CreateMap<OrderItem, OrderItemUpdateDto>().ReverseMap();
         CreateMap<OrderItem, OrderItemGetDto>().ReverseMap();
         CreateMap<OrderItemCreateDto, BasketItemGetDto>().ReverseMap();
+        CreateMap<OrderItemGetDto, BasketItemGetDto>().ReverseMap().ForMember(x => x.StaticPrice, x => x.MapFrom(x => x.ProductSize.Price));
     }
 }

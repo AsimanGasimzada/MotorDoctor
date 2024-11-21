@@ -1,0 +1,231 @@
+﻿@model OrderGetDto
+
+<style>
+
+    /* General Styles for the Checkout Page */
+    .checkout-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 20px;
+        gap: 20px;
+        width: 100%;
+        flex-wrap: wrap; /* Allows wrapping for smaller screens */
+    }
+
+    .checkout-form-section,
+    .order-summary-section {
+        border: 2px solid black;
+        padding: 20px;
+        flex: 1;
+        border-radius: 0;
+        height: fit-content;
+        min-width: 300px; /* Ensures sections have a minimum width */
+    }
+
+    .order-summary-section {
+        margin-right: 20px;
+    }
+
+        .order-summary-section h1,
+        .checkout-form-section h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid black;
+            padding-bottom: 10px;
+        }
+
+    .order-summary-section {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .order-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        border-bottom: 1px solid black;
+        padding-bottom: 10px;
+    }
+
+        .order-item img {
+            width: 80px;
+            height: 80px;
+            border: 2px solid black;
+            margin-right: 10px;
+        }
+
+        .order-item .product-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .order-item .price {
+            font-weight: bold;
+        }
+
+    .total {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 18px;
+    }
+
+    .checkout-form {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .checkout-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .checkout-form label {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .checkout-form input,
+        .checkout-form textarea,
+        .checkout-form button {
+            width: 100%;
+            border: 2px solid black;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 0;
+            outline: none;
+        }
+
+        .checkout-form textarea {
+            resize: none;
+            height: 60px;
+        }
+
+            .checkout-form input::placeholder,
+            .checkout-form textarea::placeholder {
+                color: #888;
+            }
+
+        .checkout-form button {
+            background-color: black;
+            color: white;
+            border: 2px solid black;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+            .checkout-form button:hover {
+                background-color: white;
+                color: black;
+            }
+
+    /* Responsive Design */
+    @@media (max-width: 768px) {
+        .checkout-container {
+            flex-direction: column; /* Stacks sections vertically on smaller screens */
+            gap: 30px;
+        }
+
+        .order-summary-section,
+        .checkout-form-section {
+            margin-right: 0; /* Removes margin when stacked */
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .checkout-form-section h1, .order-summary-section h1 {
+            font-size: 20px;
+        }
+
+        .checkout-form input,
+        .checkout-form textarea,
+        .checkout-form button {
+            font-size: 12px;
+            padding: 8px;
+        }
+
+        .order-item img {
+            width: 60px;
+            height: 60px;
+        }
+
+        .total {
+            font-size: 16px;
+        }
+    }
+</style>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<main>
+    <div class="checkout-container">
+        <div class="order-summary-section">
+            <h1>Məhsullar</h1>
+            @foreach (var item in Model.OrderItems ?? new())
+            {
+                <div class="order-item">
+                    <img src="@item.ProductSize.Product.MainImagePath" alt="@item.ProductSize.Product.Name">
+                    <div class="product-details">
+                        <bold>
+                            <a style="text-decoration:none;font-weight:600" asp-area="@null" asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId">
+                                <span>@item.ProductSize.Product.Name</span>
+                            </a>
+                        </bold>
+                        <span>Ölçü: @item.ProductSize.Size</span>
+                        <span>Say: @item.Count</span>
+                    </div>
+                    <span class="price">₼@(item.ProductSize.Price * item.Count)</span>
+                </div>
+            }
+
+            <div class="total">
+                <strong>Cəm:</strong>
+                <strong>₼@Model.TotalPrice</strong>
+            </div>
+        </div>
+        <div class="checkout-form-section">
+            <h1>Sifariş məlumatları</h1>
+            <form  class="checkout-form">
+                <div class="form-group">
+                    <label for="city">Şəhər</label>
+                    <input id="city" disabled asp-for="City" required placeholder="Enter your city">
+                </div>
+
+                <div class="form-group">
+                    <label for="region">Rayon</label>
+                    <input id="region" disabled asp-for="Region" required placeholder="Enter your region">
+                </div>
+
+                <div class="form-group">
+                    <label for="street">Küçə</label>
+                    <input id="street" disabled asp-for="Street" required placeholder="Enter your street">
+                </div>
+
+
+                <div class="form-group">
+                    <label for="phone">Telefon</label>
+                    <input type="tel" disabled id="phone" asp-for="PhoneNumber" required placeholder="Enter your phone number">
+                </div>
+
+
+
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <input  disabled id="status" asp-for="Status.Name" required placeholder="Enter your phone number">
+                </div>
+
+
+            </form>
+        </div>
+
+    </div>
+    <a class="btn btn-secondary" asp-action="Index">Geri</a>
+</main>

@@ -1,4 +1,5 @@
 ﻿@model BasketGetDto
+@inject BasketLocalizer _localizer
 
 <br />
 <br />
@@ -8,15 +9,15 @@
 <main id="main">
     <!-- Breadcrumb Navigation Start -->
     <nav id="breadcrumb">
-        <span><a href="./index.html">HOME</a></span>
+        <span><a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a></span>
         <span class="line">|</span>
-        <span><a href="#" class="text-dark">CART</a></span>
+        <span><a asp-action="Index" class="text-dark">@_localizer.GetValue("Cart")</a></span>
     </nav>
     <!-- Breadcrumb Navigation End -->
     <!-- Wishlist Section Start -->
     <section id="wishlist" class="basketSectionArea">
 
-    <partial name="_basketSectionPartial" model="@Model"></partial>
+        <partial name="_basketSectionPartial" model="@Model"></partial>
     </section>
     <!-- Wishlist Section End -->
 </main>

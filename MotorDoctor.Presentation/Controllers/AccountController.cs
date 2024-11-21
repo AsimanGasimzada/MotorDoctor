@@ -27,6 +27,9 @@ public class AccountController : Controller
         if (result is false)
             return View(dto);
 
+        if (!string.IsNullOrWhiteSpace(dto.ReturnUrl))
+            return Redirect(dto.ReturnUrl);
+
         return RedirectToAction("Index", "Home");
     }
 

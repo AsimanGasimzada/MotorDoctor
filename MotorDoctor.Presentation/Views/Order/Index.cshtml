@@ -1,0 +1,110 @@
+﻿@model OrderCreateDto
+@inject OrderLocalizer _localizer
+@{
+    decimal totalPrice = Model.OrderItems?.Sum(x => x.Count * x.ProductSize.Price) ?? 0;
+}
+<br />
+<br />
+<br />
+<br />
+<main>
+    <!-- Breadcrumb Navigation Start -->
+    <nav id="breadcrumb">
+        <span><a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a></span>
+        <span class="line">|</span>
+        <span><a asp-action="Index" class="text-dark">@_localizer.GetValue("Order")</a></span>
+    </nav>
+    <!-- Breadcrumb Navigation End -->
+    <!-- Wishlist Section Start -->
+    <section id="wishlist">
+        <div class="product-wishlist">
+            <h2>@_localizer.GetValue("OrderTitle")</h2>
+        </div>
+
+        <div class="checkout-container">
+            <div class="order-summary-section">
+                <h1>@_localizer.GetValue("Summary")</h1>
+                @foreach (var item in Model.OrderItems ?? new())
+                {
+                    <div class="order-item">
+                        <img src="@item.ProductSize.Product.MainImagePath" alt="@item.ProductSize.Product.Name">
+                        <div class="product-details">
+                            <a style="text-decoration:none;font-weight:600;color:black" asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId">
+                                <span>@item.ProductSize.Product.Name</span>
+                            </a>
+                            <span>@_localizer.GetValue("Size"): @item.ProductSize.Size</span>
+                            <span>@_localizer.GetValue("Quantity"): @item.Count</span>
+                        </div>
+                        <span class="price">₼@(item.ProductSize.Price * item.Count)</span>
+                    </div>
+                }
+
+                <div class="total">
+                    <strong>@_localizer.GetValue("Total"):</strong>
+                    <strong>₼@totalPrice</strong>
+                </div>
+            </div>
+            <div class="checkout-form-section">
+                <h1>@_localizer.GetValue("Details")</h1>
+                <form method="post" class="checkout-form orderForm">
+                    <div class="form-group">
+                        <label for="city">@_localizer.GetValue("City")</label>
+                        <input id="city" asp-for="City" required placeholder="@_localizer.GetValue("CityInput")">
+                        <span asp-validation-for="City" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="region">@_localizer.GetValue("Region")</label>
+                        <input id="region" asp-for="Region" required placeholder="@_localizer.GetValue("RegionInput")">
+                        <span asp-validation-for="Region" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="street">@_localizer.GetValue("Street")</label>
+                        <input id="street" asp-for="Street" required placeholder="@_localizer.GetValue("StreetInput")">
+                        <span asp-validation-for="Street" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="phone">@_localizer.GetValue("PhoneNumber")</label>
+                        <input type="tel" id="phone" asp-for="PhoneNumber" required placeholder="@_localizer.GetValue("PhoneNumberInput")">
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="orderSubmitButton">@_localizer.GetValue("Submit")</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+</main>
+
+@section Scripts {
+    <script>
+        const orderSubmitButton=document.querySelector(".orderSubmitButton")
+        const orderForm=document.querySelector(".orderForm")
+
+        orderSubmitButton.addEventListener('click',(e)=>{
+            e.preventDefault();
+
+                    Swal.fire({
+          title: ` @_localizer.GetValue("ConfirmOrderWarning") 
+                        @_localizer.GetValue("ConfirmOrder") `,
+          text: ``,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText:`@_localizer.GetValue("Reject")`,
+          confirmButtonText: `@_localizer.GetValue("Accept")`
+        }).then((result) => {
+          if (result.isConfirmed) {
+           
+            orderForm.submit();
+          }
+        });
+        })
+    </script>
+}

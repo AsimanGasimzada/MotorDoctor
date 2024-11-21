@@ -1,5 +1,5 @@
 ﻿@model LoginDto
-
+@inject AccountLocalizer _localizer
 <!-- Main Start -->
 <main id="main">
 
@@ -11,18 +11,18 @@
                         <div class="brand-logo mb-4 text-center">
                             <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/02/Dunker-logo-dark.png" alt="Dunker Logo" class="img-fluid">
                         </div>
+                        <h4 class="mb-4 text-center">@_localizer.GetValue("Hello")</h4>
+                        <h6 class="font-weight-light mb-4 text-center">@_localizer.GetValue("LoginTitle")</h6>
                         <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                        <h4 class="mb-4 text-center">Hello! Let's get started</h4>
-                        <h6 class="font-weight-light mb-4 text-center">Sign up to continue.</h6>
                         <form class="pt-3" method="post">
                             <div class="form-group mb-3">
-                                <label for="username">Username</label>
+                                <label for="username">@_localizer.GetValue("UsernameOrEmail")</label>
                                 <input asp-for="EmailOrUsername" class="form-control" id="username"
                                        aria-describedby="emailHelp">
                                 <span class="text-danger" asp-validation-for="EmailOrUsername"></span>
                             </div>
                             <div class="form-group position-relative mb-2">
-                                <label for="password">Password</label>
+                                <label for="password">@_localizer.GetValue("Password")</label>
                                 <input asp-for="Password" class="form-control" id="password" type="password">
                                 <span class="text-danger" asp-validation-for="Password"></span>
                                 <button type="button" style="margin-top: 14px;" class="btn btn-icon"
@@ -32,14 +32,14 @@
                             </div>
                             <div class="text-center my-3">
                                 <a asp-action="ForgetPassword" asp-controller="Account"
-                                   class="auth-link text-dark">Forgot password?</a>
+                                   class="auth-link text-dark">@_localizer.GetValue("ForgotPassword")</a>
                             </div>
                             <div class="text-center">
-                                <button type="submit" class="btn custom-button2">Submit</button>
+                                <button type="submit" class="btn custom-button2">@_localizer.GetValue("LoginButton")</button>
                             </div>
                             <div class="text-center mt-4 font-weight-light">
-                                Don't have an account? <a asp-action="Register" asp-controller="Account"
-                                                          class="text-primary">Create</a>
+                                @_localizer.GetValue("DontHaveAccount") <a asp-action="Register" asp-controller="Account"
+                                                                           class="text-primary">@_localizer.GetValue("Register")</a>
                             </div>
                         </form>
                     </div>

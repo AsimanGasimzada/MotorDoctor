@@ -1,6 +1,7 @@
 ﻿@using MotorDoctor.Core.Enum
 @model ShopFilterDto
 @inject IWishlistService wishlistService
+@inject ShopLocalizer _localizer
 @section Styles {
 
     <link rel="stylesheet" href="~/assets/css/shop.css" />
@@ -22,7 +23,7 @@
                             <div class="mb-3">
                                 <div class="container mt-4  ">
                                     <div class="filter-sidebar" style="overflow:hidden">
-                                        <p class="results">Showing 1–12 of 27 results</p>
+                                        <p class="results">@_localizer.GetValue("Filter")</p>
                                         <div class="accordion" id="filterAccordion">
 
                                             <!-- Category Filter -->
@@ -30,7 +31,7 @@
                                                 <h2 class="accordion-header" id="headingCategory">
                                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                             data-bs-target="#collapseCategory" aria-expanded="false" aria-controls="collapseCategory">
-                                                        Category
+                                                        @_localizer.GetValue("Category")
                                                     </button>
                                                 </h2>
                                                 <div id="collapseCategory" class="accordion-collapse collapse"
@@ -65,7 +66,7 @@
                                                 <h2 class="accordion-header" id="headingBrand">
                                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                             data-bs-target="#collapseBrand" aria-expanded="false" aria-controls="collapseBrand">
-                                                        Brand
+                                                        @_localizer.GetValue("Brand")
                                                     </button>
                                                 </h2>
                                                 <div id="collapseBrand" class="accordion-collapse collapse" aria-labelledby="headingBrand">
@@ -99,7 +100,7 @@
                                             <div class="accordion-item">
                                                 <h2 class="accordion-header">
                                                     <button class="accordion-button" type="button" disabled>
-                                                        Price
+                                                        @_localizer.GetValue("Price")
                                                     </button>
                                                 </h2>
                                                 <div class="accordion-body">
@@ -116,11 +117,11 @@
                                             </div>
                                         </div>
 
-                                        <button class="btn btn-outline-dark w-100 mt-3">Filter</button>
-                                        <a class="btn btn-outline-dark w-100 mt-3" asp-action="Index">Clear Filter</a>
+                                        <button class="btn btn-outline-dark w-100 mt-3">@_localizer.GetValue("Filter")</button>
+                                        <a class="btn btn-outline-dark w-100 mt-3" asp-action="Index">@_localizer.GetValue("ClearFilter")</a>
 
                                         <div class="input-group mt-4">
-                                            <input type="text" class="form-control shopFilterSearchInput" asp-for="ProductFilterDto!.Search" placeholder="Search products..."
+                                            <input type="text" class="form-control shopFilterSearchInput" asp-for="ProductFilterDto!.Search" placeholder="@_localizer.GetValue("Search")"
                                                    aria-label="Search products" aria-describedby="search-icon">
                                             <span class="input-group-text" id="search-icon">
                                                 <i style="cursor: pointer;"
@@ -140,11 +141,11 @@
                                 style="appearance: none; border: none; outline: none; padding: 5px; background: transparent; color: inherit; font-size: inherit; text-align: center; border-radius: 0px; cursor: pointer;"
                                 id="sortSelect"
                                 asp-for="ProductFilterDto!.SortType">
-                            <option value="@SortTypes.Latest" selected>SORT BY LATEST</option>
-                            <option value="@SortTypes.Oldest">SORT BY OLDEST</option>
-                            <option value="@SortTypes.Popularity">SORT BY POPULARITY</option>
-                            <option value="@SortTypes.PriceDescending">SORT BY PRICE HIGH TO LOW</option>
-                            <option value="@SortTypes.PriceAscending">SORT BY PRICE LOW TO HIGH</option>
+                            <option value="@SortTypes.Latest" selected>@_localizer.GetValue("SortByLatest")</option>
+                            <option value="@SortTypes.Oldest">@_localizer.GetValue("SortByOldest")</option>
+                            <option value="@SortTypes.Popularity">@_localizer.GetValue("SortByPopularity")</option>
+                            <option value="@SortTypes.PriceDescending">@_localizer.GetValue("PriceHighToLow")</option>
+                            <option value="@SortTypes.PriceAscending">@_localizer.GetValue("PriceLowToHigh")</option>
                         </select>
                     </div>
 
@@ -164,7 +165,7 @@
                                                 <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
                                             </button>
 
-                                            <a href="./product-detail.html?id=1">
+                                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
                                                 <span class=""></span>
                                                 <span class=""></span>
 
@@ -199,11 +200,11 @@
                                                 </div>
                                             </a>
                                             <div class="product-card-content">
-                                                <a href="./product-detail.html?id=1"> </a><a href="#">@product.Brand.Name</a>
-                                                <a href="#" class="product-title">@product.Name</a>
-                                                <a href="#" class="product-category">@product.Category.Name</a>
+                                                <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a >@product.Brand.Name</a>
+                                                <a  class="product-title">@product.Name</a>
+                                                <a  class="product-category">@product.Category.Name</a>
                                                 <div>
-                                                    <span>$@product.ProductSizes.FirstOrDefault()?.Price</span>
+                                                    <span>₼@product.ProductSizes.FirstOrDefault()?.Price</span>
 
                                                     <span style="
                                   color: #727272;
