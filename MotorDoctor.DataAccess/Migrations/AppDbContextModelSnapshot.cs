@@ -155,6 +155,61 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.About", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("OrderNo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Abouts");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.AboutDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AboutId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(9196)
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AboutId");
+
+                    b.HasIndex("LanguageId", "AboutId")
+                        .IsUnique();
+
+                    b.ToTable("AboutDetails");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
@@ -491,6 +546,58 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsUnique();
 
                     b.ToTable("CategoryDetails");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Comments", t =>
+                        {
+                            t.HasCheckConstraint("CK_Comment_Rating_Range", "[Rating] >= 0 AND [Rating] <= 5");
+                        });
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Language", b =>
@@ -1060,7 +1167,7 @@ namespace MotorDoctor.DataAccess.Migrations
                             Id = 21,
                             LanguageId = 3,
                             SettingId = 7,
-                            Value = "addressp.com"
+                            Value = "address.com"
                         },
                         new
                         {
@@ -1422,6 +1529,25 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.AboutDetail", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.About", "About")
+                        .WithMany("AboutDetails")
+                        .HasForeignKey("AboutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("About");
+
+                    b.Navigation("Language");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.AttendanceDetail", b =>
                 {
                     b.HasOne("MotorDoctor.Core.Entities.Attendance", "Attedance")
@@ -1524,6 +1650,25 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Comment", b =>
+                {
+                    b.HasOne("MotorDoctor.Core.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MotorDoctor.Core.Entities.Product", "Product")
+                        .WithMany("Comments")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Order", b =>
@@ -1700,6 +1845,11 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("ProductSize");
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.About", b =>
+                {
+                    b.Navigation("AboutDetails");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Attendance", b =>
                 {
                     b.Navigation("AttendanceDetails");
@@ -1744,6 +1894,8 @@ namespace MotorDoctor.DataAccess.Migrations
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Product", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("ProductDetails");
 
                     b.Navigation("ProductImages");

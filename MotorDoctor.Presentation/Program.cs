@@ -23,8 +23,12 @@ var localizationOptions = new RequestLocalizationOptions()
                                                 .AddSupportedCultures(supportedCultures)
                                                 .AddSupportedUICultures(supportedCultures);
 
+//app.UseMiddleware<GlobalExceptionHandler>();
+
 
 app.UseRequestLocalization(localizationOptions);
+
+app.RenderSelectedLanguage();
 
 await app.InitDatabaseAsync();
 

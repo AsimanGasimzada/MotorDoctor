@@ -4,6 +4,7 @@ using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -12,11 +13,13 @@ internal class SettingService : ISettingService
 {
     private readonly ISettingRepository _repository;
     private readonly IMapper _mapper;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public SettingService(ISettingRepository repository, IMapper mapper)
+    public SettingService(ISettingRepository repository, IMapper mapper, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
+        _errorLocalizer = errorLocalizer;
     }
 
     public async Task<bool> CreateAsync(SettingCreateDto dto, ModelStateDictionary ModelState)
@@ -66,7 +69,7 @@ internal class SettingService : ISettingService
         var setting = await _repository.GetAsync(id);
 
         if (setting is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         _repository.Delete(setting);
         await _repository.SaveChangesAsync();
@@ -88,7 +91,7 @@ internal class SettingService : ISettingService
         var setting = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (setting is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<SettingGetDto>(setting);
 
@@ -108,7 +111,7 @@ internal class SettingService : ISettingService
         var setting = await _repository.GetAsync(id, x => x.Include(x => x.SettingDetails));
 
         if (setting is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<SettingUpdateDto>(setting);
 
@@ -142,7 +145,7 @@ internal class SettingService : ISettingService
         var existSetting = await _repository.GetAsync(dto.Id, x => x.Include(x => x.SettingDetails));
 
         if (existSetting is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
 
         existSetting = _mapper.Map(dto, existSetting);

@@ -56,6 +56,11 @@
                         <li class="navbar-item">
                             <a asp-action="Index" asp-controller="Contact" class="navbar-link">@_localizer.GetValue("Contact")</a>
                         </li>
+
+
+                        <li class="navbar-item">
+                            <a asp-action="Index" asp-controller="About" class="navbar-link">@_localizer.GetValue("About")</a>
+                        </li>
                     </ul>
                 </div>
                 <div class="rightside-nav">
@@ -66,13 +71,13 @@
 
                         <div id="searchOverlay" class="overlay">
                             <span class="closebtn" onclick="closeSearch()"><i class="fa-solid fa-xmark"></i></span>
-                            <div class="overlay-content">
+                            <form asp-action="Index" asp-controller="Shop" method="post" class="overlay-content">
                                 <h1>@_localizer.GetValue("SearchText")</h1>
-                                <input id="searchInput" type="text" placeholder="@_localizer.GetValue("SearchButton")..." onkeydown="checkEnter(event)" />
-                                <button type="button" onclick="performSearch()">
+                                <input id="searchInput" type="text" name="dto.ProductFilterDto.Search" placeholder="@_localizer.GetValue("SearchButton")..." />
+                              @*   <button type="submit" class="btn btn-secondary">
                                     @_localizer.GetValue("SearchButton")
-                                </button>
-                            </div>
+                                </button> *@
+                            </form>
                         </div>
 
                         <div class="account-container">
@@ -83,6 +88,7 @@
                             {
                                 <div class="account-dropdown">
                                     <p class="name">@User.Identity.Name</p>
+                                    <a asp-action="List" asp-controller="Order" class="btn">@_localizer.GetValue("Orders")</a>
                                     <a asp-action="Logout" asp-controller="Account" class="btn">@_localizer.GetValue("Logout")</a>
                                 </div>
                             }
@@ -261,6 +267,9 @@
                         </li>
                         <li>
                             <a asp-action="Index" asp-controller="Contact">@_localizer.GetValue("Contact")</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="About">@_localizer.GetValue("About")</a>
                         </li>
 
                     </ul>

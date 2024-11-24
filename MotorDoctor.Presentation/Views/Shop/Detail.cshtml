@@ -1,8 +1,8 @@
-﻿@model ProductGetDto
+﻿@model ShopDetailDto
 @inject IWishlistService wishlistService
 @inject ShopLocalizer _localizer
 @{
-    var isExistWishlist = await wishlistService.IsExistByProductIdAsync(Model.Id);
+    var isExistWishlist = await wishlistService.IsExistByProductIdAsync(Model.Product.Id);
 }
 <br />
 <br />
@@ -14,7 +14,7 @@
     <nav id="breadcrumb">
         <span><a asp-action="Index" asp-controller="Shop">@_localizer.GetValue("Shop")</a></span>
         <span class="line">|</span>
-        <span><a class="text-dark">@Model.Name</a></span>
+        <span><a class="text-dark">@Model.Product.Name</a></span>
     </nav>
     <!-- Breadcrumb Navigation End -->
     <!-- Detail Product Section Start -->
@@ -28,19 +28,19 @@
                             <div class="zoomist-wrapper">
                                 <!-- zoomist-image is required -->
                                 <div class="zoomist-image">
-                                    <img src="@Model.MainImagePath"
-                                         alt="@Model.Name"
+                                    <img src="@Model.Product.MainImagePath"
+                                         alt="@Model.Product.Name"
                                          id="zoom-img" />
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="gallery-items">
-                        @foreach (var imagePath in Model.ImagePaths)
+                        @foreach (var imagePath in Model.Product.ImagePaths)
                         {
                             <div class="gallery-item">
                                 <img src="@imagePath"
-                                     alt="@Model.Name"
+                                     alt="@Model.Product.Name"
                                      class="gallery-img" />
                             </div>
                         }
@@ -51,14 +51,14 @@
             <div class="col-lg-6 col-12">
                 <div class="product-content">
                     <div class="product-heading">
-                        <h1>@Model.Name</h1>
+                        <h1>@Model.Product.Name</h1>
 
                         <p>
-                            @(Model.Description.Length > 256 ? Model.Description.Substring(0, 256) + "..." : Model.Description)
+                            @(Model.Product.Description.Length > 256 ? Model.Product.Description.Substring(0, 256) + "..." : Model.Product.Description)
                         </p>
                         <h5 style="display:inline">@_localizer.GetValue("Size"):</h5>
                         <select class="form-select productSizeSelectInput" aria-label="Default select example" style="text-align:center;max-width:30%;margin:0 10px;display:inline;">
-                            @foreach (var productSize in Model.ProductSizes)
+                            @foreach (var productSize in Model.Product.ProductSizes)
                             {
                                 <option value="@productSize.Id">@productSize.Size - @productSize.Price ₼</option>
                             }
@@ -81,7 +81,7 @@
                         </a>
 
 
-                        <button class="addToFavButton wishlist-btn" data-productId="@Model.ProductSizes.FirstOrDefault()?.Id">
+                        <button class="addToFavButton wishlist-btn" data-productId="@Model.Product.ProductSizes.FirstOrDefault()?.Id">
                             <i class="@(isExistWishlist? "fa-solid" : "fa-regular") fa-heart"></i>
                         </button>
                     </div>
@@ -96,15 +96,15 @@
                         <div class="product-stats">
                             <div class="sku">
                                 <span>@_localizer.GetValue("Code"):</span>
-                                <a>@Model.Code</a>
+                                <a>@Model.Product.Code</a>
                             </div>
                             <div class="category">
                                 <span>@_localizer.GetValue("Category"):</span>
-                                <a>@Model.Category.Name</a>
+                                <a>@Model.Product.Category.Name</a>
                             </div>
                             <div class="tag">
                                 <span>@_localizer.GetValue("Brand"):</span>
-                                <a href="#">@Model.Brand.Name</a>
+                                <a href="#">@Model.Product.Brand.Name</a>
                             </div>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                             </li>
                             <li class="tab-item">
                                 <a href="#" class="tab-link" data-tab="additional-info">
-                                    @_localizer.GetValue("Reviews") (0)
+                                    @_localizer.GetValue("Reviews") (@Model.Comments.Count)
                                 </a>
                             </li>
                         </ul>
@@ -129,63 +129,50 @@
                     <div class="tabs-content pt-4" id="tabContent">
                         <div class="tab" data-tab="description">
                             <p class="fs-5">
-                                @Model.Description
+                                @Model.Product.Description
                             </p>
                         </div>
                         <div class="tab d-none" data-tab="additional-info">
                             <div class="product-stats">
                                 <div class="container mt-5">
-                                    <div class="review">
-                                        <div class="d-flex align-items-start">
-                                            <img src="./assets/img/banner1.jpg"
-                                                 style="width: 70px; height: 70px"
-                                                 alt="User Avatar"
-                                                 class="rounded-circle mr-3" />
-                                            <div>
-                                                <p class="mb-1 text-muted">April 12, 2024</p>
-                                                <h5 class="font-weight-bold mb-1">Jason Smith</h5>
-                                                <p>
-                                                    The generated Lorem Ipsum is therefore always free
-                                                    from repetition, injected humour, or
-                                                    non-characteristic words etc. Suspendisse
-                                                    ultricies nisi vel quam suscipit.
-                                                </p>
-                                                <div class="stars">
-                                                    <span class="text-warning">&#9733;</span>
-                                                    <span class="text-warning">&#9733;</span>
-                                                    <span class="text-warning">&#9733;</span>
-                                                    <span class="text-warning">&#9733;</span>
-                                                    <span class="text-secondary">&#9733;</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    @foreach (var comment in Model.Comments)
+                                    {
+                                        <div class="review" style="position: relative;">
+                                            <div class="d-flex align-items-start">
+                                                <i style="font-size:30px;margin-right:20px" class="fa-solid fa-user"></i>
+                                                <div>
+                                                    <p class="mb-1 text-muted">@comment.CreatedAt.ToString("yyyy, MM MMMM")</p>
+                                                    <h5 class="font-weight-bold mb-1">@comment.AppUser.Name @comment.AppUser.Surname</h5>
+                                                    <p>
+                                                        @comment.Text
+                                                    </p>
+                                                    <div class="stars">
+                                                        @for (int i = 0; i < comment.Rating; i++)
+                                                        {
+                                                            <span class="text-warning">&#9733;</span>
+                                                        }
+                                                        @for (int i = 5; i >= comment.Rating + 1; i--)
+                                                        {
+                                                            <span class="text-secondary">&#9733;</span>
+                                                        }
+                                                    </div>
 
-                                    <div class="review mt-4">
-                                        <div class="d-flex align-items-start">
-                                            <img src="./assets/img/banner1.jpg"
-                                                 style="width: 70px; height: 70px"
-                                                 alt="User Avatar"
-                                                 class="rounded-circle mr-3" />
-                                            <div>
-                                                <p class="mb-1 text-muted">April 12, 2024</p>
-                                                <h5 class="font-weight-bold mb-1">Sam Peters</h5>
-                                                <p>
-                                                    The generated Lorem Ipsum is therefore always free
-                                                    from repetition, injected humour, or
-                                                    non-characteristic words etc. Suspendisse
-                                                    ultricies nisi vel quam suscipit.
-                                                </p>
-                                                <div class="stars">
-                                                    <span class="text-warning">&#9733;</span>
-                                                    <span class="text-warning">&#9733;</span>
-                                                    <span class="text-warning">&#9733;</span>
-                                                    <span class="text-secondary">&#9733;</span>
-                                                    <span class="text-secondary">&#9733;</span>
+                                                    @if (comment.AppUser.Username == User.Identity?.Name || User.IsInRole("Admin"))
+                                                    {
+                                                        <a class="delete-comment-btn btn btn-outline-danger btn-sm"
+                                                           style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%);"
+                                                           asp-action="DeleteComment" asp-controller="Shop" asp-route-id="@comment.Id">
+                                                            <i class="fas fa-trash-alt"></i> Delete
+                                                        </a>
+                                                    }
                                                 </div>
                                             </div>
+                                            <hr />
                                         </div>
-                                    </div>
+
+
+                                    }
+
                                 </div>
                             </div>
                         </div>
@@ -193,61 +180,86 @@
                 </div>
             </div>
         </div>
-        <div class="container mt-5">
-            <h2 class="mb-4">Leave a Reply</h2>
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <label for="name">Your Name *</label>
-                        <input type="text"
-                               class="form-control"
-                               id="name"
-                               placeholder="Your Name" />
+     @if(Model.IsAllowComment){
+
+            <div class="comment-form-container" style="max-width: 80%; margin: 20px auto; border: 1px solid whitesmoke; border-radius: 0; padding: 20px; background-color: #fff; color: #000;">
+                <form id="commentForm" asp-action="CreateComment" asp-route-ProductId="@Model.Product.Id">
+                    <h4 class="text-center" style="margin-bottom: 20px;">@_localizer.GetValue("LeaveComment")</h4>
+
+                    <!-- Comment Text -->
+                    <div class="form-group">
+                        <label for="commentText" style="font-weight: bold;">@_localizer.GetValue("YourComment")</label>
+                        <textarea id="commentText" name="Text" class="form-control" rows="4" style="border: 1px solid #000; border-radius: 0;" placeholder="@_localizer.GetValue("YourCommentInput")" required></textarea>
                     </div>
-                    <div class="form-group col-md-6">
-                        <label for="email">Your Email *</label>
-                        <input type="email"
-                               class="form-control"
-                               id="email"
-                               placeholder="Your Email" />
+
+                    <!-- Star Rating -->
+                    <div class="form-group">
+                        <label for="rating" style="font-weight: bold;">@_localizer.GetValue("YourRating")</label>
+                        <div class="rating-stars" style="display: flex; gap: 5px; justify-content: flex-end; direction: rtl;">
+                            <input type="radio" id="star5" name="Rating" value="5">
+                            <label for="star5" class="star">&#9733;</label>
+                            <input type="radio" id="star4" name="Rating" value="4">
+                            <label for="star4" class="star">&#9733;</label>
+                            <input type="radio" id="star3" name="Rating" value="3">
+                            <label for="star3" class="star">&#9733;</label>
+                            <input type="radio" id="star2" name="Rating" value="2">
+                            <label for="star2" class="star">&#9733;</label>
+                            <input type="radio" id="star1" name="Rating" value="1">
+                            <label for="star1" class="star">&#9733;</label>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="review">Your Review *</label>
-                    <textarea class="form-control"
-                              id="review"
-                              rows="4"
-                              placeholder="Your Review"></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="rating">Please rate:</label>
-                    <div id="rating">
-                        <span class="text-secondary">&#9733;</span>
-                        <span class="text-secondary">&#9733;</span>
-                        <span class="text-secondary">&#9733;</span>
-                        <span class="text-secondary">&#9733;</span>
-                        <span class="text-secondary">&#9733;</span>
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-outline-success">
-                    Post Comment
-                </button>
-            </form>
-        </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-dark" style="width: 100%; border-radius: 0; font-weight: bold;">@_localizer.GetValue("CommentButton")</button>
+                </form>
+            </div>
+
+            <style>
+                .rating-stars input[type="radio"] {
+                    display: none;
+                }
+
+                .rating-stars .star {
+                    font-size: 25px;
+                    color: #ccc;
+                    cursor: pointer;
+                    transition: color 0.3s ease;
+                }
+
+                    /* Hover Effect */
+                    .rating-stars .star:hover,
+                    .rating-stars .star:hover ~ .star {
+                        color: #ffc107;
+                    }
+
+                /* Highlight Selected Stars (Soldan Sağa Dolma) */
+                .rating-stars input[type="radio"]:checked ~ label {
+                    color: #ffc107;
+                }
+
+                .rating-stars label:hover ~ label {
+                    color: #ccc;
+                }
+            </style>
+
+
+
+     }
     </section>
     <!-- Detail Product Section End -->
     <!-- Related Products Section Start -->
-    <section id="related-products">
+ @*    <section id="related-products">
         <div class="title">
             <h2>RELATED PRODUCTS</h2>
         </div>
         <div class="featured-products-container">
             <div class="row justify-content-center"></div>
         </div>
-    </section>
+    </section> *@
     <!-- Related Products Section End -->
 </main>
 <!-- Main End -->
+
 @section Scripts {
 
     <script src="~/assets/js/tab.js"></script>
@@ -308,6 +320,32 @@
 
                         RenderBasketCount();
                 } )
+
+
+
+                const commentDeleteButtons=document.querySelectorAll(".delete-comment-btn");
+
+                commentDeleteButtons.forEach(btn=>{
+                    btn.addEventListener("click", (e)=>{
+                        e.preventDefault();
+
+
+                             Swal.fire({
+          title: `  @_localizer.GetValue("ConfirmDelete") `,
+          text: ``,
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          cancelButtonText:`@_localizer.GetValue("Reject")`,
+          confirmButtonText: `@_localizer.GetValue("Accept")`
+        }).then((result) => {
+          if (result.isConfirmed) {
+             window.location.href=btn.href
+          }
+        });
+                    })
+                })
     </script>
 
 }

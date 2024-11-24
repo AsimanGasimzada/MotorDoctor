@@ -126,6 +126,9 @@
   <data name="FeaturedProducts" xml:space="preserve">
     <value>SEÇİLMİŞ MƏHSULLAR</value>
   </data>
+  <data name="ReadMore" xml:space="preserve">
+    <value>Daha çox</value>
+  </data>
   <data name="ShowAll" xml:space="preserve">
     <value>Hamısı</value>
   </data>

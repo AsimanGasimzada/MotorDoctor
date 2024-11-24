@@ -1,4 +1,6 @@
-﻿namespace MotorDoctor.Business.Exceptions;
+﻿using System.Net;
+
+namespace MotorDoctor.Business.Exceptions;
 
 public class UnAuthorizedException : Exception, IBaseException
 {
@@ -6,4 +8,6 @@ public class UnAuthorizedException : Exception, IBaseException
     {
 
     }
+
+    public HttpStatusCode StatusCode { get ; set; }=HttpStatusCode.Unauthorized;
 }

@@ -19,20 +19,20 @@ internal class AuthService : IAuthService
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly IMapper _mapper;
     private readonly IEmailService _emailService;
-    private readonly string _staticFilesPath;
     private readonly IUrlHelper _urlHelper;
     private readonly ErrorLocalizer _errorLocalizer;
+    private readonly ISubscriberService _subscriberService;
 
-    public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IHttpContextAccessor contextAccessor, IMapper mapper, IEmailService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor, ErrorLocalizer errorLocalizer)
+    public AuthService(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IHttpContextAccessor contextAccessor, IMapper mapper, IEmailService emailService, IUrlHelperFactory urlHelperFactory, IActionContextAccessor actionContextAccessor, ErrorLocalizer errorLocalizer, ISubscriberService subscriberService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _contextAccessor = contextAccessor;
         _mapper = mapper;
         _emailService = emailService;
-        _staticFilesPath = Path.Combine(Directory.GetCurrentDirectory(), "..", "Connex.Business", "StaticFiles");
         _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext ?? new());
         _errorLocalizer = errorLocalizer;
+        _subscriberService = subscriberService;
     }
 
     public async Task<bool> LoginAsync(LoginDto dto, ModelStateDictionary ModelState)
@@ -147,6 +147,8 @@ internal class AuthService : IAuthService
             throw new InvalidInputException(_errorLocalizer.GetValue("UnconfirmedEmail"));
         }
 
+        await _signInManager.SignInAsync(user, isPersistent: false);
+        await _subscriberService.CreateAsync(new SubscriberCreateDto { Email = dto.Email }, ModelState);
 
         return true;
 
@@ -162,7 +164,7 @@ internal class AuthService : IAuthService
 
         for (int i = 0; i < dtos.Count; i++)
         {
-            dtos[i].Role = (await _userManager.GetRolesAsync(users[i])).FirstOrDefault() ?? "undified";
+            dtos[i].Role = (await _userManager.GetRolesAsync(users[i])).FirstOrDefault() ?? "undifiend";
         }
 
         return dtos;
@@ -200,7 +202,7 @@ internal class AuthService : IAuthService
         var link = _urlHelper.Action(context);
 
 
-        string emailBody = await _getTemplateContentAsync(link ?? "", user.UserName ?? "", "ConfirmEmailBody.html");
+        string emailBody = _getTemplateContent(link ?? "");
 
 
         EmailSendDto emailSendDto = new()
@@ -213,17 +215,101 @@ internal class AuthService : IAuthService
         await _emailService.SendEmailAsync(emailSendDto);
     }
 
-    private async Task<string> _getTemplateContentAsync(string url, string username, string filename)
+    private string _getTemplateContent(string url)
     {
-        string path = Path.Combine(_staticFilesPath, filename);
 
-        using StreamReader streamReader = new StreamReader(path);
-        string result = await streamReader.ReadToEndAsync();
-
-        result = result.Replace("[REPLACE_URL]", url);
-        result = result.Replace("[REPLACE_USERNAME]", username);
-
-        streamReader.Close();
+        string result = $@"
+<!DOCTYPE html>
+<html lang=""az"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Email Təsdiqləmə</title>
+    <style>
+        body {{
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            color: #000000;
+        }}
+        .email-container {{
+            max-width: 600px;
+            margin: 20px auto;
+            border: 2px solid #000000;
+            padding: 20px;
+            border-radius: 0;
+            background-color: #ffffff;
+            text-align: center;
+        }}
+        .email-header {{
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }}
+        .email-body {{
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }}
+        .email-button {{
+            display: inline-block;
+            text-decoration: none;
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: 2px solid #000000;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }}
+        .email-footer {{
+            font-size: 12px;
+            color: #555555;
+            margin-top: 20px;
+        }}
+        hr {{
+            margin: 30px 0;
+            border: none;
+            border-top: 1px solid #000;
+        }}
+    </style>
+</head>
+<body>
+    <div class=""email-container"">
+        <!-- Azərbaycan Dili -->
+        <div class=""email-header"">Email Təsdiqləmə</div>
+        <div class=""email-body"">
+            Qeydiyyatdan keçdiyiniz üçün təşəkkür edirik! Hesabınızı aktivləşdirmək üçün e-mail ünvanınızı təsdiqləyin.
+        </div>
+        <a href=""{url}"" class=""email-button"">E-maili Təsdiqlə</a>
+        <div class=""email-footer"">
+            Əgər bu hesabı siz yaratmamısınızsa, zəhmət olmasa, bu e-maili nəzərə almayın.
+        </div>
+        <hr>
+        <!-- İngilis Dili -->
+        <div class=""email-header"">Email Confirmation</div>
+        <div class=""email-body"">
+            Thank you for signing up! Please confirm your email address to activate your account.
+        </div>
+        <a href=""{url}"" class=""email-button"">Confirm Email</a>
+        <div class=""email-footer"">
+            If you didn’t create this account, please ignore this email.
+        </div>
+        <hr>
+        <!-- Rus Dili -->
+        <div class=""email-header"">Подтверждение Email</div>
+        <div class=""email-body"">
+            Спасибо за регистрацию! Пожалуйста, подтвердите свой адрес электронной почты, чтобы активировать ваш аккаунт.
+        </div>
+        <a href=""{url}"" class=""email-button"">Подтвердить Email</a>
+        <div class=""email-footer"">
+            Если вы не создавали эту учетную запись, просто проигнорируйте это письмо.
+        </div>
+    </div>
+</body>
+</html>";
         return result;
     }
 }

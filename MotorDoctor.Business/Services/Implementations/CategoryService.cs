@@ -4,6 +4,7 @@ using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -13,18 +14,26 @@ internal class CategoryService : ICategoryService
     private readonly ICategoryRepository _repository;
     private readonly IMapper _mapper;
     private readonly ICloudinaryService _cloudinaryService;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public CategoryService(ICategoryRepository repository, IMapper mapper, ICloudinaryService cloudinaryService)
+    public CategoryService(ICategoryRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
         _cloudinaryService = cloudinaryService;
+        _errorLocalizer = errorLocalizer;
     }
 
     public async Task<bool> CreateAsync(CategoryCreateDto dto, ModelStateDictionary ModelState)
     {
         if (!ModelState.IsValid)
             return false;
+
+        if (dto.ParentId is null && dto.Image is null)
+        {
+            ModelState.AddModelError("Image", "Əsas kategoriyanın şəkli mütləq olmalıdır.");
+            return false;
+        }
 
         if (!dto.Image?.ValidateSize(2) ?? false)
         {
@@ -86,13 +95,13 @@ internal class CategoryService : ICategoryService
         var category = await _repository.GetAsync(id, x => x.Include(x => x.Children).Include(x => x.Products));
 
         if (category is null)
-            throw new NotFoundException("Bu Id-də kategoriya tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         if (category.Children.Count > 0)
-            throw new InvalidInputException("Alt kategoriyaları olan kategoriyanı silə bilməzsiniz");
+            throw new InvalidInputException(_errorLocalizer.GetValue(nameof(InvalidInputException)));
 
         if (category.Products.Count > 0)
-            throw new InvalidInputException("Məhsulları olan kategoriyanı silə bilməzsiniz");
+            throw new InvalidInputException(_errorLocalizer.GetValue(nameof(InvalidInputException)));
 
 
         if (!string.IsNullOrEmpty(category.ImagePath))
@@ -128,7 +137,7 @@ internal class CategoryService : ICategoryService
         var category = await _repository.GetAsync(id, x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.Children).Include(x => x.Parent!));
 
         if (category is null)
-            throw new NotFoundException("Bu Id-də kategoriya tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<CategoryGetDto>(category);
 
@@ -179,11 +188,15 @@ internal class CategoryService : ICategoryService
         var query = _repository.GetFilter(x => x.ParentId != null, x => x.Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language))
                                         .Include(x => x.Products).ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))
                                         .Include(x => x.Products).ThenInclude(x => x.ProductSizes).Include(x => x.Products)
-                                        .ThenInclude(x => x.ProductImages));
+                                        .ThenInclude(x => x.ProductImages).Include(x => x.Parent!));
 
         query = _repository.OrderByDescending(query, x => x.Products.Sum(x => x.SalesCount));
 
-        var categories = await query.Take(3).Include(x => x.Parent).ToListAsync();
+        var categories = await query
+              .GroupBy(x => x.ParentId)
+              .Select(group => group.FirstOrDefault() != null ? group.FirstOrDefault()! : new())
+              .Take(3)
+              .ToListAsync();
 
         foreach (var category in categories)
             category.Products = category.Products.Take(4).ToList();
@@ -211,7 +224,7 @@ internal class CategoryService : ICategoryService
         var category = await _repository.GetAsync(id, x => x.Include(x => x.CategoryDetails));
 
         if (category is null)
-            throw new NotFoundException("Bu Id-də kategoriya tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<CategoryUpdateDto>(category);
 
@@ -251,7 +264,7 @@ internal class CategoryService : ICategoryService
         var existCategory = await _repository.GetAsync(x => x.Id == dto.Id, x => x.Include(x => x.CategoryDetails).Include(x => x.Children));
 
         if (existCategory is null)
-            throw new NotFoundException("Bu id-də məlumat mövcud deyi");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         if (!dto.Image?.ValidateSize(2) ?? false)
         {

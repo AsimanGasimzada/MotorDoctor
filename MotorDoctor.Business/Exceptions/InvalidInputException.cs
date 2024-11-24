@@ -1,4 +1,6 @@
-﻿namespace MotorDoctor.Business.Exceptions;
+﻿using System.Net;
+
+namespace MotorDoctor.Business.Exceptions;
 
 public class InvalidInputException:Exception,IBaseException
 {
@@ -6,4 +8,7 @@ public class InvalidInputException:Exception,IBaseException
     {
         
     }
+
+    public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.BadRequest;
+
 }

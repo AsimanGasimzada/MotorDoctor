@@ -1,24 +1,19 @@
-using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
 using MotorDoctor.Business.Extensions;
 using MotorDoctor.Business.UIServices.Abstractions;
 using MotorDoctor.Presentation.Extensions;
-using System.Reflection.Metadata;
+using Newtonsoft.Json;
 
 namespace MotorDoctor.Presentation.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IBasketService _basketService;
-        private readonly IOrderService _orderService;
         private readonly IHomeService _homeService;
         private readonly ILanguageService _languageService;
         private readonly ISubscriberService _subscriberService;
-        public HomeController(IBasketService basketService, IOrderService orderService, IHomeService homeService, ILanguageService languageService, ISubscriberService subscriberService)
+        public HomeController(IHomeService homeService, ILanguageService languageService, ISubscriberService subscriberService)
         {
-            _basketService = basketService;
-            _orderService = orderService;
             _homeService = homeService;
             _languageService = languageService;
             _subscriberService = subscriberService;
@@ -26,6 +21,7 @@ namespace MotorDoctor.Presentation.Controllers
 
         public async Task<IActionResult> Index()
         {
+
             var dto = await _homeService.GetHomeDtoAsync(Constants.SelectedLanguage);
 
             return View(dto);
@@ -40,6 +36,21 @@ namespace MotorDoctor.Presentation.Controllers
             return Redirect(returnUrl);
         }
 
+
+        public IActionResult Error(string json)
+        {
+            if (!string.IsNullOrEmpty(json))
+            {
+                var dto = JsonConvert.DeserializeObject<ErrorDto>(json);
+                return View(dto);
+            }
+
+            return View(new ErrorDto
+            {
+                StatusCode = 500,
+                Message = "An unexpected error occurred."
+            });
+        }
 
 
         public async Task<IActionResult> AddSubscriber(SubscriberCreateDto dto)

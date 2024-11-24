@@ -4,6 +4,7 @@ using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -13,12 +14,14 @@ internal class BrandService : IBrandService
     private readonly IBrandRepository _repository;
     private readonly IMapper _mapper;
     private readonly ICloudinaryService _cloudinaryService;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public BrandService(IBrandRepository repository, IMapper mapper, ICloudinaryService cloudinaryService)
+    public BrandService(IBrandRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
         _cloudinaryService = cloudinaryService;
+        _errorLocalizer = errorLocalizer;
     }
 
     public async Task<bool> CreateAsync(BrandCreateDto dto, ModelStateDictionary ModelState)
@@ -73,7 +76,7 @@ internal class BrandService : IBrandService
         var brand = await _repository.GetAsync(x => x.Id == id);
 
         if (brand is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         _repository.Delete(brand);
         await _repository.SaveChangesAsync();
@@ -103,7 +106,7 @@ internal class BrandService : IBrandService
         var brand = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (brand is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<BrandGetDto>(brand);
 
@@ -116,7 +119,7 @@ internal class BrandService : IBrandService
 
 
         if (brand is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<BrandUpdateDto>(brand);
 
@@ -138,7 +141,7 @@ internal class BrandService : IBrandService
         var existBrand = await _repository.GetAsync(dto.Id, x => x.Include(x => x.BrandDetails));
 
         if (existBrand is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         if (!dto.Image?.ValidateSize(2) ?? false)
         {

@@ -56,9 +56,9 @@
                         <div class="product-card-details">
                             <div class="product-detail-content">
                                 <div class="product-detail-content-left">
-                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a >@product.Brand?.Name</a>
+                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a>@product.Brand?.Name</a>
                                     <a class="product-detail-title">@product.Name</a>
-                                    <a >@product.Category.Name</a>
+                                    <a>@product.Category.Name</a>
                                 </div>
                                 <div class="product-detail-content-right">
 
@@ -148,9 +148,9 @@
                             </div>
                         </a>
                         <div class="product-card-content">
-                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a >@product.Brand.Name</a>
-                            <a  class="product-title">@product.Name</a>
-                            <a  class="product-category">@product.Category.Name</a>
+                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a>@product.Brand.Name</a>
+                            <a class="product-title">@product.Name</a>
+                            <a class="product-category">@product.Category.Name</a>
                             <div>
                                 <span>₼@product.ProductSizes.FirstOrDefault()?.Price</span>
 
@@ -186,7 +186,7 @@
                     <div class="category-items">
                         <img src="@category.ImagePath"
                              alt="Image 3" class="product-image" />
-                        <a  class="category-item">
+                        <a asp-action="Index" asp-controller="Shop" asp-route-categoryId="@category.Id" class="category-item">
                             <span class="category-title">
                                 @category.Name
                                 <span class="category-count">(@category.ProductCount)</span>
@@ -230,18 +230,18 @@
     </section>
     <!-- Trending Section End  -->
     <!-- Street Vibe Section Start -->
-    <section id="street-vibe">
-        <div class="street-title">
-            <span>GOING OUT ON THE STREET</span>
-            <h2>THE ULTIMATE STREET VIBE</h2>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit ellent,
-                esque eget massa ac urna finibus fringilla nonpon mauris sit amet
-                nisl in nunc pharetra.
-            </p>
-            <a  class="custom-button">SHOP NOW</a>
-        </div>
-    </section>
+    @if (Model.About is { })
+    {
+        <section id="street-vibe" style="background-image:url(@Model.About.ImagePath)">
+            <div class="street-title">
+                <h2>@Model.About.Name</h2>
+                <p>
+                    @Html.Raw(Model.About.Description)
+                </p>
+                <a class="custom-button">SHOP NOW</a>
+            </div>
+        </section>
+    }
     <!-- Street Vibe Section End -->
     <!-- Categories Slider Section Start -->
     <section style="margin-top: 100px;" id="categories-slider">
@@ -254,7 +254,7 @@
                             <h5>@category.Name</h5>
                             <div class="category-image" style="width:200px;height:200px;overflow:hidden">
                                 <img src="@category.ImagePath"
-                                     alt="@category.Name"  style="object-fit:cover;width:100%;height:auto;"/>
+                                     alt="@category.Name" style="object-fit:cover;width:100%;height:auto;" />
                             </div>
                         </div>
                     </div>

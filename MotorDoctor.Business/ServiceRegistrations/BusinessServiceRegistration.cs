@@ -35,12 +35,14 @@ public static class BusinessServiceRegistration
 
     private static void AddServices(IServiceCollection services)
     {
+        services.AddScoped<IAboutService, AboutService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAttendanceService, AttendanceService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
         services.AddScoped<ISliderService, SliderService>();
         services.AddScoped<ISettingService, SettingService>();
-        services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IBranchService, BranchService>();
         services.AddScoped<IProductService, ProductService>();

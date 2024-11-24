@@ -31,16 +31,18 @@ public static class DataAccessServiceRegistration
 
     private static void _addRepositories(IServiceCollection services)
     {
+        services.AddScoped<IAboutRepository, AboutRepository>();
+        services.AddScoped<IAttedanceRepository, AttedanceRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
         services.AddScoped<IBasketItemRepository, BasketItemRepository>();
-        services.AddScoped<ILanguageRepository, LanguageRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<ILanguageRepository, LanguageRepository>();
         services.AddScoped<ISliderRepository, SliderRepository>();
         services.AddScoped<ISettingRepository, SettingRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
-        services.AddScoped<IAttedanceRepository, AttedanceRepository>();
         services.AddScoped<ISubscriberRepository, SubscriberRepository>();
         services.AddScoped<IStatusRepository, StatusRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
@@ -50,6 +52,7 @@ public static class DataAccessServiceRegistration
 
     private static void _addLocalizers(IServiceCollection services)
     {
+        services.AddSingleton<AboutLocalizer>();
         services.AddSingleton<AccountLocalizer>();
         services.AddSingleton<BasketLocalizer>();
         services.AddSingleton<ContactLocalizer>();

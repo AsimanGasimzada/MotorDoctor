@@ -135,8 +135,17 @@
   <data name="Details" xml:space="preserve">
     <value>Detallar</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Əsas səhifə</value>
+  </data>
+  <data name="NotFoundOrders" xml:space="preserve">
+    <value>HƏLƏKİ SİFARİŞİNİZ YOXDUR , BOL-BOL ALIŞVERİŞ EDİN</value>
+  </data>
   <data name="Order" xml:space="preserve">
     <value>Sifariş</value>
+  </data>
+  <data name="OrdersTitle" xml:space="preserve">
+    <value>SİFARİŞLƏRİNİZ</value>
   </data>
   <data name="OrderTitle" xml:space="preserve">
     <value>SİFARİŞİ TƏSDİQLƏ</value>

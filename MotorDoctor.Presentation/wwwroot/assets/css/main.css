@@ -605,7 +605,7 @@ body.no-scroll {
     background-color: white;
     border: none;
     cursor: pointer;
-    z-index: 10;
+    z-index: 2;
     transition: 0.4s ease-in;
 }
 
@@ -2956,5 +2956,57 @@ body.no-scroll {
 
     .total {
         font-size: 16px;
+    }
+}
+
+
+
+
+
+
+
+
+
+/*About*/
+.smaller-card {
+    max-width: 980px;
+    margin: 0 auto;
+}
+
+.smaller-img {
+    height: auto;
+    max-height: 542px;
+    object-fit: cover;
+}
+
+.bigger-title {
+    font-size: 2.5rem;
+}
+
+.bigger-text {
+    font-size: 1.2rem;
+}
+
+.btn-dark.bigger-text {
+    font-size: 1.1rem;
+    padding: 10px 20px;
+}
+
+.card-body a:hover {
+    color: #000000;
+}
+
+
+.custom-button:hover {
+    color: white !important;
+}
+
+.btn-dark:hover {
+    background-color: #444;
+}
+
+@media screen and (max-width:450px) {
+    .bigger-title {
+        font-size: 41px !important;
     }
 }

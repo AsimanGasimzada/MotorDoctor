@@ -5,6 +5,7 @@ using MotorDoctor.Business.Extensions;
 
 namespace MotorDoctor.Presentation.Controllers;
 
+[Authorize]
 public class OrderController : Controller
 {
     private readonly IOrderService _orderService;
@@ -15,7 +16,6 @@ public class OrderController : Controller
         _orderService = orderService;
     }
 
-    [Authorize]
     public async Task<IActionResult> Index()
     {
         var result = await _orderService.GetUserUnSubmitOrderAsync(Constants.SelectedLanguage);
@@ -37,5 +37,11 @@ public class OrderController : Controller
         }
 
         return RedirectToAction("Index", "Shop");
+    }
+    public async Task<IActionResult> List()
+    {
+        var result = await _orderService.GetUserOrdersAsync(Constants.SelectedLanguage);
+
+        return View(result);
     }
 }

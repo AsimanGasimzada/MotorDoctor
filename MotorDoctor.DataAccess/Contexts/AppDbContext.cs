@@ -22,6 +22,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
         modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
         modelBuilder.Entity<ProductSize>().HasQueryFilter(x => !x.IsDeleted);
         modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Comment>().HasQueryFilter(x => !x.IsDeleted);
 
         base.OnModelCreating(modelBuilder);
     }
@@ -32,28 +33,32 @@ public class AppDbContext : IdentityDbContext<AppUser>
         base.OnConfiguring(optionsBuilder);
     }
 
-    public DbSet<Attendance> Attendances { get; set; } = null!;
-    public DbSet<AttendanceDetail> AttendanceDetails { get; set; } = null!;
-    public DbSet<Language> Languages { get; set; } = null!;
-    public DbSet<Brand> Brands { get; set; } = null!;
-    public DbSet<BrandDetail> BrandDetails { get; set; } = null!;
-    public DbSet<Category> Categories { get; set; } = null!;
-    public DbSet<CategoryDetail> CategoryDetails { get; set; } = null!;
-    public DbSet<Slider> Sliders { get; set; } = null!;
-    public DbSet<SliderDetail> SliderDetails { get; set; } = null!;
-    public DbSet<SettingDetail> SettingDetails { get; set; } = null!;
-    public DbSet<Setting> Settings { get; set; } = null!;
-    public DbSet<Product> Products { get; set; } = null!;
-    public DbSet<ProductSize> ProductSizes { get; set; } = null!;
-    public DbSet<ProductImage> ProductImages { get; set; } = null!;
-    public DbSet<ProductDetail> ProductDetails { get; set; } = null!;
-    public DbSet<Branch> Branches { get; set; } = null!;
-    public DbSet<BranchDetail> BranchDetails { get; set; } = null!;
-    public DbSet<BasketItem> BasketItems { get; set; } = null!;
-    public DbSet<Subscriber> Subscribers { get; set; } = null!;
-    public DbSet<Order> Orders { get; set; } = null!;
-    public DbSet<OrderItem> OrderItems { get; set; } = null!;
-    public DbSet<Status> Statuses { get; set; } = null!;
-    public DbSet<StatusDetail> StatusDetails { get; set; } = null!;
-    public DbSet<WishlistItem> WishlistItems { get; set; } = null!;
+    public required DbSet<About> Abouts { get; set; }
+    public required DbSet<AboutDetail> AboutDetails { get; set; }
+    public required DbSet<Attendance> Attendances { get; set; }
+    public required DbSet<AttendanceDetail> AttendanceDetails { get; set; }
+    public required DbSet<BasketItem> BasketItems { get; set; }
+    public required DbSet<Branch> Branches { get; set; }
+    public required DbSet<BranchDetail> BranchDetails { get; set; }
+    public required DbSet<Brand> Brands { get; set; }
+    public required DbSet<BrandDetail> BrandDetails { get; set; }
+    public required DbSet<Category> Categories { get; set; }
+    public required DbSet<CategoryDetail> CategoryDetails { get; set; }
+    public required DbSet<Comment> Comments { get; set; }
+    public required DbSet<Language> Languages { get; set; }
+    public required DbSet<Order> Orders { get; set; }
+    public required DbSet<OrderItem> OrderItems { get; set; }
+    public required DbSet<Product> Products { get; set; }
+    public required DbSet<ProductDetail> ProductDetails { get; set; }
+    public required DbSet<ProductImage> ProductImages { get; set; }
+    public required DbSet<ProductSize> ProductSizes { get; set; }
+    public required DbSet<Setting> Settings { get; set; }
+    public required DbSet<SettingDetail> SettingDetails { get; set; }
+    public required DbSet<Slider> Sliders { get; set; }
+    public required DbSet<SliderDetail> SliderDetails { get; set; }
+    public required DbSet<Status> Statuses { get; set; }
+    public required DbSet<StatusDetail> StatusDetails { get; set; }
+    public required DbSet<Subscriber> Subscribers { get; set; }
+    public required DbSet<WishlistItem> WishlistItems { get; set; }
+
 }

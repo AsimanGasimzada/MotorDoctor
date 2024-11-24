@@ -58,4 +58,12 @@ public class AccountController : Controller
 
         return Redirect(returnUrl);
     }
+
+
+    public async Task<IActionResult> VerifyEmail(VerifyEmailDto dto)
+    {
+        var result = await _authService.VerifyEmailAsync(dto, ModelState);
+
+        return RedirectToAction("Index", "Home");
+    }
 }

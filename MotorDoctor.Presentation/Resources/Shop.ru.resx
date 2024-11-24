@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Accept" xml:space="preserve">
+    <value>Yes</value>
+  </data>
   <data name="AddToCart" xml:space="preserve">
     <value>Add to cart</value>
   </data>
@@ -132,11 +135,24 @@
   <data name="Code" xml:space="preserve">
     <value>Code</value>
   </data>
+  <data name="CommentButton" xml:space="preserve">
+    <value>Submit</value>
+  </data>
+  <data name="ConfirmDelete" xml:space="preserve">
+    <value>Are you sure you want to delete the comment?</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
   <data name="Filter" xml:space="preserve">
     <value>Filter</value>
+  </data>
+  <data name="LeaveComment" xml:space="preserve">
+    <value>Leave a Comment
+</value>
+  </data>
+  <data name="NotFoundProduct" xml:space="preserve">
+    <value>PRODUCT NOT FOUND</value>
   </data>
   <data name="Price" xml:space="preserve">
     <value>Price</value>
@@ -146,6 +162,9 @@
   </data>
   <data name="PriceLowToHigh" xml:space="preserve">
     <value>Sort by price low to high</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>No</value>
   </data>
   <data name="Reviews" xml:space="preserve">
     <value>Reviews</value>
@@ -167,5 +186,14 @@
   </data>
   <data name="SortByPopularity" xml:space="preserve">
     <value>Sort by popularity</value>
+  </data>
+  <data name="YourComment" xml:space="preserve">
+    <value>Your Comment</value>
+  </data>
+  <data name="YourCommentInput" xml:space="preserve">
+    <value>Write your comment</value>
+  </data>
+  <data name="YourRating" xml:space="preserve">
+    <value>Your Rating</value>
   </data>
 </root>

@@ -3,4 +3,5 @@
 public interface ILanguageService
 {
     void SelectCulture(string culture);
+    void RenderSelectedLanguage();
 }

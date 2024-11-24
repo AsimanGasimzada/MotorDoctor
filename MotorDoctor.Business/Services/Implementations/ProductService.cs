@@ -4,6 +4,7 @@ using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -15,14 +16,16 @@ internal class ProductService : IProductService
     private readonly ICloudinaryService _cloudinaryService;
     private readonly ICategoryService _categoryService;
     private readonly IBrandService _brandService;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public ProductService(IProductRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ICategoryService categoryService, IBrandService brandService)
+    public ProductService(IProductRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ICategoryService categoryService, IBrandService brandService, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
         _cloudinaryService = cloudinaryService;
         _categoryService = categoryService;
         _brandService = brandService;
+        _errorLocalizer = errorLocalizer;
     }
 
 
@@ -131,7 +134,7 @@ internal class ProductService : IProductService
         var product = await _repository.GetAsync(x => x.ProductSizes.Any(x => x.Id == productSizeId), x => x.Include(x => x.ProductSizes));
 
         if (product is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         if (count < 0)
             count = 0;
@@ -148,7 +151,7 @@ internal class ProductService : IProductService
         var product = await _repository.GetAsync(id);
 
         if (product is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         _repository.Delete(product);
         await _repository.SaveChangesAsync();
@@ -209,6 +212,9 @@ internal class ProductService : IProductService
                     query = query.OrderBy(x => x.ProductSizes.FirstOrDefault() != null ? x.ProductSizes.FirstOrDefault()!.Price : x.Id);
                     break;
             }
+
+            if (filterDto.MaxPrice is 0)
+                filterDto.MaxPrice = 1000;
         }
 
         int count = await query.CountAsync();
@@ -279,7 +285,7 @@ internal class ProductService : IProductService
         var product = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (product is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<ProductGetDto>(product);
 
@@ -342,7 +348,7 @@ internal class ProductService : IProductService
         var product = await _repository.GetAsync(id, _getIncludeFunc());
 
         if (product is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<ProductUpdateDto>(product);
 
@@ -371,7 +377,7 @@ internal class ProductService : IProductService
         var product = await _repository.GetAsync(x => x.ProductSizes.Any(x => x.Id == productSizeId), x => x.Include(x => x.ProductSizes));
 
         if (product is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         if (count < 0)
             count = 0;
@@ -394,7 +400,7 @@ internal class ProductService : IProductService
         var existProduct = await _repository.GetAsync(dto.Id, _getIncludeFunc());
 
         if (existProduct is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var isExistCategory = await _categoryService.IsExistAsync(dto.CategoryId);
 

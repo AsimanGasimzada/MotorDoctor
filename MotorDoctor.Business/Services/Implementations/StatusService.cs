@@ -4,6 +4,7 @@ using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -12,11 +13,13 @@ public class StatusService : IStatusService
 {
     private readonly IStatusRepository _repository;
     private readonly IMapper _mapper;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public StatusService(IStatusRepository repository, IMapper mapper)
+    public StatusService(IStatusRepository repository, IMapper mapper, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
+        _errorLocalizer = errorLocalizer;
     }
 
     public async Task<List<StatusGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
@@ -33,7 +36,7 @@ public class StatusService : IStatusService
         var status = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (status is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<StatusGetDto>(status);
 
@@ -44,7 +47,7 @@ public class StatusService : IStatusService
         var status = await _repository.GetAsync(x => x.Id > 0, include: _getIncludeFunc(language));
 
         if (status is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<StatusGetDto>(status);
 
@@ -58,7 +61,7 @@ public class StatusService : IStatusService
         var status = statuses.LastOrDefault();
 
         if (status is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<StatusGetDto>(status);
 

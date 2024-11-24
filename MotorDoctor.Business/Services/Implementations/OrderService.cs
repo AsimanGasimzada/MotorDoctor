@@ -220,7 +220,9 @@ internal class OrderService : IOrderService
 
         string userId = _getUserId();
 
-        var orders = await _repository.GetFilter(x => x.AppUserId == userId, _getIncludeFunc(language)).ToListAsync();
+        var query = _repository.GetFilter(x => x.AppUserId == userId, _getIncludeFunc(language));
+
+        var orders = await _repository.OrderByDescending(query, x => x.CreatedAt).ToListAsync();
 
         var dtos = _mapper.Map<List<OrderGetDto>>(orders);
 
@@ -279,8 +281,9 @@ internal class OrderService : IOrderService
     {
         LanguageHelper.CheckLanguageId(ref language);
         return x => x.Include(x => x.OrderItems).ThenInclude(x => x.ProductSize.Product.ProductDetails.Where(x => x.LanguageId == (int)language))
-                            .Include(x=>x.OrderItems).ThenInclude(x=>x.ProductSize.Product.ProductImages)
-                            .Include(x => x.Status.StatusDetails.Where(x => x.LanguageId == (int)language));
+                            .Include(x => x.OrderItems).ThenInclude(x => x.ProductSize.Product.ProductImages)
+                            .Include(x => x.Status.StatusDetails.Where(x => x.LanguageId == (int)language))
+                            .Include(x => x.AppUser);
     }
 
 

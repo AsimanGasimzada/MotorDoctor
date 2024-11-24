@@ -201,27 +201,39 @@
 
                 <div class="form-group">
                     <label for="region">Rayon</label>
-                    <input id="region" disabled asp-for="Region" required placeholder="Enter your region">
+                    <input id="region" disabled asp-for="Region" >
                 </div>
 
                 <div class="form-group">
                     <label for="street">Küçə</label>
-                    <input id="street" disabled asp-for="Street" required placeholder="Enter your street">
+                    <input id="street" disabled asp-for="Street" >
                 </div>
 
 
                 <div class="form-group">
                     <label for="phone">Telefon</label>
-                    <input type="tel" disabled id="phone" asp-for="PhoneNumber" required placeholder="Enter your phone number">
+                    <input type="tel" disabled id="phone" asp-for="PhoneNumber">
                 </div>
 
 
 
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <input  disabled id="status" asp-for="Status.Name" required placeholder="Enter your phone number">
+                    <input  disabled id="status" asp-for="Status.Name"  >
                 </div>
 
+
+
+                <div class="form-group">
+                    <label for="status">Email</label>
+                    <input disabled id="status" asp-for="AppUser.Email"  >
+                </div>
+
+
+                <div class="form-group">
+                    <label for="status">İstifadəçi adı</label>
+                    <input disabled id="status" asp-for="AppUser.Username">
+                </div>
 
             </form>
         </div>

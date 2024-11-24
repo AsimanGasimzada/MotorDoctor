@@ -135,7 +135,16 @@
   <data name="Details" xml:space="preserve">
     <value />
   </data>
+  <data name="Home" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NotFoundOrders" xml:space="preserve">
+    <value />
+  </data>
   <data name="Order" xml:space="preserve">
+    <value />
+  </data>
+  <data name="OrdersTitle" xml:space="preserve">
     <value />
   </data>
   <data name="OrderTitle" xml:space="preserve">

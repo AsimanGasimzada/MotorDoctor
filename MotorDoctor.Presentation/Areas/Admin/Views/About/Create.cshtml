@@ -1,0 +1,164 @@
+﻿@model AboutCreateDto
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description">
+                Mətn yarat
+            </p>
+            <form method="post" class="forms-sample" enctype="multipart/form-data">
+
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.AboutDetails[0].LanguageId" value="1" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca ad</label>
+                        <input class="form-control" required asp-for="@Model.AboutDetails[0].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.AboutDetails[0].Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Azərbaycanca açıqlama</label>
+                        <textarea class="form-control" id="description0"  asp-for="@Model.AboutDetails[0].Description" placeholder="Açıqlama daxil edin"></textarea>
+                        <span asp-validation-for="@Model.AboutDetails[0].Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.AboutDetails[1].LanguageId" value="2" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə ad</label>
+                        <input class="form-control" required asp-for="@Model.AboutDetails[1].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.AboutDetails[1].Name" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">İngiliscə açıqlama</label>
+                        <textarea class="form-control" id="description1" asp-for="@Model.AboutDetails[1].Description" placeholder="Açıqlama daxil edin"></textarea>
+                        <span asp-validation-for="@Model.AboutDetails[1].Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+                <div class="form-group">
+
+                    <input asp-for="@Model.AboutDetails[2].LanguageId" value="3" type="hidden" />
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca ad</label>
+                        <input class="form-control" required asp-for="@Model.AboutDetails[2].Name" placeholder="Ad daxil edin">
+                        <span asp-validation-for="@Model.AboutDetails[2].Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Rusca açıqlama</label>
+                        <textarea class="form-control" id="description2" asp-for="@Model.AboutDetails[2].Description" placeholder="Açıqlama daxil edin"></textarea>
+                        <span asp-validation-for="@Model.AboutDetails[2].Description" class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1"> Sıra nömrəsi daxil edin.Qeyd:Daxil etdiyiniz sıra nömrəsi bu mətnin səhifədə neçənci sırada olacağını göstərir</label>
+                    <input class="form-control" asp-for="OrderNo" placeholder="Sıra nömrəsi daxil edin">
+                    <span asp-validation-for="OrderNo" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1"> Şəkil seçin</label>
+                    <input class="form-control" asp-for="Image">
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+           
+
+
+                <button type="submit" class="btn btn-primary mr-2">Yarat</button>
+                <a class="btn btn-light" asp-action="Index">Ləğv et</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@section Scripts {
+
+    <script type="module">
+        import {
+            ClassicEditor,
+            Essentials,
+            Paragraph,
+            Bold,
+            Italic,
+            Font
+        } from 'ckeditor5';
+
+        ClassicEditor
+            .create(document.querySelector('#description0'), {
+                plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+        ClassicEditor
+            .create(document.querySelector('#description1'), {
+                plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+
+        ClassicEditor
+            .create(document.querySelector('#description2'), {
+                plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+    </script>
+}

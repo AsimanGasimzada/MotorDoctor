@@ -1,0 +1,40 @@
+﻿@model List<AboutGetDto>
+@inject AboutLocalizer _localizer
+
+<br />
+<br />
+<br />
+<br />
+<main id="main">
+    @if (Model.Count == 0)
+    {
+        <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
+            <p class="m-0 fw-bold">@_localizer.GetValue("NotFoundAbout")</p>
+        </div>
+    }
+    else
+    {
+
+        @foreach (var about in Model)
+        {
+
+            <div class="container my-4 mt-5">
+                <div class="card border-0   smaller-card">
+                    <img src="@about.ImagePath"
+                         class="card-img-top smaller-img" alt="Ideas for Action">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between text-muted mb-2">
+                            <a href="#" class="text-decoration-none bigger-text"></a>
+                            <a href="#" class="text-decoration-none bigger-text"></a>
+                        </div>
+                        <h1 style="font-size: 50px; font-weight: 640;" class="card-title bigger-title">@about.Name</h1>
+                        <p class="card-text mt-2 bigger-text">
+                            @Html.Raw(about.Description)
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+</main>

@@ -4,6 +4,7 @@ using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -12,12 +13,14 @@ internal class AttendanceService : IAttendanceService
     private readonly IAttedanceRepository _repository;
     private readonly IMapper _mapper;
     private readonly ICloudinaryService _cloudinaryService;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public AttendanceService(IAttedanceRepository repository, IMapper mapper, ICloudinaryService cloudinaryService)
+    public AttendanceService(IAttedanceRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
         _cloudinaryService = cloudinaryService;
+        _errorLocalizer = errorLocalizer;
     }
 
     public async Task<bool> CreateAsync(AttendanceCreateDto dto, ModelStateDictionary ModelState)
@@ -72,7 +75,7 @@ internal class AttendanceService : IAttendanceService
         var attedance = await _repository.GetAsync(id);
 
         if (attedance is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         _repository.Delete(attedance);
         await _repository.SaveChangesAsync();
@@ -94,7 +97,7 @@ internal class AttendanceService : IAttendanceService
         var attendance = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (attendance is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<AttendanceGetDto>(attendance);
 
@@ -106,7 +109,7 @@ internal class AttendanceService : IAttendanceService
         var attendance = await _repository.GetAsync(id, x => x.Include(x => x.AttendanceDetails));
 
         if (attendance is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<AttendanceUpdateDto>(attendance);
 
@@ -121,7 +124,7 @@ internal class AttendanceService : IAttendanceService
         var existAttendance = await _repository.GetAsync(dto.Id, x => x.Include(x => x.AttendanceDetails));
 
         if (existAttendance is null)
-            throw new NotFoundException("Bu id-də məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         if (!dto.Image?.ValidateSize(2) ?? false)
         {

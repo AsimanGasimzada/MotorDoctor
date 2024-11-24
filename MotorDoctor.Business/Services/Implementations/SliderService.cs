@@ -4,6 +4,7 @@ using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -13,12 +14,14 @@ internal class SliderService : ISliderService
     private readonly ISliderRepository _repository;
     private readonly IMapper _mapper;
     private readonly ICloudinaryService _cloudinaryService;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public SliderService(ISliderRepository repository, IMapper mapper, ICloudinaryService cloudinaryService)
+    public SliderService(ISliderRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
         _cloudinaryService = cloudinaryService;
+        _errorLocalizer = errorLocalizer;
     }
     public async Task<bool> CreateAsync(SliderCreateDto dto, ModelStateDictionary ModelState)
     {
@@ -74,7 +77,7 @@ internal class SliderService : ISliderService
         var slider = await _repository.GetAsync(id);
 
         if (slider is null)
-            throw new NotFoundException($"{id}-bu idli slayd mövcud deyildir.");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         _repository.Delete(slider);
         await _repository.SaveChangesAsync();
@@ -98,7 +101,7 @@ internal class SliderService : ISliderService
         var slider = await _repository.GetAsync(id, _getIncludeFunc(language));
 
         if (slider is null)
-            throw new NotFoundException($"{id}-bu idli slayd mövcud deyildir.");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<SliderGetDto>(slider);
 
@@ -110,7 +113,7 @@ internal class SliderService : ISliderService
         var slider = await _repository.GetAsync(id, x => x.Include(x => x.SliderDetails));
 
         if (slider is null)
-            throw new NotFoundException($"{id}-bu idli slayd mövcud deyildir.");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<SliderUpdateDto>(slider);
 
@@ -125,7 +128,7 @@ internal class SliderService : ISliderService
         var existSlider = await _repository.GetAsync(dto.Id, x => x.Include(x => x.SliderDetails));
 
         if (existSlider is null)
-            throw new NotFoundException($"{dto.Id}-bu idli slayd mövcud deyildir.");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         if (dto.Image is { })
         {

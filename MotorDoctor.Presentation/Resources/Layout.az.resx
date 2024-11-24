@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="About" xml:space="preserve">
+    <value>Haqqımızda</value>
+  </data>
   <data name="BasketTitle" xml:space="preserve">
     <value>Səbət</value>
   </data>
@@ -132,6 +135,9 @@ PLUS FREE RETURNS</value>
   </data>
   <data name="Info" xml:space="preserve">
     <value>Məlumat</value>
+  </data>
+  <data name="LoadMore" xml:space="preserve">
+    <value>Daha çox</value>
   </data>
   <data name="Login" xml:space="preserve">
     <value>Giriş et</value>
@@ -150,6 +156,9 @@ PLUS FREE RETURNS</value>
   </data>
   <data name="Or" xml:space="preserve">
     <value>və ya</value>
+  </data>
+  <data name="Orders" xml:space="preserve">
+    <value>Sifarişlərim</value>
   </data>
   <data name="Register" xml:space="preserve">
     <value>Qeydiyyat</value>

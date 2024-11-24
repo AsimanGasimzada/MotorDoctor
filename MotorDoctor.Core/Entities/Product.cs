@@ -11,5 +11,6 @@ public class Product : BaseAuditableEntity
     public ICollection<ProductImage> ProductImages { get; set; } = [];
     public ICollection<ProductDetail> ProductDetails { get; set; } = [];
     public ICollection<ProductSize> ProductSizes { get; set; } = [];
+    public ICollection<Comment> Comments { get; set; } = [];
 
 }

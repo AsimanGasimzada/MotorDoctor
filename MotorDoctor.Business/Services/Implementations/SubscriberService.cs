@@ -2,6 +2,7 @@
 using MotorDoctor.Business.Exceptions;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Entities;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -11,12 +12,14 @@ internal class SubscriberService : ISubscriberService
     private readonly ISubscriberRepository _repository;
     private readonly IMapper _mapper;
     private readonly IEmailService _emailService;
+    private readonly ErrorLocalizer _errorLocalizer;
 
-    public SubscriberService(ISubscriberRepository repository, IMapper mapper, IEmailService emailService)
+    public SubscriberService(ISubscriberRepository repository, IMapper mapper, IEmailService emailService, ErrorLocalizer errorLocalizer)
     {
         _repository = repository;
         _mapper = mapper;
         _emailService = emailService;
+        _errorLocalizer = errorLocalizer;
     }
 
     public async Task<bool> CreateAsync(SubscriberCreateDto dto, ModelStateDictionary ModelState)
@@ -24,7 +27,7 @@ internal class SubscriberService : ISubscriberService
         if (!ModelState.IsValid)
             return false;
 
-        var isExist = await _repository.IsExistAsync(x => x.Email == dto.Email.ToUpper());
+        var isExist = await _repository.IsExistAsync(x => x.Email.ToUpper() == dto.Email.ToUpper());
 
         if (isExist)
         {
@@ -45,7 +48,7 @@ internal class SubscriberService : ISubscriberService
         var subscriber = await _repository.GetAsync(id);
 
         if (subscriber is null)
-            throw new NotFoundException("Məlumat tapılmadı");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         _repository.Delete(subscriber);
         await _repository.SaveChangesAsync();
@@ -65,7 +68,7 @@ internal class SubscriberService : ISubscriberService
         var subscriber = await _repository.GetAsync(id);
 
         if (subscriber is null)
-            throw new NotFoundException("Məlumat tapılmadı.");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<SubscriberGetDto>(subscriber);
 
@@ -77,7 +80,7 @@ internal class SubscriberService : ISubscriberService
         var subscriber = await _repository.GetAsync(id);
 
         if (subscriber is null)
-            throw new NotFoundException("Məlumat tapılmadı.");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<SubscriberUpdateDto>(subscriber);
 
@@ -116,7 +119,7 @@ internal class SubscriberService : ISubscriberService
         var existSubscriber = await _repository.GetAsync(x => x.Id == dto.Id);
 
         if (existSubscriber is null)
-            throw new NotFoundException("Məlumat tapılmadı.");
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var isExist = await _repository.IsExistAsync(x => x.Email == dto.Email.ToUpper() && x.Id != dto.Id);
 

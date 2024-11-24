@@ -1,0 +1,175 @@
+﻿@model List<OrderGetDto>
+@inject OrderLocalizer _localizer
+<br />
+<br />
+<br />
+<br />
+<style>
+
+
+    .accordion {
+        width: 100%;
+        max-width: 800px;
+        margin: 20px auto;
+        border: 2px solid black;
+        border-radius: 4px;
+        overflow: hidden;
+    }
+
+    .accordion-item {
+        border-bottom: 2px solid whitesmoke;
+    }
+
+        .accordion-item:last-child {
+            border-bottom: none;
+        }
+
+    .accordion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: black;
+        color: white;
+        padding: 15px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        outline: none;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+        .accordion-header span {
+            width: 200px;
+        }
+
+        .accordion-header:hover {
+            background-color: white;
+            color: black;
+        }
+
+        .accordion-header .date,
+        .accordion-header .price,
+        .accordion-header .status {
+            margin: 0 10px;
+        }
+
+    .accordion-content {
+        background-color: white;
+        color: black;
+        padding: 15px;
+        display: none;
+        border-top: 2px solid black;
+    }
+
+    .product {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+    .orderInfo{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        text-align:center;
+        margin:10px 0;
+    }
+
+        .product img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            border: 1px solid black;
+        }
+
+    .product-name {
+        flex: 2;
+    }
+
+    .product-price, .product-quantity {
+        flex: 1;
+        text-align: right;
+    }
+
+    .product:last-child {
+        margin-bottom: 0;
+    }
+</style>
+<main>
+    <!-- Breadcrumb Navigation Start -->
+    <nav id="breadcrumb">
+        <span><a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a></span>
+        <span class="line">|</span>
+        <span><a asp-action="List" class="text-dark">@_localizer.GetValue("Order")</a></span>
+    </nav>
+    <!-- Breadcrumb Navigation End -->
+    <!-- Wishlist Section Start -->
+    <section id="wishlist">
+        <div class="product-wishlist">
+            <h2>@_localizer.GetValue("OrdersTitle")</h2>
+        </div>
+        @if (Model.Count == 0)
+        {
+            <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
+                <p class="m-0 fw-bold">@_localizer.GetValue("NotFoundOrders")</p>
+            </div>
+        }
+        else
+        {
+            <div class="accordion">
+                @foreach (var order in Model)
+                {
+                    <div class="accordion-item">
+                        <button class="accordion-header">
+                            <span class="date">@order.CreatedAt.ToString("yyyy, MM MMMM")</span>
+                            <span class="price">₼@order.TotalPrice</span>
+                            <span class="status">@order.Status.Name</span>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="orderInfo" style="border-bottom:2px solid black;">
+                                <span class="orderInfoItem">@_localizer.GetValue("City"): @order.City</span>
+                                <span class="orderInfoItem">@_localizer.GetValue("Region"): @order.Region</span>
+                                <span class="orderInfoItem">@_localizer.GetValue("Street"): @order.Street</span>
+                                <span class="orderInfoItem">@_localizer.GetValue("PhoneNumber"): @order.PhoneNumber</span>
+                            </div>
+                            @foreach (var item in order.OrderItems)
+                            {
+                                <div class="product">
+                                    <img src="@item.ProductSize.Product.MainImagePath" alt="@item.ProductSize.Product.Name">
+                                    <span class="product-name"><a asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId" style="text-decoration:none;color:black;">@item.ProductSize.Product.Name</a></span>
+                                    <span class="product-name">@item.ProductSize.Size</span>
+                                    <span class="product-price">₼@item.ProductSize.Price</span>
+                                    <span class="product-quantity">x @item.Count</span>
+                                    <span class="product-quantity">₼@(item.Count * item.ProductSize.Price)</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                }
+            </div>
+        }
+
+    </section>
+
+
+</main>
+
+
+<script>
+        document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = header.nextElementSibling;
+
+        // Toggle the active state
+        const isOpen = content.style.display === 'block';
+        document.querySelectorAll('.accordion-content').forEach(content => {
+          content.style.display = 'none';
+        });
+
+        // Open or close the clicked section
+        content.style.display = isOpen ? 'none' : 'block';
+      });
+    });
+
+</script>
