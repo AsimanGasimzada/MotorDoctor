@@ -1,5 +1,4 @@
-﻿using CloudinaryDotNet.Actions;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Core.Enum;
@@ -16,11 +15,11 @@ internal class LanguageService : ILanguageService
         _contextAccessor = contextAccessor;
     }
 
-    public void RenderSelectedLanguage()
+    public Languages RenderSelectedLanguage()
     {
         string? culture = _contextAccessor.HttpContext?.Request.Cookies[COOKIE_KEY];
 
-        if (culture is null)
+        if (string.IsNullOrWhiteSpace(culture))
         {
             culture = "az";
             SelectCulture(culture);
@@ -29,6 +28,8 @@ internal class LanguageService : ILanguageService
         var language = _getEnumValue(culture);
 
         Constants.SelectedLanguage = language;
+
+        return language;
 
     }
 

@@ -118,69 +118,70 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="About" xml:space="preserve">
-    <value>About</value>
+    <value>О нас</value>
   </data>
   <data name="BasketTitle" xml:space="preserve">
-    <value>Basket</value>
+    <value>Корзина</value>
   </data>
   <data name="Contact" xml:space="preserve">
-    <value>Contact</value>
+    <value>Связаться с</value>
   </data>
   <data name="DiscountMessage" xml:space="preserve">
-    <value>10% DISCOUNT FOR REGISTERED USERS &amp; FREE SHIPPING FOR ORDERS OVER $70
-PLUS FREE RETURNS</value>
+    <value>СКИДКА 10% ДЛЯ ЗАРЕГИСТРИРОВАННЫХ ПОЛЬЗОВАТЕЛЕЙ И БЕСПЛАТНАЯ ДОСТАВКА ДЛЯ ЗАКАЗОВ НА СУММУ СВЫШЕ $70
+ПЛЮС БЕСПЛАТНЫЙ ВОЗВРАТ</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>test</value>
+    <value>Главная</value>
   </data>
   <data name="Info" xml:space="preserve">
-    <value>Info</value>
+    <value>Информация</value>
   </data>
   <data name="LoadMore" xml:space="preserve">
-    <value>Read More</value>
+    <value>Читать далее</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>muarrem</value>
+    <value>Вход в систему</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Bayraaa</value>
+    <value>Выход из системы</value>
   </data>
   <data name="Newsletter" xml:space="preserve">
-    <value>Newsletter</value>
+    <value>Информационный бюллетень</value>
   </data>
   <data name="NewsletterDescription" xml:space="preserve">
-    <value>Dunker has all of the best products from all of the top brands.
-
-</value>
+    <value>В Motordoctor представлены все лучшие продукты от ведущих брендов.</value>
   </data>
   <data name="NewsletterPlaceholder" xml:space="preserve">
-    <value>Your email</value>
+    <value>Ваш адрес электронной почты</value>
   </data>
   <data name="Or" xml:space="preserve">
-    <value>or</value>
+    <value>или</value>
   </data>
   <data name="Orders" xml:space="preserve">
-    <value>My Orders</value>
+    <value>Мои заказы</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Register</value>
+    <value>Регистрация</value>
   </data>
   <data name="SearchButton" xml:space="preserve">
-    <value>Search</value>
+    <value>Поиск</value>
   </data>
   <data name="SearchText" xml:space="preserve">
-    <value>What are you looking for?</value>
+    <value>Что вы ищете?</value>
   </data>
   <data name="Shop" xml:space="preserve">
-    <value>test</value>
+    <value>Магазин</value>
   </data>
   <data name="Subtotal" xml:space="preserve">
-    <value>Subtotal</value>
+    <value>Итого</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>test</value>
+    <value>SubtotalMotorDoctor - моторные масла</value>
   </data>
   <data name="ViewCart" xml:space="preserve">
-    <value>View cart &amp; Checkout</value>
+    <value>Просмотр корзины и оформление заказа</value>
+  </data>
+  <data name="WhatsAppTitle" xml:space="preserve">
+    <value>Свяжитесь с нами по WhatsApp</value>
   </data>
 </root>

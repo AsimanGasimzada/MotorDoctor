@@ -8,9 +8,7 @@ public class LoginDto : IDto
 
     [DataType(DataType.Password)]
     public string Password { get; set; } = null!;
-
     public bool RememberMe { get; set; } = false;
-
     public string? ReturnUrl { get; set; }
 }
 

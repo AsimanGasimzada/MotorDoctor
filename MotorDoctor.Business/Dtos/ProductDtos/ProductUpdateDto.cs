@@ -19,5 +19,5 @@ public class ProductUpdateDto : IDto
 
 
     public List<ProductSizeUpdateDto> ProductSizes { get; set; } = [];
-    public List<ProductDetailCreateDto> ProductDetails { get; set; } = [];
+    public List<ProductDetailUpdateDto> ProductDetails { get; set; } = [];
 }

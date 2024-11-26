@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
 using MotorDoctor.Business.Extensions;
 using MotorDoctor.Business.UIServices.Abstractions;
+using MotorDoctor.Core.Enum;
 using MotorDoctor.Presentation.Extensions;
 using Newtonsoft.Json;
 
@@ -12,17 +13,19 @@ namespace MotorDoctor.Presentation.Controllers
         private readonly IHomeService _homeService;
         private readonly ILanguageService _languageService;
         private readonly ISubscriberService _subscriberService;
+        private readonly Languages _language;
         public HomeController(IHomeService homeService, ILanguageService languageService, ISubscriberService subscriberService)
         {
             _homeService = homeService;
             _languageService = languageService;
             _subscriberService = subscriberService;
+            _language = _languageService.RenderSelectedLanguage();
         }
 
         public async Task<IActionResult> Index()
         {
 
-            var dto = await _homeService.GetHomeDtoAsync(Constants.SelectedLanguage);
+            var dto = await _homeService.GetHomeDtoAsync(_language);
 
             return View(dto);
         }

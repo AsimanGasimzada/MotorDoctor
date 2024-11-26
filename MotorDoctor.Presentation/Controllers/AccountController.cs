@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
+using MotorDoctor.Core.Enum;
 using MotorDoctor.Presentation.Extensions;
 
 namespace MotorDoctor.Presentation.Controllers;
@@ -8,10 +9,14 @@ namespace MotorDoctor.Presentation.Controllers;
 public class AccountController : Controller
 {
     private readonly IAuthService _authService;
+    private readonly ILanguageService _languageService;
+    private readonly Languages _language;
 
-    public AccountController(IAuthService authService)
+    public AccountController(IAuthService authService, ILanguageService languageService)
     {
         _authService = authService;
+        _languageService = languageService;
+        _language = _languageService.RenderSelectedLanguage();
     }
 
     public IActionResult Login()
@@ -46,7 +51,7 @@ public class AccountController : Controller
         if (result is false)
             return View(dto);
 
-        return RedirectToAction(nameof(Login));
+        return RedirectToAction("Index", "Home");
     }
 
     [Authorize]

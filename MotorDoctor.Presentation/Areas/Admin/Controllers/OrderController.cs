@@ -4,6 +4,7 @@ using MotorDoctor.Business.Extensions;
 
 namespace MotorDoctor.Presentation.Areas.Admin.Controllers;
 [Area("Admin")]
+[Authorize(Roles = "Admin")]
 public class OrderController : Controller
 {
     private readonly IOrderService _service;

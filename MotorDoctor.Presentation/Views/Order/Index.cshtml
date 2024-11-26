@@ -21,63 +21,95 @@
             <h2>@_localizer.GetValue("OrderTitle")</h2>
         </div>
 
-        <div class="checkout-container">
-            <div class="order-summary-section">
-                <h1>@_localizer.GetValue("Summary")</h1>
-                @foreach (var item in Model.OrderItems ?? new())
-                {
-                    <div class="order-item">
-                        <img src="@item.ProductSize.Product.MainImagePath" alt="@item.ProductSize.Product.Name">
-                        <div class="product-details">
-                            <a style="text-decoration:none;font-weight:600;color:black" asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId">
-                                <span>@item.ProductSize.Product.Name</span>
-                            </a>
-                            <span>@_localizer.GetValue("Size"): @item.ProductSize.Size</span>
-                            <span>@_localizer.GetValue("Quantity"): @item.Count</span>
+        @if (Model.OrderItems?.Count == 0)
+        {
+            <div class="wishlist-title text-center py-4 border border-top-1 border-bottom-1">
+                <p class="m-0 fw-bold">@_localizer.GetValue("NotFoundItem")</p>
+            </div>
+        }
+        else
+        {
+            <div class="checkout-container">
+                <div class="order-summary-section">
+                    <h1>@_localizer.GetValue("Summary")</h1>
+                    @foreach (var item in Model.OrderItems ?? new())
+                    {
+                        <div class="order-item">
+                            <img src="@item.ProductSize.Product.MainImagePath" alt="@item.ProductSize.Product.Name">
+                            <div class="product-details">
+                                <a style="text-decoration:none;font-weight:600;color:black" asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId">
+                                    <span>@item.ProductSize.Product.Name</span>
+                                </a>
+                                <span>@_localizer.GetValue("Size"): @item.ProductSize.Size</span>
+                                <span>@_localizer.GetValue("Quantity"): @item.Count</span>
+                            </div>
+                            <span class="price">₼@(item.ProductSize.Price * item.Count)</span>
                         </div>
-                        <span class="price">₼@(item.ProductSize.Price * item.Count)</span>
-                    </div>
-                }
+                    }
 
-                <div class="total">
-                    <strong>@_localizer.GetValue("Total"):</strong>
-                    <strong>₼@totalPrice</strong>
+                    <div class="total">
+                        <strong>@_localizer.GetValue("Total"):</strong>
+                        <strong>₼@totalPrice</strong>
+                    </div>
+                </div>
+                <div class="checkout-form-section">
+                    <h1>@_localizer.GetValue("Details")</h1>
+                    <form method="post" class="checkout-form orderForm">
+
+                        <div class="form-group">
+                            <label for="city">@_localizer.GetValue("Name")</label>
+                            <input id="city" asp-for="Name" required placeholder="@_localizer.GetValue("NameInput")">
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="city">@_localizer.GetValue("Surname")</label>
+                            <input id="city" asp-for="Surname" required placeholder="@_localizer.GetValue("SurnameInput")">
+                            <span asp-validation-for="Surname" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="city">@_localizer.GetValue("City")</label>
+                            <input id="city" asp-for="City" required placeholder="@_localizer.GetValue("CityInput")">
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="region">@_localizer.GetValue("Region")</label>
+                            <input id="region" asp-for="Region" required placeholder="@_localizer.GetValue("RegionInput")">
+                            <span asp-validation-for="Region" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="street">@_localizer.GetValue("Street")</label>
+                            <input id="street" asp-for="Street" required placeholder="@_localizer.GetValue("StreetInput")">
+                            <span asp-validation-for="Street" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label for="phone">@_localizer.GetValue("PhoneNumber")</label>
+                            <input type="tel" id="phone" asp-for="PhoneNumber" required placeholder="@_localizer.GetValue("PhoneNumberInput")">
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="orderSubmitButton">@_localizer.GetValue("Submit")</button>
+                        </div>
+
+                        @if (!User.Identity?.IsAuthenticated ?? false)
+                        {
+                            <span class="text-danger">
+                                @_localizer.GetValue("UnAuthorizeTitle")
+                            </span>
+                        }
+
+                    </form>
                 </div>
             </div>
-            <div class="checkout-form-section">
-                <h1>@_localizer.GetValue("Details")</h1>
-                <form method="post" class="checkout-form orderForm">
-                    <div class="form-group">
-                        <label for="city">@_localizer.GetValue("City")</label>
-                        <input id="city" asp-for="City" required placeholder="@_localizer.GetValue("CityInput")">
-                        <span asp-validation-for="City" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="region">@_localizer.GetValue("Region")</label>
-                        <input id="region" asp-for="Region" required placeholder="@_localizer.GetValue("RegionInput")">
-                        <span asp-validation-for="Region" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="street">@_localizer.GetValue("Street")</label>
-                        <input id="street" asp-for="Street" required placeholder="@_localizer.GetValue("StreetInput")">
-                        <span asp-validation-for="Street" class="text-danger"></span>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="phone">@_localizer.GetValue("PhoneNumber")</label>
-                        <input type="tel" id="phone" asp-for="PhoneNumber" required placeholder="@_localizer.GetValue("PhoneNumberInput")">
-                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <button type="submit" class="orderSubmitButton">@_localizer.GetValue("Submit")</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+        }
     </section>
 </main>
 
@@ -90,8 +122,8 @@
             e.preventDefault();
 
                     Swal.fire({
-          title: ` @_localizer.GetValue("ConfirmOrderWarning") 
-                        @_localizer.GetValue("ConfirmOrder") `,
+          title: ` @_localizer.GetValue("ConfirmOrderWarning")
+        @_localizer.GetValue("ConfirmOrder") `,
           text: ``,
           icon: "warning",
           showCancelButton: true,
@@ -101,7 +133,7 @@
           confirmButtonText: `@_localizer.GetValue("Accept")`
         }).then((result) => {
           if (result.isConfirmed) {
-           
+
             orderForm.submit();
           }
         });

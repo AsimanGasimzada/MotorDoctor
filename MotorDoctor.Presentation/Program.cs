@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using MotorDoctor.Business.ServiceRegistrations;
 using MotorDoctor.DataAccess.ServiceRegistrations;
@@ -9,6 +10,7 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 builder.Services.AddControllersWithViews().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix).AddDataAnnotationsLocalization();
+
 
 builder.Services.AddDataAccessServices(builder.Configuration);
 builder.Services.AddBusinessServices();
@@ -22,6 +24,20 @@ var localizationOptions = new RequestLocalizationOptions()
                                                 .SetDefaultCulture(supportedCultures[0])
                                                 .AddSupportedCultures(supportedCultures)
                                                 .AddSupportedUICultures(supportedCultures);
+
+
+localizationOptions.RequestCultureProviders.Insert(0, new CustomRequestCultureProvider(async context =>
+{
+    var cultureCookie = context.Request.Cookies[".AspNetCore.Culture"];
+
+    if (!string.IsNullOrEmpty(cultureCookie))
+    {
+        return new ProviderCultureResult(cultureCookie);
+    }
+
+    return new ProviderCultureResult("az", "az");
+}));
+
 
 //app.UseMiddleware<GlobalExceptionHandler>();
 

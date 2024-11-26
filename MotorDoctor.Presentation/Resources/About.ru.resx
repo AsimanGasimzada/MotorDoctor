@@ -118,6 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="NotFoundAbout" xml:space="preserve">
-    <value>THERE IS NOTHING IN THIS SECTION YET, IT WILL BE SOON.</value>
+    <value>В ЭТОМ РАЗДЕЛЕ ПОКА НИЧЕГО НЕТ, СКОРО БУДЕТ.</value>
   </data>
 </root>

@@ -118,28 +118,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Address" xml:space="preserve">
-    <value>Address</value>
+    <value>Адрес</value>
   </data>
   <data name="Contact" xml:space="preserve">
-    <value>Get In Touch With Us
-</value>
+    <value>Свяжитесь с нами</value>
   </data>
   <data name="EmailInput" xml:space="preserve">
-    <value>Your Email</value>
+    <value>Ваш адрес электронной почты</value>
   </data>
   <data name="FullnameInput" xml:space="preserve">
-    <value>Your Fullname</value>
+    <value>Ваше полное имя</value>
   </data>
   <data name="Mail" xml:space="preserve">
-    <value>Mail Us</value>
+    <value>Напишите нам</value>
   </data>
   <data name="MessageInput" xml:space="preserve">
-    <value>Your Message</value>
+    <value>Ваше сообщение</value>
   </data>
   <data name="Phone" xml:space="preserve">
-    <value>Phone</value>
+    <value>Телефон</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Submit</value>
+    <value>Отправить</value>
   </data>
 </root>

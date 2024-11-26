@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
 
 namespace MotorDoctor.Presentation.Areas.Admin.Controllers;
 [Area("Admin")]
+[Authorize(Roles ="Admin")]
 public class AboutController : Controller
 {
     private readonly IAboutService _service;

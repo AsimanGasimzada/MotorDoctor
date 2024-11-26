@@ -149,7 +149,7 @@ PLUS FREE RETURNS</value>
     <value>Newsletter</value>
   </data>
   <data name="NewsletterDescription" xml:space="preserve">
-    <value>Dunker has all of the best products from all of the top brands.
+    <value>Motordoctor has all of the best products from all of the top brands.
 
 </value>
   </data>
@@ -178,9 +178,12 @@ PLUS FREE RETURNS</value>
     <value>Subtotal</value>
   </data>
   <data name="Title" xml:space="preserve">
-    <value>test</value>
+    <value>SubtotalMotorDoctor - motor oils</value>
   </data>
   <data name="ViewCart" xml:space="preserve">
     <value>View cart &amp; Checkout</value>
+  </data>
+  <data name="WhatsAppTitle" xml:space="preserve">
+    <value>Contact us on WhatsApp</value>
   </data>
 </root>

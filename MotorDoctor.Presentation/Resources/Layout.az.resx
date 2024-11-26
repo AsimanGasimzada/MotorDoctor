@@ -181,4 +181,7 @@ PLUS FREE RETURNS</value>
   <data name="ViewCart" xml:space="preserve">
     <value>Karta bax &amp; Ödəniş et</value>
   </data>
+  <data name="WhatsAppTitle" xml:space="preserve">
+    <value>Bizimlə WhatsApp-da əlaqə saxlayın</value>
+  </data>
 </root>

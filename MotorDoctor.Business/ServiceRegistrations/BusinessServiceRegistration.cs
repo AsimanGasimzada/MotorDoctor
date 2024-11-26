@@ -22,13 +22,8 @@ public static class BusinessServiceRegistration
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         services.AddHttpContextAccessor();
 
-
-        services
-            .AddFluentValidationAutoValidation()
-            .AddFluentValidationClientsideAdapters()
-            .AddValidatorsFromAssemblyContaining<TestValidator>();
-
-
+        services.AddFluentValidationAutoValidation();
+        services.AddValidatorsFromAssemblyContaining(typeof(ProductCreateDtoValidator));
 
         return services;
     }

@@ -20,8 +20,9 @@ internal class OrderService : IOrderService
     private readonly IHttpContextAccessor _contextAccessor;
     private readonly ErrorLocalizer _errorLocalizer;
     private readonly IMapper _mapper;
+    private readonly IAuthService _authService;
 
-    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService, IProductService productService)
+    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService, IProductService productService, IAuthService authService)
     {
         _repository = repository;
         _mapper = mapper;
@@ -30,6 +31,7 @@ internal class OrderService : IOrderService
         _errorLocalizer = errorLocalizer;
         _statusService = statusService;
         _productService = productService;
+        _authService = authService;
     }
     public async Task CancelOrderAsync(int id)
     {
@@ -85,9 +87,6 @@ internal class OrderService : IOrderService
         if (!ModelState.IsValid)
             return false;
 
-        if (!_checkAuthorized())
-            throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
-
         var basket = await _basketService.GetBasketAsync();
 
         if (basket.Count is 0)
@@ -100,7 +99,7 @@ internal class OrderService : IOrderService
         var status = await _statusService.GetFirstAsync();
         order.StatusId = status.Id;
 
-        string userId = _getUserId();
+        string userId = _getUserId()!;
         order.AppUserId = userId;
 
         await _repository.CreateAsync(order);
@@ -215,10 +214,7 @@ internal class OrderService : IOrderService
 
     public async Task<List<OrderGetDto>> GetUserOrdersAsync(Languages language = Languages.Azerbaijan)
     {
-        if (!_checkAuthorized())
-            throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
-
-        string userId = _getUserId();
+        string? userId = _getUserId();
 
         var query = _repository.GetFilter(x => x.AppUserId == userId, _getIncludeFunc(language));
 
@@ -234,7 +230,7 @@ internal class OrderService : IOrderService
         if (!_checkAuthorized())
             throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
 
-        string userId = _getUserId();
+        string userId = _getUserId()!;
 
         var order = await _repository.GetAsync(x => x.AppUserId == userId && x.Id == id, _getIncludeFunc(language));
 
@@ -250,15 +246,19 @@ internal class OrderService : IOrderService
 
     public async Task<OrderCreateDto> GetUserUnSubmitOrderAsync(Languages language = Languages.Azerbaijan)
     {
-        if (!_checkAuthorized())
-            throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
-
         var basket = await _basketService.GetBasketAsync();
 
-        if (basket.Count is 0)
-            throw new EmptyBasketException(_errorLocalizer.GetValue(nameof(EmptyBasketException)));
-
         OrderCreateDto dto = new();
+
+        if (_checkAuthorized())
+        {
+            var userId = _getUserId()!;
+
+            var user = await _authService.GetUserAsync(userId);
+
+            dto.Name = user.Name;
+            dto.Surname = user.Surname;
+        }
 
         dto.OrderItems = _mapper.Map<List<OrderItemCreateDto>>(basket.Items);
 
@@ -266,9 +266,9 @@ internal class OrderService : IOrderService
     }
 
 
-    private string _getUserId()
+    private string? _getUserId()
     {
-        return _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? "";
+        return _contextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier) ?? null;
     }
 
     private bool _checkAuthorized()
@@ -283,7 +283,7 @@ internal class OrderService : IOrderService
         return x => x.Include(x => x.OrderItems).ThenInclude(x => x.ProductSize.Product.ProductDetails.Where(x => x.LanguageId == (int)language))
                             .Include(x => x.OrderItems).ThenInclude(x => x.ProductSize.Product.ProductImages)
                             .Include(x => x.Status.StatusDetails.Where(x => x.LanguageId == (int)language))
-                            .Include(x => x.AppUser);
+                            .Include(x => x.AppUser!);
     }
 
 

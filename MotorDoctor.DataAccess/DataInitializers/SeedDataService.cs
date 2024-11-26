@@ -70,7 +70,8 @@ public static class SeedDataService
             new Setting { Id = 7, Key = "Unvan" },
             new Setting { Id = 8, Key = "IsSaatlari" },
             new Setting { Id = 9, Key = "Copyright" },
-            new Setting { Id = 10, Key = "Email" }
+            new Setting { Id = 10, Key = "Email" },
+            new Setting { Id = 11, Key = "WhatsAppLink" }
         );
 
         modelBuilder.Entity<SettingDetail>().HasData(
@@ -112,9 +113,11 @@ public static class SeedDataService
 
             new SettingDetail { Id = 28, Value = "info@motordoctor.az", LanguageId = 1, SettingId = 10 },
             new SettingDetail { Id = 29, Value = "info@motordoctor.az", LanguageId = 2, SettingId = 10 },
-            new SettingDetail { Id = 30, Value = "info@motordoctor.az", LanguageId = 3, SettingId = 10 }
+            new SettingDetail { Id = 30, Value = "info@motordoctor.az", LanguageId = 3, SettingId = 10 },
 
-
+            new SettingDetail { Id = 31, Value = "https://wa.me/994501234567", LanguageId = 1, SettingId = 11 },
+            new SettingDetail { Id = 32, Value = "https://wa.me/994501234567", LanguageId = 2, SettingId = 11 },
+            new SettingDetail { Id = 33, Value = "https://wa.me/994501234567", LanguageId = 3, SettingId = 11 }
         );
     }
 

@@ -118,82 +118,81 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Accept" xml:space="preserve">
-    <value>Yes</value>
+    <value>Да</value>
   </data>
   <data name="AddToCart" xml:space="preserve">
-    <value>Add to cart</value>
+    <value>Добавить в корзину</value>
   </data>
   <data name="Brand" xml:space="preserve">
-    <value>Brand</value>
+    <value>Бренд</value>
   </data>
   <data name="Category" xml:space="preserve">
-    <value>Category</value>
+    <value>Категория</value>
   </data>
   <data name="ClearFilter" xml:space="preserve">
-    <value>Clear Filter</value>
+    <value>Очистить фильтр</value>
   </data>
   <data name="Code" xml:space="preserve">
-    <value>Code</value>
+    <value>Код</value>
   </data>
   <data name="CommentButton" xml:space="preserve">
-    <value>Submit</value>
+    <value>Отправить</value>
   </data>
   <data name="ConfirmDelete" xml:space="preserve">
-    <value>Are you sure you want to delete the comment?</value>
+    <value>Вы уверены, что хотите удалить комментарий?</value>
   </data>
   <data name="Description" xml:space="preserve">
-    <value>Description</value>
+    <value>Описание</value>
   </data>
   <data name="Filter" xml:space="preserve">
-    <value>Filter</value>
+    <value>Фильтр</value>
   </data>
   <data name="LeaveComment" xml:space="preserve">
-    <value>Leave a Comment
-</value>
+    <value>Оставить комментарий</value>
   </data>
   <data name="NotFoundProduct" xml:space="preserve">
-    <value>PRODUCT NOT FOUND</value>
+    <value>ПРОДУКТ НЕ НАЙДЕН</value>
   </data>
   <data name="Price" xml:space="preserve">
-    <value>Price</value>
+    <value>Цена</value>
   </data>
   <data name="PriceHighToLow" xml:space="preserve">
-    <value>Sort by price high to low</value>
+    <value>Сортировать по цене от высокой к низкой</value>
   </data>
   <data name="PriceLowToHigh" xml:space="preserve">
-    <value>Sort by price low to high</value>
+    <value>Сортировать по цене от низкой до высокой</value>
   </data>
   <data name="Reject" xml:space="preserve">
-    <value>No</value>
+    <value>Нет</value>
   </data>
   <data name="Reviews" xml:space="preserve">
-    <value>Reviews</value>
+    <value>Отзывы</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search products...</value>
+    <value>Поиск товаров...</value>
   </data>
   <data name="Shop" xml:space="preserve">
-    <value>Shop</value>
+    <value>Магазин</value>
   </data>
   <data name="Size" xml:space="preserve">
-    <value>Size</value>
+    <value>Размер</value>
   </data>
   <data name="SortByLatest" xml:space="preserve">
-    <value>Sort by latest</value>
+    <value>Сортировать по возрастанию</value>
   </data>
   <data name="SortByOldest" xml:space="preserve">
-    <value>Sort by oldest</value>
+    <value>Сортировать по возрасту</value>
   </data>
   <data name="SortByPopularity" xml:space="preserve">
-    <value>Sort by popularity</value>
+    <value>Сортировать по популярности</value>
   </data>
   <data name="YourComment" xml:space="preserve">
-    <value>Your Comment</value>
+    <value>Ваш комментарий</value>
   </data>
   <data name="YourCommentInput" xml:space="preserve">
-    <value>Write your comment</value>
+    <value>Напишите свой комментарий</value>
   </data>
   <data name="YourRating" xml:space="preserve">
-    <value>Your Rating</value>
+    <value>Ваш рейтинг</value>
   </data>
 </root>

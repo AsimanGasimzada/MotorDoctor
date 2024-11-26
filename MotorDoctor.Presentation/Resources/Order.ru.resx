@@ -118,72 +118,90 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Accept" xml:space="preserve">
-    <value>Yes</value>
+    <value>Да</value>
   </data>
   <data name="City" xml:space="preserve">
-    <value>City</value>
+    <value>Город</value>
   </data>
   <data name="CityInput" xml:space="preserve">
-    <value>Enter your city</value>
+    <value>Введите ваш город</value>
   </data>
   <data name="ConfirmOrder" xml:space="preserve">
-    <value>Are you sure you want to place the order?</value>
+    <value>Вы уверены, что хотите сделать заказ?</value>
   </data>
   <data name="ConfirmOrderWarning" xml:space="preserve">
-    <value>Make sure you fill in all the details correctly.</value>
+    <value>Убедитесь, что вы правильно заполнили все данные.</value>
   </data>
   <data name="Details" xml:space="preserve">
-    <value>Details</value>
+    <value>Подробности</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Главная</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Имя</value>
+  </data>
+  <data name="NameInput" xml:space="preserve">
+    <value>Введите свое имя</value>
+  </data>
+  <data name="NotFoundItem" xml:space="preserve">
+    <value>КОРЗИНА ПУСТА</value>
   </data>
   <data name="NotFoundOrders" xml:space="preserve">
-    <value>YOU DON'T HAVE AN ORDER YET, BUY LOTS OF IT</value>
+    <value>ЕСЛИ У ВАС ЕЩЕ НЕТ ЗАКАЗА, КУПИТЕ МНОГО</value>
   </data>
   <data name="Order" xml:space="preserve">
-    <value>Order</value>
+    <value>Заказать</value>
   </data>
   <data name="OrdersTitle" xml:space="preserve">
-    <value>YOUR ORDERS</value>
+    <value>ВАШИ ЗАКАЗЫ</value>
   </data>
   <data name="OrderTitle" xml:space="preserve">
-    <value>ConfirmOrder</value>
+    <value>Подтвердить заказ</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
-    <value>Phone Number</value>
+    <value>Номер телефона</value>
   </data>
   <data name="PhoneNumberInput" xml:space="preserve">
-    <value>Enter your phone number</value>
+    <value>Введите номер телефона</value>
   </data>
   <data name="Quantity" xml:space="preserve">
-    <value>Quantity</value>
+    <value>Количество</value>
   </data>
   <data name="Region" xml:space="preserve">
-    <value>Region</value>
+    <value>Регион</value>
   </data>
   <data name="RegionInput" xml:space="preserve">
-    <value>Enter your region</value>
+    <value>Введите свой регион</value>
   </data>
   <data name="Reject" xml:space="preserve">
-    <value>No</value>
+    <value>Нет</value>
   </data>
   <data name="Size" xml:space="preserve">
-    <value>Size</value>
+    <value>Размер</value>
   </data>
   <data name="Street" xml:space="preserve">
-    <value>Street</value>
+    <value>Улица</value>
   </data>
   <data name="StreetInput" xml:space="preserve">
-    <value>Enter your street</value>
+    <value>Укажите вашу улицу</value>
   </data>
   <data name="Submit" xml:space="preserve">
-    <value>Place Order</value>
+    <value>Разместить заказ</value>
   </data>
   <data name="Summary" xml:space="preserve">
-    <value>Products</value>
+    <value>Продукция</value>
+  </data>
+  <data name="Surname" xml:space="preserve">
+    <value>Фамилия</value>
+  </data>
+  <data name="SurnameInput" xml:space="preserve">
+    <value>Введите вашу фамилию</value>
   </data>
   <data name="Total" xml:space="preserve">
-    <value>Total</value>
+    <value>Всего</value>
+  </data>
+  <data name="UnAuthorizeTitle" xml:space="preserve">
+    <value>Если вы не зарегистрированы, вы не сможете получить подробную информацию о своем заказе.</value>
   </data>
 </root>

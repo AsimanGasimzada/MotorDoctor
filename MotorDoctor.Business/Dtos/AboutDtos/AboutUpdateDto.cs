@@ -8,5 +8,5 @@ public class AboutUpdateDto : IDto
     public int OrderNo { get; set; }
     public string? ImagePath { get; set; } = null!;
     public IFormFile? Image { get; set; } = null!;
-    public List<AboutDetailCreateDto> AboutDetails { get; set; } = new List<AboutDetailCreateDto>();
+    public List<AboutDetailUpdateDto> AboutDetails { get; set; } = [];
 }

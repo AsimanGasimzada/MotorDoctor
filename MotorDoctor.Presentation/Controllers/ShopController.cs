@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
 using MotorDoctor.Business.Extensions;
+using MotorDoctor.Core.Enum;
 using MotorDoctor.Presentation.Extensions;
 
 namespace MotorDoctor.Presentation.Controllers;
@@ -12,13 +13,17 @@ public class ShopController : Controller
     private readonly IBrandService _brandService;
     private readonly ICategoryService _categoryService;
     private readonly ICommentService _commentService;
+    private readonly ILanguageService _languageService;
+    private readonly Languages _language;
 
-    public ShopController(IProductService productService, IBrandService brandService, ICategoryService categoryService, ICommentService commentService)
+    public ShopController(IProductService productService, IBrandService brandService, ICategoryService categoryService, ICommentService commentService, ILanguageService languageService)
     {
         _productService = productService;
         _brandService = brandService;
         _categoryService = categoryService;
         _commentService = commentService;
+        _languageService = languageService;
+        _language = _languageService.RenderSelectedLanguage();
     }
 
     public async Task<IActionResult> Index(int page = 1, int? categoryId = null)
@@ -32,12 +37,12 @@ public class ShopController : Controller
             filterDto = new()
             {
                 CategoryIds = category.Children?.Count > 0 ? category.Children.Select(x => x.Id).ToList() : [category.Id],
-                MaxPrice=1000
+                MaxPrice = 1000
             };
         }
 
 
-        var shopFilterDto = await _productService.GetAllWithPageAsync(filterDto, Constants.SelectedLanguage, page);
+        var shopFilterDto = await _productService.GetAllWithPageAsync(filterDto, _language, page);
         shopFilterDto.Categories = await _categoryService.GetAllForProductAsync();
         shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
 
@@ -48,7 +53,7 @@ public class ShopController : Controller
     public async Task<IActionResult> Index(ShopFilterDto dto, int page = 1)
     {
 
-        var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, Constants.SelectedLanguage, page);
+        var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
         shopFilterDto.Categories = await _categoryService.GetAllForProductAsync();
         shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
 
@@ -65,7 +70,7 @@ public class ShopController : Controller
 
     public async Task<IActionResult> Detail(int id)
     {
-        var product = await _productService.GetAsync(id, Constants.SelectedLanguage);
+        var product = await _productService.GetAsync(id, _language);
         var comments = await _commentService.GetProductCommentsAsync(id);
         var isAllowComment = await _commentService.CheckIsAllowCommentAsync(id);
 

@@ -1,4 +1,5 @@
-﻿@model ShopDetailDto
+﻿@using MotorDoctor.Presentation.Extensions
+@model ShopDetailDto
 @inject IWishlistService wishlistService
 @inject ShopLocalizer _localizer
 @{
@@ -54,7 +55,10 @@
                         <h1>@Model.Product.Name</h1>
 
                         <p>
-                            @(Model.Product.Description.Length > 256 ? Model.Product.Description.Substring(0, 256) + "..." : Model.Product.Description)
+                            @(Model.Product.Description.Length > 256
+                                ? Html.Raw(Model.Product.Description.Substring(0, 256).StripHtmlTags().ToString() + "...")
+                                : Html.Raw(Model.Product.Description))
+
                         </p>
                         <h5 style="display:inline">@_localizer.GetValue("Size"):</h5>
                         <select class="form-select productSizeSelectInput" aria-label="Default select example" style="text-align:center;max-width:30%;margin:0 10px;display:inline;">
@@ -129,7 +133,7 @@
                     <div class="tabs-content pt-4" id="tabContent">
                         <div class="tab" data-tab="description">
                             <p class="fs-5">
-                                @Model.Product.Description
+                                @Html.Raw(Model.Product.Description)
                             </p>
                         </div>
                         <div class="tab d-none" data-tab="additional-info">
@@ -180,7 +184,8 @@
                 </div>
             </div>
         </div>
-     @if(Model.IsAllowComment){
+        @if (Model.IsAllowComment)
+        {
 
             <div class="comment-form-container" style="max-width: 80%; margin: 20px auto; border: 1px solid whitesmoke; border-radius: 0; padding: 20px; background-color: #fff; color: #000;">
                 <form id="commentForm" asp-action="CreateComment" asp-route-ProductId="@Model.Product.Id">
@@ -244,11 +249,11 @@
 
 
 
-     }
+        }
     </section>
     <!-- Detail Product Section End -->
     <!-- Related Products Section Start -->
- @*    <section id="related-products">
+    @*    <section id="related-products">
         <div class="title">
             <h2>RELATED PRODUCTS</h2>
         </div>
@@ -259,7 +264,6 @@
     <!-- Related Products Section End -->
 </main>
 <!-- Main End -->
-
 @section Scripts {
 
     <script src="~/assets/js/tab.js"></script>

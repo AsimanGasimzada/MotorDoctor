@@ -231,7 +231,10 @@ internal class BasketService : IBasketService
     public async Task ClearBasketAsync()
     {
         if (!_checkAuthorized())
-            throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
+        {
+            _writeBasketInCookie(new());
+            return;
+        }
 
         string userId = _getUserId();
 

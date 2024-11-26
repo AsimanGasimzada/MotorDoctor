@@ -12,8 +12,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@_localizer.GetValue("Title")</title>
-    <link rel="shortcut icon" href="~/assets/img/cropped-favicon-32x32.png" type="image/x-icon" />
-    <link rel="shortcut icon" href="~/assets/img/cropped-favicon-32x32.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/assets/img/logo.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/assets/img/logo.png" type="image/x-icon" />
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
           integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
@@ -41,7 +41,10 @@
             <div class="navbar-container">
                 <div class="leftside-nav">
                     <div class="logo">
-                        <img src="~/assets/img/logo.png" alt="Dark Dunker" />
+                        <a asp-action="Index" asp-controller="Home">
+                            <img src="~/assets/img/logo.png" alt="Dark Dunker" />
+                        </a>
+
                     </div>
                 </div>
                 <div class="middle-nav">
@@ -74,7 +77,7 @@
                             <form asp-action="Index" asp-controller="Shop" method="post" class="overlay-content">
                                 <h1>@_localizer.GetValue("SearchText")</h1>
                                 <input id="searchInput" type="text" name="dto.ProductFilterDto.Search" placeholder="@_localizer.GetValue("SearchButton")..." />
-                              @*   <button type="submit" class="btn btn-secondary">
+                                @*   <button type="submit" class="btn btn-secondary">
                                     @_localizer.GetValue("SearchButton")
                                 </button> *@
                             </form>
@@ -88,6 +91,10 @@
                             {
                                 <div class="account-dropdown">
                                     <p class="name">@User.Identity.Name</p>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="Index" asp-controller="Dashboard" asp-area="admin" class="btn">@_localizer.GetValue("Admin Panel")</a>
+                                    }
                                     <a asp-action="List" asp-controller="Order" class="btn">@_localizer.GetValue("Orders")</a>
                                     <a asp-action="Logout" asp-controller="Account" class="btn">@_localizer.GetValue("Logout")</a>
                                 </div>
@@ -145,9 +152,9 @@
             <div class="mobile-header-top">
                 <div class="mobile-nav-container">
                     <div class="mobile-nav-left">
-                        <a href="./index.html">
+                        <a asp-action="Index" asp-controller="Home">
                             <div class="dark-logo">
-                                <img src="~/assets/img/Mobile-logo.png" alt="DunkerDark" />
+                                <img src="~/assets/img/logo.png" alt="DunkerDark" />
                             </div>
                         </a>
                     </div>
@@ -232,7 +239,9 @@
     </header> <!-- Header Section End -->
     @RenderBody()
 
-
+    <a href="@settings["WhatsAppLink"]" class="whatsapp-icon" target="_blank" title="@_localizer.GetValue("WhatsAppTitle")">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
 
     <!-- Footer Start -->
     <footer id="footer">
@@ -240,7 +249,10 @@
             <div class="content-bottom">
                 <div class="row content-bottom-row align-items-center">
                     <div class="content-logo col-lg-3 col-md-6 col-12">
-                        <img src="https://dunker.qodeinteractive.com/wp-content/uploads/2023/02/Dunker-logo-dark.png" alt="" />
+                        <a asp-action="Index" asp-controller="Home">
+                            <img src="~/assets/img/logo.png" alt="" />
+
+                        </a>
                     </div>
                     @foreach (var attendance in attendances)
                     {
@@ -258,7 +270,7 @@
         <div class="footer-middle">
             <div class="row align-items-center">
                 <div class="col-lg-3 col-md-6 col-12 mb-4">
-                    <ul style="display:flex;width:100%;justify-content:space-between">
+                    <ul style="display:flex;width:100%;justify-content:space-between;gap:10px;flex-wrap:wrap">
                         <li>
                             <a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a>
                         </li>
@@ -297,17 +309,22 @@
                     <div class="location col-lg-3 col-md-6 col-12">
                         <h5>@_localizer.GetValue("Info")</h5>
                         <address>
-                            <h6 class="footer-heading">
+                            <h5 class="footer-heading">
                                 <a href="tel:@settings["Telefon1"]">@settings["Telefon1"]</a>
-                            </h6>
-                            <h6 class="footer-heading">
+                            </h5>
+                            <h5 class="footer-heading">
                                 <a>
                                     @settings["Unvan"]
                                 </a>
-                            </h6>
-                            <h6 class="footer-heading">
+                            </h5>
+                            <h5 class="footer-heading">
                                 <a>@settings["IsSaatlari"]</a>
-                            </h6>
+                            </h5>
+                            <h5 class="footer-heading">
+                                <a href="@settings["FacebookLink"]" style="font-size:21px"><i class="fa-brands fa-facebook"></i></a>
+                                <a href="@settings["InstagramLink"]" style="font-size:21px"><i class="fa-brands fa-instagram"></i></a>
+                                <a href="@settings["WhatsAppLink"]" style="font-size:21px"><i class="fa-brands fa-whatsapp"></i></a>
+                            </h5>
                         </address>
                     </div>
 
@@ -348,7 +365,7 @@
             window.location.href=`/Home/SelectCulture?culture=${changeLangInput.value}`
         })
         changeLangInputMobile.addEventListener('change',()=>{
-            window.location.href=`/Home/SelectCulture?culture=${changeLangInput.value}`
+            window.location.href=`/Home/SelectCulture?culture=${changeLangInputMobile.value}`
         })
     </script>
     <script>

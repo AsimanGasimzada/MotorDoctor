@@ -1,4 +1,5 @@
 ﻿using MotorDoctor.DataAccess.DataInitializers;
+using System.Text.RegularExpressions;
 
 namespace MotorDoctor.Presentation.Extensions;
 
@@ -19,6 +20,11 @@ public static class ExtensionMethods
             var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
             languageService.RenderSelectedLanguage();
         }
+    }
+
+    public static string StripHtmlTags(this string input)
+    {
+        return Regex.Replace(input, "<.*?>", string.Empty);
     }
 
     public static string GetReturnUrl(this HttpRequest Request)

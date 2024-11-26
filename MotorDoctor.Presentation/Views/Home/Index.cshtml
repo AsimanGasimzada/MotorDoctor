@@ -11,8 +11,8 @@
             {
                 <div class="swiper-slide">
                     <div class="slider-title">
-                        <h1 class="slider-heading">@slider.Title</h1>
-                        <p class="pb-4">
+                            <h1 class="slider-heading text-difference-color">@slider.Title</h1>
+                            <p class="pb-4 text-difference-color">
                             @slider.Description
                         </p>
                         <a asp-action="Index" asp-controller="Shop" class="custom-button">@slider.ButtonTitle</a>
@@ -175,7 +175,7 @@
     </section>
     <!-- featured-products end -->
     <!-- Categories Section Start -->
-    <section id="categories">
+    <section id="categories" style="overflow:hidden">
         <div class="section-title">
             <span>@_localizer.GetValue("FeaturedCategories")</span>
         </div>
@@ -234,8 +234,8 @@
     {
         <section id="street-vibe" style="background-image:url(@Model.About.ImagePath)">
             <div class="street-title">
-                <h2>@Model.About.Name</h2>
-                <p>
+                <h2 class="text-readable">@Model.About.Name</h2>
+                    <p class="text-readable">
                     @Html.Raw(Model.About.Description)
                 </p>
                 <a class="custom-button">SHOP NOW</a>

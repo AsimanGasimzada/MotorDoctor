@@ -13,5 +13,6 @@ public class OrderGetDto : IDto
     public StatusGetDto Status { get; set; } = null!;
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public UserGetDto AppUser { get; set; } = null!;
-
+    public string Name { get; set; } = null!;
+    public string Surname { get; set; } = null!;
 }

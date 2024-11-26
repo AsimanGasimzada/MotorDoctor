@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MotorDoctor.Core.Enum;
 using MotorDoctor.Presentation.Extensions;
 
 namespace MotorDoctor.Presentation.Controllers;
@@ -6,15 +7,19 @@ namespace MotorDoctor.Presentation.Controllers;
 public class WishlistController : Controller
 {
     private readonly IWishlistService _wishlistService;
+    private readonly ILanguageService _languageService;
+    private readonly Languages _language;
 
-    public WishlistController(IWishlistService wishlistService)
+    public WishlistController(IWishlistService wishlistService, ILanguageService languageService)
     {
         _wishlistService = wishlistService;
+        _languageService = languageService;
+        _language = _languageService.RenderSelectedLanguage();
     }
 
     public async Task<IActionResult> Index()
     {
-        var wishlistItems = await _wishlistService.GetWishlistAsync();
+        var wishlistItems = await _wishlistService.GetWishlistAsync(_language);
 
         return View(wishlistItems);
     }

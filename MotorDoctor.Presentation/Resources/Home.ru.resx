@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Collection" xml:space="preserve">
-    <value>MotorDoctor Collection</value>
+    <value>Коллекция MotorDoctor</value>
   </data>
   <data name="FeaturedCategories" xml:space="preserve">
-    <value>Featured Categories</value>
+    <value>Подборка категорий</value>
   </data>
   <data name="FeaturedProducts" xml:space="preserve">
-    <value>Featured Products</value>
+    <value>Популярные товары</value>
   </data>
   <data name="ReadMore" xml:space="preserve">
-    <value>Read more</value>
+    <value>Читать далее</value>
   </data>
   <data name="ShowAll" xml:space="preserve">
-    <value>Show All</value>
+    <value>Показать все</value>
   </data>
   <data name="WhyChooseUs" xml:space="preserve">
     <value>Почему стоит выбрать нас?</value>

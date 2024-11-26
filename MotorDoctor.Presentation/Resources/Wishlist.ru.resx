@@ -118,22 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddToCart" xml:space="preserve">
-    <value>Add to cart</value>
+    <value>Добавить в корзину</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Главная</value>
   </data>
   <data name="InStock" xml:space="preserve">
-    <value>In Stock</value>
+    <value>В наличии</value>
   </data>
   <data name="NotFoundProduct" xml:space="preserve">
-    <value>NO PRODUCTS ADDED TO THE WISHLIST</value>
+    <value>НЕТ ТОВАРОВ, ДОБАВЛЕННЫХ В СПИСОК ЖЕЛАНИЙ</value>
   </data>
   <data name="Wishlist" xml:space="preserve">
-    <value>Wishlist</value>
+    <value>Список желаний</value>
   </data>
   <data name="WishlistTitle" xml:space="preserve">
-    <value>Product Wishlist
+    <value>Список продуктов
 </value>
   </data>
 </root>

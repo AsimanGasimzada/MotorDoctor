@@ -109,6 +109,8 @@ internal class AuthService : IAuthService
 
         var user = _mapper.Map<AppUser>(dto);
 
+        user.EmailConfirmed = true;
+
         var result = await _userManager.CreateAsync(user, dto.Password);
 
         if (!result.Succeeded)
@@ -119,7 +121,9 @@ internal class AuthService : IAuthService
 
         await _userManager.AddToRoleAsync(user, IdentityRoles.Member.ToString());
 
-        await _sendConfirmEmailToken(user);
+        //await _sendConfirmEmailToken(user);
+
+        await _signInManager.SignInAsync(user, isPersistent: false);
 
         return true;
     }
@@ -168,6 +172,19 @@ internal class AuthService : IAuthService
         }
 
         return dtos;
+    }
+
+
+    public async Task<UserGetDto> GetUserAsync(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+
+        if (user is null)
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+        var dto = _mapper.Map<UserGetDto>(user);
+
+        return dto;
     }
 
     public async Task<bool> ChangeUserRoleAsync(UserChangeRoleDto dto)

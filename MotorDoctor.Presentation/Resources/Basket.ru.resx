@@ -118,30 +118,30 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Basket" xml:space="preserve">
-    <value>Product Cart</value>
+    <value>Корзина для продуктов</value>
   </data>
   <data name="Cart" xml:space="preserve">
-    <value>Cart</value>
+    <value>Корзина</value>
   </data>
   <data name="CartTotals" xml:space="preserve">
-    <value>Cart Totals</value>
+    <value>Итоговые показатели корзины</value>
   </data>
   <data name="Discount" xml:space="preserve">
-    <value>Discount</value>
+    <value>Скидка</value>
   </data>
   <data name="Home" xml:space="preserve">
-    <value>Home</value>
+    <value>Главная</value>
   </data>
   <data name="NotFoundProduct" xml:space="preserve">
-    <value>NO PRODUCTS ADDED TO THE CART</value>
+    <value>В КОРЗИНУ НЕ ДОБАВЛЕНО НИ ОДНОГО ТОВАРА</value>
   </data>
   <data name="SubmitOrder" xml:space="preserve">
-    <value>Proceed to Checkout</value>
+    <value>Приступить к оформлению заказа</value>
   </data>
   <data name="Subtotal" xml:space="preserve">
-    <value>Subtotal</value>
+    <value>Итого</value>
   </data>
   <data name="Total" xml:space="preserve">
-    <value>Total</value>
+    <value>Всего</value>
   </data>
 </root>

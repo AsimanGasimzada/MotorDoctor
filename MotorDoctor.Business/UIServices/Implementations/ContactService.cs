@@ -1,5 +1,6 @@
 ﻿using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Business.UIServices.Abstractions;
+using MotorDoctor.Core.Enum;
 
 namespace MotorDoctor.Business.UIServices.Implementations;
 
@@ -14,11 +15,11 @@ internal class ContactService : IContactService
 
     }
 
-    public async Task<ContactDto> GetContactDtoAsync()
+    public async Task<ContactDto> GetContactDtoAsync(Languages language = Languages.Azerbaijan)
     {
         ContactDto dto = new()
         {
-            Settings = await _settingService.GetSettingsWithDictionaryAsync(Constants.SelectedLanguage)
+            Settings = await _settingService.GetSettingsWithDictionaryAsync(language)
         };
 
         return dto;

@@ -660,7 +660,6 @@ namespace MotorDoctor.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AppUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("City")
@@ -677,6 +676,11 @@ namespace MotorDoctor.DataAccess.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -695,6 +699,11 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Surname")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -819,8 +828,8 @@ namespace MotorDoctor.DataAccess.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
@@ -990,6 +999,11 @@ namespace MotorDoctor.DataAccess.Migrations
                         {
                             Id = 10,
                             Key = "Email"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Key = "WhatsAppLink"
                         });
                 });
 
@@ -1231,6 +1245,27 @@ namespace MotorDoctor.DataAccess.Migrations
                             LanguageId = 3,
                             SettingId = 10,
                             Value = "info@motordoctor.az"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            LanguageId = 1,
+                            SettingId = 11,
+                            Value = "https://wa.me/994501234567"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            LanguageId = 2,
+                            SettingId = 11,
+                            Value = "https://wa.me/994501234567"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            LanguageId = 3,
+                            SettingId = 11,
+                            Value = "https://wa.me/994501234567"
                         });
                 });
 
@@ -1244,7 +1279,8 @@ namespace MotorDoctor.DataAccess.Migrations
 
                     b.Property<string>("ImagePath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -1261,11 +1297,13 @@ namespace MotorDoctor.DataAccess.Migrations
 
                     b.Property<string>("ButtonTitle")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
 
                     b.Property<int>("LanguageId")
                         .HasColumnType("int");
@@ -1275,13 +1313,15 @@ namespace MotorDoctor.DataAccess.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LanguageId");
-
                     b.HasIndex("SliderId");
+
+                    b.HasIndex("LanguageId", "SliderId")
+                        .IsUnique();
 
                     b.ToTable("SliderDetails");
                 });
@@ -1675,9 +1715,7 @@ namespace MotorDoctor.DataAccess.Migrations
                 {
                     b.HasOne("MotorDoctor.Core.Entities.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AppUserId");
 
                     b.HasOne("MotorDoctor.Core.Entities.Status", "Status")
                         .WithMany("Orders")
