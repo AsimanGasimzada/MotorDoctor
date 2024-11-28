@@ -71,7 +71,13 @@ public static class SeedDataService
             new Setting { Id = 8, Key = "IsSaatlari" },
             new Setting { Id = 9, Key = "Copyright" },
             new Setting { Id = 10, Key = "Email" },
-            new Setting { Id = 11, Key = "WhatsAppLink" }
+            new Setting { Id = 11, Key = "WhatsAppLink" },
+            new Setting { Id = 12, Key = "WebsiteTitle" },
+            new Setting { Id = 13, Key = "WebsiteShortDescription" },
+            new Setting { Id = 14, Key = "WebsiteLongDescription" },
+            new Setting { Id = 15, Key = "WebsiteAuthor" },
+            new Setting { Id = 16, Key = "WebsiteKeywords" },
+            new Setting { Id = 17, Key = "WhyChooseUs" }
         );
 
         modelBuilder.Entity<SettingDetail>().HasData(
@@ -117,7 +123,31 @@ public static class SeedDataService
 
             new SettingDetail { Id = 31, Value = "https://wa.me/994501234567", LanguageId = 1, SettingId = 11 },
             new SettingDetail { Id = 32, Value = "https://wa.me/994501234567", LanguageId = 2, SettingId = 11 },
-            new SettingDetail { Id = 33, Value = "https://wa.me/994501234567", LanguageId = 3, SettingId = 11 }
+            new SettingDetail { Id = 33, Value = "https://wa.me/994501234567", LanguageId = 3, SettingId = 11 },
+
+            new SettingDetail { Id = 34, Value = "MotorDoctor", LanguageId = 1, SettingId = 12 },
+            new SettingDetail { Id = 35, Value = "MotorDoctor", LanguageId = 2, SettingId = 12 },
+            new SettingDetail { Id = 36, Value = "MotorDoctor", LanguageId = 3, SettingId = 12 },
+
+            new SettingDetail { Id = 37, Value = "Online Shop", LanguageId = 1, SettingId = 13 },
+            new SettingDetail { Id = 38, Value = "Online Shop", LanguageId = 2, SettingId = 13 },
+            new SettingDetail { Id = 39, Value = "Online Shop", LanguageId = 3, SettingId = 13 },
+
+            new SettingDetail { Id = 40, Value = "Online Shop", LanguageId = 1, SettingId = 14 },
+            new SettingDetail { Id = 41, Value = "Online Shop", LanguageId = 2, SettingId = 14 },
+            new SettingDetail { Id = 42, Value = "Online Shop", LanguageId = 3, SettingId = 14 },
+
+            new SettingDetail { Id = 43, Value = "MotorDoctor", LanguageId = 1, SettingId = 15 },
+            new SettingDetail { Id = 44, Value = "MotorDoctor", LanguageId = 2, SettingId = 15 },
+            new SettingDetail { Id = 45, Value = "MotorDoctor", LanguageId = 3, SettingId = 15 },
+
+            new SettingDetail { Id = 46, Value = "MotorDoctor", LanguageId = 1, SettingId = 16 },
+            new SettingDetail { Id = 47, Value = "MotorDoctor", LanguageId = 2, SettingId = 16 },
+            new SettingDetail { Id = 48, Value = "MotorDoctor", LanguageId = 3, SettingId = 16 },
+
+            new SettingDetail { Id = 49, Value = "KEYFİYYƏTİN ADI MOTORDOCTOR", LanguageId = 1, SettingId = 17 },
+            new SettingDetail { Id = 50, Value = "KEYFİYYƏTİN ADI MOTORDOCTOR", LanguageId = 2, SettingId = 17 },
+            new SettingDetail { Id = 51, Value = "KEYFİYYƏTİN ADI MOTORDOCTOR", LanguageId = 3, SettingId = 17 }
         );
     }
 

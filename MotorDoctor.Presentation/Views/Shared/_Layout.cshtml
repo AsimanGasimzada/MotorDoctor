@@ -11,7 +11,28 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@_localizer.GetValue("Title")</title>
+    <title>@settings["WebsiteTitle"]</title>
+
+
+     <!-- SEO Metas -->
+    <meta name="keywords" content="@settings["WebsiteKeywords"]" />
+    <meta name="description" content="@settings["WebsiteLongDescription"]" />
+    <meta name="author" content="@settings["WebsiteAuthor"]" />
+
+    <!-- Open Graph Meta Tags (for Social Sharing) -->
+    <meta property="og:title" content="@settings["WebsiteTitle"]" />
+    <meta property="og:description" content="@settings["WebsiteShortDescription"]" />
+    <meta property="og:image" content="~/assets/img/logo.png" />
+    <meta property="og:url" content="https://motordoctor.az" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="@settings["WebsiteTitle"]" />
+    <meta name="twitter:description" content="@settings["WebsiteShortDescription"]" />
+    <meta name="twitter:image" content="~/assets/img/logo.png" />
+
+
     <link rel="shortcut icon" href="~/assets/img/logo.png" type="image/x-icon" />
     <link rel="shortcut icon" href="~/assets/img/logo.png" type="image/x-icon" />
     <!-- Font Awesome -->
@@ -89,23 +110,23 @@
                             </span>
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
-                                <div class="account-dropdown">
-                                    <p class="name">@User.Identity.Name</p>
+                                    <div class="account-dropdown">
+                                        <p class="name">@User.Identity.Name</p>
                                     @if (User.IsInRole("Admin"))
                                     {
-                                        <a asp-action="Index" asp-controller="Dashboard" asp-area="admin" class="btn">@_localizer.GetValue("Admin Panel")</a>
+                                                <a asp-action="Index" asp-controller="Dashboard" asp-area="admin" class="btn">@_localizer.GetValue("Admin Panel")</a>
                                     }
-                                    <a asp-action="List" asp-controller="Order" class="btn">@_localizer.GetValue("Orders")</a>
-                                    <a asp-action="Logout" asp-controller="Account" class="btn">@_localizer.GetValue("Logout")</a>
-                                </div>
+                                        <a asp-action="List" asp-controller="Order" class="btn">@_localizer.GetValue("Orders")</a>
+                                        <a asp-action="Logout" asp-controller="Account" class="btn">@_localizer.GetValue("Logout")</a>
+                                    </div>
                             }
                             else
                             {
-                                <div class="account-dropdown" style="text-align:center">
-                                    <a asp-action="Login" asp-controller="Account" class="btn">@_localizer.GetValue("Login")</a>
-                                    <p class="position">@_localizer.GetValue("Or")</p>
-                                    <a asp-action="Register" asp-controller="Account" class="btn">@_localizer.GetValue("Register")</a>
-                                </div>
+                                    <div class="account-dropdown" style="text-align:center">
+                                        <a asp-action="Login" asp-controller="Account" class="btn">@_localizer.GetValue("Login")</a>
+                                        <p class="position">@_localizer.GetValue("Or")</p>
+                                        <a asp-action="Register" asp-controller="Account" class="btn">@_localizer.GetValue("Register")</a>
+                                    </div>
                             }
                         </div>
 
@@ -116,22 +137,22 @@
                             <select class="changeCultureInput">
                                 @if (selectedLanguage == "en")
                                 {
-                                    <option value="az">AZE</option>
-                                    <option value="en" selected>ENG</option>
-                                    <option value="ru">RUS</option>
+                                        <option value="az">AZE</option>
+                                        <option value="en" selected>ENG</option>
+                                        <option value="ru">RUS</option>
                                 }
                                 else if (selectedLanguage == "ru")
                                 {
 
-                                    <option value="az">AZE</option>
-                                    <option value="en">ENG</option>
-                                    <option value="ru" selected>RUS</option>
+                                        <option value="az">AZE</option>
+                                        <option value="en">ENG</option>
+                                        <option value="ru" selected>RUS</option>
                                 }
                                 else
                                 {
-                                    <option value="az" selected>AZE</option>
-                                    <option value="en">ENG</option>
-                                    <option value="ru">RUS</option>
+                                        <option value="az" selected>AZE</option>
+                                        <option value="en">ENG</option>
+                                        <option value="ru">RUS</option>
                                 }
                             </select>
                         </div>
@@ -174,22 +195,22 @@
                                 <select class="changeCultureInputMobile">
                                     @if (selectedLanguage == "en")
                                     {
-                                        <option value="az">AZE</option>
-                                        <option value="en" selected>ENG</option>
-                                        <option value="ru">RUS</option>
+                                            <option value="az">AZE</option>
+                                            <option value="en" selected>ENG</option>
+                                            <option value="ru">RUS</option>
                                     }
                                     else if (selectedLanguage == "ru")
                                     {
 
-                                        <option value="az">AZE</option>
-                                        <option value="en">ENG</option>
-                                        <option value="ru" selected>RUS</option>
+                                            <option value="az">AZE</option>
+                                            <option value="en">ENG</option>
+                                            <option value="ru" selected>RUS</option>
                                     }
                                     else
                                     {
-                                        <option value="az" selected>AZE</option>
-                                        <option value="en">ENG</option>
-                                        <option value="ru">RUS</option>
+                                            <option value="az" selected>AZE</option>
+                                            <option value="en">ENG</option>
+                                            <option value="ru">RUS</option>
                                     }
                                 </select>
                             </div>
@@ -227,6 +248,15 @@
                         </a>
                     </li>
 
+                    <li class="mobile-navbar-item text-uppercase">
+                        <a asp-action="Index" asp-controller="About" class="mobile-navbar-link">
+                            @_localizer.GetValue("About")
+                            <span class="right-chevron">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </li>
+
                 </ul>
             </nav>
         </div>
@@ -256,12 +286,12 @@
                     </div>
                     @foreach (var attendance in attendances)
                     {
-                        <div class="services col-lg-3 col-md-6 col-12">
-                            <div>
-                                <img src="@attendance.ImagePath" />
+                            <div class="services col-lg-3 col-md-6 col-12">
+                                <div style="width:100px;height:100px">
+                                    <img src="@attendance.ImagePath" />
+                                </div>
+                                <span>@attendance.Name</span>
                             </div>
-                            <span>@attendance.Name</span>
-                        </div>
                     }
 
                 </div>

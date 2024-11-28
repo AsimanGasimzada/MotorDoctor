@@ -26,7 +26,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputUsername1 ">Azərbaycanca açıqlama</label>
-                        <textarea class="form-control productDescription" id="description0" required asp-for="@Model.ProductDetails[0].Description" placeholder="Açıqlama daxil edin"></textarea>
+                        <textarea class="form-control productDescription" id="description0" asp-for="@Model.ProductDetails[0].Description" placeholder="Açıqlama daxil edin"></textarea>
                         <span asp-validation-for="@Model.ProductDetails[0].Description" class="text-danger"></span>
                     </div>
 
@@ -55,7 +55,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputUsername1 ">İngiliscə açıqlama</label>
-                        <textarea class="form-control productDescription" id="description1" required asp-for="@Model.ProductDetails[1].Description" placeholder="Açıqlama daxil edin"></textarea>
+                        <textarea class="form-control productDescription" id="description1" asp-for="@Model.ProductDetails[1].Description" placeholder="Açıqlama daxil edin"></textarea>
                         <span asp-validation-for="@Model.ProductDetails[1].Description" class="text-danger"></span>
                     </div>
 
@@ -77,7 +77,7 @@
 
                     <div class="form-group">
                         <label for="exampleInputUsername1 ">Rusca açıqlama</label>
-                        <textarea class="form-control productDescription" id="description2" required asp-for="@Model.ProductDetails[2].Description" placeholder="Açıqlama daxil edin"></textarea>
+                        <textarea class="form-control productDescription" id="description2" asp-for="@Model.ProductDetails[2].Description" placeholder="Açıqlama daxil edin"></textarea>
                         <span asp-validation-for="@Model.ProductDetails[2].Description" class="text-danger"></span>
                     </div>
 
@@ -224,18 +224,18 @@
 
 
        const sameDataInput=document.querySelector(".sameDataInput")
-          const nameInputs=document.querySelectorAll(".productName");
-          const descriptionInputs=document.querySelectorAll(".productDescription");
+       const nameInputs=document.querySelectorAll(".productName");
+       //const descriptionInputs=document.querySelectorAll(".productDescription");
 
        sameDataInput.addEventListener("change",(e)=>{
            e.preventDefault();
            if(sameDataInput.checked){
 
                let name=nameInputs[0].value;
-               let description=descriptionInputs[0].value;
+               //let description=descriptionInputs[0].value;
 
                nameInputs.forEach(input=>input.value=name)
-               descriptionInputs.forEach(input=>input.value=description)
+               //descriptionInputs.forEach(input=>input.value=description)
 
 
            }

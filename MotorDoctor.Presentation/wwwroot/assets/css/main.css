@@ -1,5 +1,8 @@
 ﻿@import url("https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Noto Sans:wght@100;300;400;500;700;900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Pacifico&display=swap');
+
 
 * {
     margin: 0;
@@ -188,6 +191,14 @@ body.no-scroll {
         /* Reduce padding */
         font-size: 16px;
         /* Adjust font size */
+    }
+
+
+    #main .mainSwiper .swiper-slide .slider-title {
+        transform: translateY(-50%);
+        top: 25% !important;
+        position: absolute;
+        left: 8%;
     }
 }
 
@@ -447,8 +458,9 @@ body.no-scroll {
 
 #featured .featured-container .row .product-card span {
     font-size: 48px;
-    font-family: "Gochi Hand", cursive;
-    text-transform: capitalize;
+    font-family: "Kanit", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 #featured .featured-container .row .product-card #featured-text {
@@ -3159,3 +3171,75 @@ body.no-scroll {
         font-size: 41px !important;
     }
 }
+
+
+
+/*branch page*/
+
+
+.branch-section {
+    text-align: center;
+    padding: 80px 0;
+}
+
+.branch-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+.branch-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    width: 100%;
+}
+
+    .branch-card:hover {
+        transform: scale(1.05);
+    }
+
+    .branch-card img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+
+.branch-info {
+    padding: 20px;
+    text-align: center;
+}
+
+.branch-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+}
+
+.branch-details {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+    .branch-details a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+        .branch-details a:hover {
+            text-decoration: underline;
+        }
+
+.branch-hours {
+    font-size: 14px;
+    color: #888;
+}
+
+

@@ -6,8 +6,6 @@ public class AttendanceUpdateDtoValidator : AbstractValidator<AttendanceUpdateDt
 {
     public AttendanceUpdateDtoValidator()
     {
-        RuleFor(x => x.Image).NotEmpty();
-
         RuleForEach(x => x.AttendanceDetails).SetValidator(new AttendanceDetailUpdateDtoValidator());
     }
 }

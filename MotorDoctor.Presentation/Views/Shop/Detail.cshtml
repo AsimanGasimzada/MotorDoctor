@@ -37,6 +37,12 @@
                         </div>
                     </div>
                     <div class="gallery-items">
+
+                        <div class="gallery-item">
+                            <img src="@Model.Product.MainImagePath"
+                                 alt="@Model.Product.Name"
+                                 class="gallery-img" />
+                        </div>
                         @foreach (var imagePath in Model.Product.ImagePaths)
                         {
                             <div class="gallery-item">
@@ -231,13 +237,11 @@
                     transition: color 0.3s ease;
                 }
 
-                    /* Hover Effect */
                     .rating-stars .star:hover,
                     .rating-stars .star:hover ~ .star {
                         color: #ffc107;
                     }
 
-                /* Highlight Selected Stars (Soldan Sağa Dolma) */
                 .rating-stars input[type="radio"]:checked ~ label {
                     color: #ffc107;
                 }
@@ -264,10 +268,23 @@
     <!-- Related Products Section End -->
 </main>
 <!-- Main End -->
+
+
+<script>
+    const productImages=document.querySelectorAll(".gallery-img");
+       const mainImage=document.querySelector("#zoom-img")
+
+       productImages.forEach(img=>{
+           img.addEventListener('click',(e)=>{
+               mainImage.src=img.src;
+           })
+       })
+</script>
 @section Scripts {
 
     <script src="~/assets/js/tab.js"></script>
     <script>
+
         const decreaseButton=document.querySelector('.decrease-product')
         const increaseButton=document.querySelector('.increase-product')
         const productCountInput=document.querySelector('.product-count')

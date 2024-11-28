@@ -27,7 +27,8 @@ internal class ProductAutoMapper : Profile
         CreateMap<Product, BestSellerProductGetDto>()
                            .ForMember(x => x.ParentCategory, x => x.MapFrom(x => x.Category.Parent))
                            .ForMember(x => x.Name, x => x.MapFrom(src => src.ProductDetails.FirstOrDefault() != null ? src.ProductDetails.FirstOrDefault()!.Name : string.Empty))
-                           .ForMember(x => x.Description, x => x.MapFrom(src => src.ProductDetails.FirstOrDefault() != null ? src.ProductDetails.FirstOrDefault()!.Description : string.Empty));
+                           .ForMember(x => x.Description, x => x.MapFrom(src => src.ProductDetails.FirstOrDefault() != null ? src.ProductDetails.FirstOrDefault()!.Description : string.Empty))
+                           .ForMember(x=>x.MainImagePath,x=>x.MapFrom(src=>src.ProductImages.FirstOrDefault(x=>x.IsMain)!=null ? src.ProductImages.FirstOrDefault(x=>x.IsMain)!.Path : string.Empty));
 
     }
 }

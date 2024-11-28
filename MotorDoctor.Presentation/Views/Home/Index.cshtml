@@ -1,6 +1,11 @@
-﻿@model HomeDto
+﻿@using MotorDoctor.Business.Extensions
+@model HomeDto
 @inject IWishlistService wishlistService;
 @inject HomeLocalizer _localizer;
+@inject ISettingService _settingService;
+@{
+    var settings = await _settingService.GetSettingsWithDictionaryAsync(Constants.SelectedLanguage);
+}
 
 <!-- Main Start -->
 <main id="main">
@@ -11,8 +16,8 @@
             {
                 <div class="swiper-slide">
                     <div class="slider-title">
-                            <h1 class="slider-heading text-difference-color">@slider.Title</h1>
-                            <p class="pb-4 text-difference-color">
+                        <h1 class="slider-heading text-difference-color">@slider.Title</h1>
+                        <p class="pb-4 text-difference-color">
                             @slider.Description
                         </p>
                         <a asp-action="Index" asp-controller="Shop" class="custom-button">@slider.ButtonTitle</a>
@@ -51,7 +56,7 @@
 
                         <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
                             <span style="mix-blend-mode: difference;color:white;" id="">@product.ParentCategory?.Name</span>
-                            <img src="@product.ParentCategory?.ImagePath" alt="product" />
+                            <img src="@product.ParentCategory.ImagePath" alt="product" />
                         </a>
                         <div class="product-card-details">
                             <div class="product-detail-content">
@@ -222,7 +227,7 @@
     <section id="trending" class="pb-5">
         <div class="section-title">
             <span>@_localizer.GetValue("WhyChooseUs")</span>
-            <h2>@_localizer.GetValue("WhyChooseUsTitle")</h2>
+            <h2>@settings["WhyChooseUs"]</h2>
         </div>
         <div class="featured-products-container">
             <div class="row justify-content-center"></div>
@@ -235,10 +240,10 @@
         <section id="street-vibe" style="background-image:url(@Model.About.ImagePath)">
             <div class="street-title">
                 <h2 class="text-readable">@Model.About.Name</h2>
-                    <p class="text-readable">
+                <p class="text-readable">
                     @Html.Raw(Model.About.Description)
                 </p>
-                <a class="custom-button">SHOP NOW</a>
+                <a class="custom-button" asp-action="Index" asp-controller="About">@_localizer.GetValue("ReadMore")</a>
             </div>
         </section>
     }

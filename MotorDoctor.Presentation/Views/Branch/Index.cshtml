@@ -1,0 +1,40 @@
+﻿@model List<BranchGetDto>
+@inject AboutLocalizer _localizer
+
+<br />
+<br />
+<br />
+<main id="main">
+    <nav id="breadcrumb">
+        <span><a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a></span>
+        <span class="line">|</span>
+        <span><a asp-action="Index" class="text-dark">@_localizer.GetValue("Branchs")</a></span>
+    </nav>
+
+    <section class="branch-section" id="wishlist">
+        <div class="product-wishlist">
+            <h2>@_localizer.GetValue("Branches")</h2>
+        </div>
+        <div class="container">
+            <div class="row">
+              @foreach (var branch in Model)
+                {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="branch-card">
+                        <img src="@branch.ImagePath" alt="@branch.Name">
+                        <div class="branch-info">
+                            <p class="branch-name">Branch 2</p>
+                            <p class="branch-details">
+                                <strong>Address:</strong> @branch.Location<br>
+                                <strong>Phone:</strong> @branch.PhoneNumber<br>
+                                <strong>Working Hours:</strong> @branch.WorkHours<br>
+                                <strong>Map:</strong> <a href="https://www.google.com/maps?q=456+Park+Ave" target="_blank">View on Map</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+    </section>
+</main>

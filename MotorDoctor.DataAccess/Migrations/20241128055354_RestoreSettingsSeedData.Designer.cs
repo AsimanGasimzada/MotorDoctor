@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotorDoctor.DataAccess.Contexts;
 
@@ -11,9 +12,11 @@ using MotorDoctor.DataAccess.Contexts;
 namespace MotorDoctor.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241128055354_RestoreSettingsSeedData")]
+    partial class RestoreSettingsSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1029,11 +1032,6 @@ namespace MotorDoctor.DataAccess.Migrations
                         {
                             Id = 16,
                             Key = "WebsiteKeywords"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Key = "WhyChooseUs"
                         });
                 });
 
@@ -1401,27 +1399,6 @@ namespace MotorDoctor.DataAccess.Migrations
                             LanguageId = 3,
                             SettingId = 16,
                             Value = "MotorDoctor"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            LanguageId = 1,
-                            SettingId = 17,
-                            Value = "KEYFİYYƏTİN ADI MOTORDOCTOR"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            LanguageId = 2,
-                            SettingId = 17,
-                            Value = "KEYFİYYƏTİN ADI MOTORDOCTOR"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            LanguageId = 3,
-                            SettingId = 17,
-                            Value = "KEYFİYYƏTİN ADI MOTORDOCTOR"
                         });
                 });
 
@@ -1457,6 +1434,7 @@ namespace MotorDoctor.DataAccess.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 

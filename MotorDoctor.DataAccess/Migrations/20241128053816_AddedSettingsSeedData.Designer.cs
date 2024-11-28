@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MotorDoctor.DataAccess.Contexts;
 
@@ -11,9 +12,11 @@ using MotorDoctor.DataAccess.Contexts;
 namespace MotorDoctor.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241128053816_AddedSettingsSeedData")]
+    partial class AddedSettingsSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1029,11 +1032,6 @@ namespace MotorDoctor.DataAccess.Migrations
                         {
                             Id = 16,
                             Key = "WebsiteKeywords"
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Key = "WhyChooseUs"
                         });
                 });
 
@@ -1299,129 +1297,108 @@ namespace MotorDoctor.DataAccess.Migrations
                         },
                         new
                         {
-                            Id = 34,
-                            LanguageId = 1,
-                            SettingId = 12,
-                            Value = "MotorDoctor"
-                        },
-                        new
-                        {
-                            Id = 35,
-                            LanguageId = 2,
-                            SettingId = 12,
-                            Value = "MotorDoctor"
-                        },
-                        new
-                        {
-                            Id = 36,
-                            LanguageId = 3,
-                            SettingId = 12,
-                            Value = "MotorDoctor"
-                        },
-                        new
-                        {
-                            Id = 37,
-                            LanguageId = 1,
-                            SettingId = 13,
-                            Value = "Online Shop"
-                        },
-                        new
-                        {
-                            Id = 38,
-                            LanguageId = 2,
-                            SettingId = 13,
-                            Value = "Online Shop"
-                        },
-                        new
-                        {
-                            Id = 39,
-                            LanguageId = 3,
-                            SettingId = 13,
-                            Value = "Online Shop"
-                        },
-                        new
-                        {
-                            Id = 40,
-                            LanguageId = 1,
-                            SettingId = 14,
-                            Value = "Online Shop"
-                        },
-                        new
-                        {
-                            Id = 41,
-                            LanguageId = 2,
-                            SettingId = 14,
-                            Value = "Online Shop"
-                        },
-                        new
-                        {
-                            Id = 42,
-                            LanguageId = 3,
-                            SettingId = 14,
-                            Value = "Online Shop"
-                        },
-                        new
-                        {
-                            Id = 43,
-                            LanguageId = 1,
-                            SettingId = 15,
-                            Value = "MotorDoctor"
-                        },
-                        new
-                        {
                             Id = 44,
-                            LanguageId = 2,
-                            SettingId = 15,
+                            LanguageId = 1,
+                            SettingId = 12,
                             Value = "MotorDoctor"
                         },
                         new
                         {
                             Id = 45,
+                            LanguageId = 2,
+                            SettingId = 12,
+                            Value = "MotorDoctor"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            LanguageId = 3,
+                            SettingId = 12,
+                            Value = "MotorDoctor"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            LanguageId = 1,
+                            SettingId = 13,
+                            Value = "Online Shop"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            LanguageId = 2,
+                            SettingId = 13,
+                            Value = "Online Shop"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            LanguageId = 3,
+                            SettingId = 13,
+                            Value = "Online Shop"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            LanguageId = 1,
+                            SettingId = 14,
+                            Value = "Online Shop"
+                        },
+                        new
+                        {
+                            Id = 51,
+                            LanguageId = 2,
+                            SettingId = 14,
+                            Value = "Online Shop"
+                        },
+                        new
+                        {
+                            Id = 52,
+                            LanguageId = 3,
+                            SettingId = 14,
+                            Value = "Online Shop"
+                        },
+                        new
+                        {
+                            Id = 53,
+                            LanguageId = 1,
+                            SettingId = 15,
+                            Value = "MotorDoctor"
+                        },
+                        new
+                        {
+                            Id = 54,
+                            LanguageId = 2,
+                            SettingId = 15,
+                            Value = "MotorDoctor"
+                        },
+                        new
+                        {
+                            Id = 55,
                             LanguageId = 3,
                             SettingId = 15,
                             Value = "MotorDoctor"
                         },
                         new
                         {
-                            Id = 46,
+                            Id = 56,
                             LanguageId = 1,
                             SettingId = 16,
                             Value = "MotorDoctor"
                         },
                         new
                         {
-                            Id = 47,
+                            Id = 57,
                             LanguageId = 2,
                             SettingId = 16,
                             Value = "MotorDoctor"
                         },
                         new
                         {
-                            Id = 48,
+                            Id = 58,
                             LanguageId = 3,
                             SettingId = 16,
                             Value = "MotorDoctor"
-                        },
-                        new
-                        {
-                            Id = 49,
-                            LanguageId = 1,
-                            SettingId = 17,
-                            Value = "KEYFİYYƏTİN ADI MOTORDOCTOR"
-                        },
-                        new
-                        {
-                            Id = 50,
-                            LanguageId = 2,
-                            SettingId = 17,
-                            Value = "KEYFİYYƏTİN ADI MOTORDOCTOR"
-                        },
-                        new
-                        {
-                            Id = 51,
-                            LanguageId = 3,
-                            SettingId = 17,
-                            Value = "KEYFİYYƏTİN ADI MOTORDOCTOR"
                         });
                 });
 
@@ -1457,6 +1434,7 @@ namespace MotorDoctor.DataAccess.Migrations
                         .HasColumnType("nvarchar(32)");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("nvarchar(128)");
 
