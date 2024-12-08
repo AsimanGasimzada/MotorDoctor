@@ -31,6 +31,7 @@ public static class BusinessServiceRegistration
     private static void AddServices(IServiceCollection services)
     {
         services.AddScoped<IAboutService, AboutService>();
+        services.AddScoped<IAdvertisementService, AdvertisementService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IAttendanceService, AttendanceService>();
         services.AddScoped<ICategoryService, CategoryService>();

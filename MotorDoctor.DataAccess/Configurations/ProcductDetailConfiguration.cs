@@ -8,7 +8,7 @@ internal class ProcductDetailConfiguration : IEntityTypeConfiguration<ProductDet
     public void Configure(EntityTypeBuilder<ProductDetail> builder)
     {
         builder.Property(x => x.Name).IsRequired().HasMaxLength(128);
-        builder.Property(x => x.Description).IsRequired().HasMaxLength(2048);
+        builder.Property(x => x.Description).IsRequired().HasMaxLength(5000);
 
         builder.HasIndex(x => new { x.ProductId, x.LanguageId }).IsUnique();
     }

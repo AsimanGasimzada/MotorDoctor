@@ -6,7 +6,7 @@ public class ProductDetailUpdateDtoValidator : AbstractValidator<ProductDetailUp
 {
     public ProductDetailUpdateDtoValidator()
     {
-        RuleFor(x => x.Description).NotEmpty().MaximumLength(2048).MinimumLength(1);
+        RuleFor(x => x.Description).NotEmpty().MaximumLength(5000).MinimumLength(1);
         RuleFor(x => x.Name).NotEmpty().MaximumLength(128).MinimumLength(2);
     }
 }

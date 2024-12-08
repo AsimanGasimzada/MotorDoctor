@@ -123,6 +123,9 @@
   <data name="BasketTitle" xml:space="preserve">
     <value>Корзина</value>
   </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Филиалы</value>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Связаться с</value>
   </data>

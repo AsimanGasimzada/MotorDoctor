@@ -92,6 +92,12 @@
                 <br />
                 <br />
 
+                <div class="form-group">
+                    <label for="exampleInputUsername1"> Url daxil edin,əgər varsa</label>
+                    <input class="form-control" asp-for="ButtonPath">
+                    <span asp-validation-for="ButtonPath" class="text-danger"></span>
+                </div>
+
 
                 <div class="form-group">
                     <img src="@Model.ImagePath" width="100" height="100"/>

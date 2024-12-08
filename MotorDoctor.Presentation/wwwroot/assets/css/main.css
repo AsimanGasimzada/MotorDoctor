@@ -109,7 +109,6 @@ ol {
 }
 
 
-
 .overlay {
     height: 100%;
     width: 100%;
@@ -137,6 +136,7 @@ ol {
     padding: 15px;
     font-size: 17px;
     border: none;
+    outline:none;
     width: 80%;
     background: white;
 }
@@ -165,8 +165,9 @@ ol {
 
     .closebtn:hover {
         color: #2d2d2d;
-        ;
     }
+
+
 
 body.no-scroll {
     overflow: hidden;
@@ -253,7 +254,7 @@ body.no-scroll {
             color: #000;
             font-weight: 700;
             font-size: clamp(2.5rem, 4vw, 4.9rem);
-            max-width: 90%;
+            max-width: 100%;
             transition: all 0.5s;
             clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
         }
@@ -3179,7 +3180,7 @@ body.no-scroll {
 
 .branch-section {
     text-align: center;
-    padding: 80px 0;
+    /*padding: 80px 0;*/
 }
 
 .branch-title {

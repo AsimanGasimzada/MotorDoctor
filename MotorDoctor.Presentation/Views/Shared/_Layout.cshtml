@@ -14,7 +14,7 @@
     <title>@settings["WebsiteTitle"]</title>
 
 
-     <!-- SEO Metas -->
+    <!-- SEO Metas -->
     <meta name="keywords" content="@settings["WebsiteKeywords"]" />
     <meta name="description" content="@settings["WebsiteLongDescription"]" />
     <meta name="author" content="@settings["WebsiteAuthor"]" />
@@ -63,7 +63,7 @@
                 <div class="leftside-nav">
                     <div class="logo">
                         <a asp-action="Index" asp-controller="Home">
-                            <img src="~/assets/img/logo.png" alt="Dark Dunker" />
+                            <img src="~/assets/img/logo.png" alt="logo" />
                         </a>
 
                     </div>
@@ -81,6 +81,9 @@
                             <a asp-action="Index" asp-controller="Contact" class="navbar-link">@_localizer.GetValue("Contact")</a>
                         </li>
 
+                        <li class="navbar-item">
+                            <a asp-action="Index" asp-controller="Branch" class="navbar-link">@_localizer.GetValue("Branch")</a>
+                        </li>
 
                         <li class="navbar-item">
                             <a asp-action="Index" asp-controller="About" class="navbar-link">@_localizer.GetValue("About")</a>
@@ -93,16 +96,8 @@
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </span>
 
-                        <div id="searchOverlay" class="overlay">
-                            <span class="closebtn" onclick="closeSearch()"><i class="fa-solid fa-xmark"></i></span>
-                            <form asp-action="Index" asp-controller="Shop" method="post" class="overlay-content">
-                                <h1>@_localizer.GetValue("SearchText")</h1>
-                                <input id="searchInput" type="text" name="dto.ProductFilterDto.Search" placeholder="@_localizer.GetValue("SearchButton")..." />
-                                @*   <button type="submit" class="btn btn-secondary">
-                                    @_localizer.GetValue("SearchButton")
-                                </button> *@
-                            </form>
-                        </div>
+                      
+
 
                         <div class="account-container">
                             <span style="cursor: pointer" class="account">
@@ -110,23 +105,23 @@
                             </span>
                             @if (User.Identity?.IsAuthenticated ?? false)
                             {
-                                    <div class="account-dropdown">
-                                        <p class="name">@User.Identity.Name</p>
+                                <div class="account-dropdown">
+                                    <p class="name">@User.Identity.Name</p>
                                     @if (User.IsInRole("Admin"))
                                     {
-                                                <a asp-action="Index" asp-controller="Dashboard" asp-area="admin" class="btn">@_localizer.GetValue("Admin Panel")</a>
+                                        <a asp-action="Index" asp-controller="Dashboard" asp-area="admin" class="btn">@_localizer.GetValue("Admin Panel")</a>
                                     }
-                                        <a asp-action="List" asp-controller="Order" class="btn">@_localizer.GetValue("Orders")</a>
-                                        <a asp-action="Logout" asp-controller="Account" class="btn">@_localizer.GetValue("Logout")</a>
-                                    </div>
+                                    <a asp-action="List" asp-controller="Order" class="btn">@_localizer.GetValue("Orders")</a>
+                                    <a asp-action="Logout" asp-controller="Account" class="btn">@_localizer.GetValue("Logout")</a>
+                                </div>
                             }
                             else
                             {
-                                    <div class="account-dropdown" style="text-align:center">
-                                        <a asp-action="Login" asp-controller="Account" class="btn">@_localizer.GetValue("Login")</a>
-                                        <p class="position">@_localizer.GetValue("Or")</p>
-                                        <a asp-action="Register" asp-controller="Account" class="btn">@_localizer.GetValue("Register")</a>
-                                    </div>
+                                <div class="account-dropdown" style="text-align:center">
+                                    <a asp-action="Login" asp-controller="Account" class="btn">@_localizer.GetValue("Login")</a>
+                                    <p class="position">@_localizer.GetValue("Or")</p>
+                                    <a asp-action="Register" asp-controller="Account" class="btn">@_localizer.GetValue("Register")</a>
+                                </div>
                             }
                         </div>
 
@@ -137,22 +132,22 @@
                             <select class="changeCultureInput">
                                 @if (selectedLanguage == "en")
                                 {
-                                        <option value="az">AZE</option>
-                                        <option value="en" selected>ENG</option>
-                                        <option value="ru">RUS</option>
+                                    <option value="az">AZE</option>
+                                    <option value="en" selected>ENG</option>
+                                    <option value="ru">RUS</option>
                                 }
                                 else if (selectedLanguage == "ru")
                                 {
 
-                                        <option value="az">AZE</option>
-                                        <option value="en">ENG</option>
-                                        <option value="ru" selected>RUS</option>
+                                    <option value="az">AZE</option>
+                                    <option value="en">ENG</option>
+                                    <option value="ru" selected>RUS</option>
                                 }
                                 else
                                 {
-                                        <option value="az" selected>AZE</option>
-                                        <option value="en">ENG</option>
-                                        <option value="ru">RUS</option>
+                                    <option value="az" selected>AZE</option>
+                                    <option value="en">ENG</option>
+                                    <option value="ru">RUS</option>
                                 }
                             </select>
                         </div>
@@ -168,6 +163,14 @@
             </div>
         </nav>
         <!-- Navbar End -->
+
+        <div id="searchOverlay" class="overlay">
+            <span class="closebtn" onclick="closeSearch()"><i class="fa-solid fa-xmark"></i></span>
+            <form asp-action="Index" asp-controller="Shop" method="post" class="overlay-content">
+                <h1>@_localizer.GetValue("SearchText")</h1>
+                <input id="searchInput" required type="text" name="dto.ProductFilterDto.Search" placeholder="@_localizer.GetValue("SearchButton")..." />
+            </form>
+        </div>
         <!-- Mobile Nav Start-->
         <div class="mobile-header d-block d-lg-none">
             <div class="mobile-header-top">
@@ -181,7 +184,7 @@
                     </div>
                     <div class="mobile-nav-right">
                         <div class="mobile-nav-actions">
-                            <div class="search">
+                            <div class="search" onclick="openSearch()">
                                 <i class="fa-solid fa-magnifying-glass"></i>
                             </div>
                             <div class="mobile-nav-basket">
@@ -195,22 +198,22 @@
                                 <select class="changeCultureInputMobile">
                                     @if (selectedLanguage == "en")
                                     {
-                                            <option value="az">AZE</option>
-                                            <option value="en" selected>ENG</option>
-                                            <option value="ru">RUS</option>
+                                        <option value="az">AZE</option>
+                                        <option value="en" selected>ENG</option>
+                                        <option value="ru">RUS</option>
                                     }
                                     else if (selectedLanguage == "ru")
                                     {
 
-                                            <option value="az">AZE</option>
-                                            <option value="en">ENG</option>
-                                            <option value="ru" selected>RUS</option>
+                                        <option value="az">AZE</option>
+                                        <option value="en">ENG</option>
+                                        <option value="ru" selected>RUS</option>
                                     }
                                     else
                                     {
-                                            <option value="az" selected>AZE</option>
-                                            <option value="en">ENG</option>
-                                            <option value="ru">RUS</option>
+                                        <option value="az" selected>AZE</option>
+                                        <option value="en">ENG</option>
+                                        <option value="ru">RUS</option>
                                     }
                                 </select>
                             </div>
@@ -242,6 +245,16 @@
                     <li class="mobile-navbar-item text-uppercase">
                         <a asp-action="Index" asp-controller="Contact" class="mobile-navbar-link">
                             @_localizer.GetValue("Contact")
+                            <span class="right-chevron">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li class="mobile-navbar-item text-uppercase">
+                        <a asp-action="Index" asp-controller="Branch" class="mobile-navbar-link">
+                            @_localizer.GetValue("Branch")
                             <span class="right-chevron">
                                 <i class="fa-solid fa-chevron-right"></i>
                             </span>
@@ -286,12 +299,12 @@
                     </div>
                     @foreach (var attendance in attendances)
                     {
-                            <div class="services col-lg-3 col-md-6 col-12">
-                                <div style="width:100px;height:100px">
-                                    <img src="@attendance.ImagePath" />
-                                </div>
-                                <span>@attendance.Name</span>
+                        <div class="services col-lg-3 col-md-6 col-12" style="text-align:center;display:flex;align-items:center">
+                            <div style="width:100px;height:100px;object-fit:cover;display:flex;align-items:center">
+                                <img style="width:100%;height:auto" src="@attendance.ImagePath" />
                             </div>
+                            <span>@attendance.Name</span>
+                        </div>
                     }
 
                 </div>
@@ -299,7 +312,7 @@
         </div>
         <div class="footer-middle">
             <div class="row align-items-center">
-                <div class="col-lg-3 col-md-6 col-12 mb-4">
+                <div class="col-lg-4 col-md-6 col-12 mb-4">
                     <ul style="display:flex;width:100%;justify-content:space-between;gap:10px;flex-wrap:wrap">
                         <li>
                             <a asp-action="Index" asp-controller="Home">@_localizer.GetValue("Home")</a>
@@ -309,6 +322,9 @@
                         </li>
                         <li>
                             <a asp-action="Index" asp-controller="Contact">@_localizer.GetValue("Contact")</a>
+                        </li>
+                        <li>
+                            <a asp-action="Index" asp-controller="Branch">@_localizer.GetValue("Branch")</a>
                         </li>
                         <li>
                             <a asp-action="Index" asp-controller="About">@_localizer.GetValue("About")</a>

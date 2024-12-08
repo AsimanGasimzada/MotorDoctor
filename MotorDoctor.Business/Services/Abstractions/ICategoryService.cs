@@ -8,6 +8,7 @@ public interface ICategoryService : IModifyService<CategoryCreateDto, CategoryUp
     Task<List<CategoryGetDto>> GetBestCategoriesAsync(Languages language = Languages.Azerbaijan);
     Task<List<CategoryGetDto>> GetFeaturedCategoriesAsync(Languages language = Languages.Azerbaijan);
     Task<List<ParentCategoryDto>> GetParentCategoriesAsync(Languages language= Languages.Azerbaijan);
+    Task<List<ParentCategoryForFilterDto>> GetParentCategoriesForFilterAsync(Languages language= Languages.Azerbaijan);
     Task<bool> IsExistAsync(int id);
     Task<CategoryCreateDto> GetCreateDtoAsync();
     Task<CategoryCreateDto> GetCreateDtoAsync(CategoryCreateDto dto);

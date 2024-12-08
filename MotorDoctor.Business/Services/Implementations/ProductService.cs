@@ -214,7 +214,7 @@ internal class ProductService : IProductService
             }
 
             if (filterDto.MaxPrice is 0)
-                filterDto.MaxPrice = 1000;
+                filterDto.MaxPrice = 2500;
         }
 
         int count = await query.CountAsync();
@@ -294,7 +294,7 @@ internal class ProductService : IProductService
 
     public async Task<List<BestSellerProductGetDto>> GetBestProductsAsync(Languages language = Languages.Azerbaijan)
     {
-        var query = _repository.GetAll(x => x.Include(x=>x.ProductImages).Include(x => x.Category)
+        var query = _repository.GetAll(x => x.Include(x => x.ProductImages).Include(x => x.Category)
                                     .ThenInclude(x => x.Parent!).Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)));
 
         query = _repository.OrderByDescending(query, x => x.SalesCount);

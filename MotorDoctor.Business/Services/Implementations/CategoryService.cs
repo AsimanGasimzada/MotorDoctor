@@ -219,16 +219,32 @@ internal class CategoryService : ICategoryService
         return dtos;
     }
 
+
+    public async Task<List<ParentCategoryForFilterDto>> GetParentCategoriesForFilterAsync(Languages language = Languages.Azerbaijan)
+    {
+        var categories = await _repository.GetFilter(x => x.ParentId == null,
+                                   x => x.Include(x => x.Children).ThenInclude(x => x.CategoryDetails)
+                                   .Include(x => x.CategoryDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
+
+        var dtos = _mapper.Map<List<ParentCategoryForFilterDto>>(categories);
+
+        return dtos;
+    }
+
+
     public async Task<CategoryUpdateDto> GetUpdatedDtoAsync(int id)
     {
-        var category = await _repository.GetAsync(id, x => x.Include(x => x.CategoryDetails));
+        var category = await _repository.GetAsync(id, x => x.Include(x => x.CategoryDetails).Include(x => x.Children));
 
         if (category is null)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
         var dto = _mapper.Map<CategoryUpdateDto>(category);
 
-        var parentCategories = await _repository.GetFilter(x => x.ParentId == null, x => x.Include(x => x.CategoryDetails)).ToListAsync();
+        if (category.ParentId == null && category.Children.Count != 0)
+            return dto;
+
+        var parentCategories = await _repository.GetFilter(x => x.ParentId == null && x.Id != id, x => x.Include(x => x.CategoryDetails)).ToListAsync();
 
         var dtos = _mapper.Map<List<CategoryRelationDto>>(parentCategories);
 
@@ -239,7 +255,16 @@ internal class CategoryService : ICategoryService
 
     public async Task<CategoryUpdateDto> GetUpdatedDtoAsync(CategoryUpdateDto dto)
     {
-        var parentCategories = await _repository.GetFilter(x => x.ParentId == null, x => x.Include(x => x.CategoryDetails)).ToListAsync();
+        var category = await _repository.GetAsync(dto.Id, x => x.Include(x => x.CategoryDetails).Include(x => x.Children));
+
+        if (category is null)
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+        if (category.ParentId == null && category.Children.Count != 0)
+            return dto;
+
+
+        var parentCategories = await _repository.GetFilter(x => x.ParentId == null && x.Id != dto.Id, x => x.Include(x => x.CategoryDetails)).ToListAsync();
 
         var dtos = _mapper.Map<List<CategoryRelationDto>>(parentCategories);
 
@@ -261,7 +286,7 @@ internal class CategoryService : ICategoryService
             return false;
 
 
-        var existCategory = await _repository.GetAsync(x => x.Id == dto.Id, x => x.Include(x => x.CategoryDetails).Include(x => x.Children));
+        var existCategory = await _repository.GetAsync(x => x.Id == dto.Id, x => x.Include(x => x.CategoryDetails).Include(x => x.Children).Include(x => x.Products));
 
         if (existCategory is null)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
@@ -297,7 +322,14 @@ internal class CategoryService : ICategoryService
         }
         if (dto.ParentId is not null)
         {
-            var isExistParent = await _repository.IsExistAsync(x => x.Id == dto.ParentId && x.ParentId == null);
+            if (existCategory.ParentId == null && existCategory.Children.Count != 0)
+            {
+                ModelState.AddModelError("ParentId", "Base categorynin base i ola bilməz");
+                return false;
+            }
+
+
+            var isExistParent = await _repository.IsExistAsync(x => x.Id == dto.ParentId && x.ParentId == null && x.Id != existCategory.Id);
 
             if (isExistParent is false)
             {
@@ -305,6 +337,16 @@ internal class CategoryService : ICategoryService
                 return false;
             }
         }
+
+        if (dto.ParentId is null)
+        {
+            if (existCategory.ParentId != null && existCategory.Products.Count != 0)
+            {
+                ModelState.AddModelError("ParentId", "Bu kateqoriyada məhsul mövcuddur, ona görə əsas kateqoriya edə bilməzsiniz");
+                return false;
+            }
+        }
+
 
         if (dto.Image is { })
         {

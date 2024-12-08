@@ -123,6 +123,9 @@
   <data name="BasketTitle" xml:space="preserve">
     <value>Shopping Card</value>
   </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Branches</value>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
   </data>

@@ -7,4 +7,5 @@ public class SliderGetDto : IDto
     public string Title { get; set; } = null!;
     public string Description { get; set; } = null!;
     public string ButtonTitle { get; set; } = null!;
+    public string? ButtonPath { get; set; }
 }

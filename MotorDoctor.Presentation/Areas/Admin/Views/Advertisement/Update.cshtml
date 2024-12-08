@@ -1,0 +1,36 @@
+﻿@model AdvertisementUpdateDto
+
+<div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <p class="card-description">
+                Reklamı dəyişdir
+            </p>
+            <form method="post" class="forms-sample" enctype="multipart/form-data">
+
+                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1"> URL daxil edin</label>
+                    <input class="form-control" asp-for="Url">
+                    <span asp-validation-for="Url" class="text-danger"></span>
+                </div>
+
+
+
+                <div class="form-group">
+                    <img src="@Model.ImagePath" width="150" height="150" />
+                    <label for="exampleInputUsername1"> Şəkil seçin</label>
+                    <input class="form-control" accept="image/*" asp-for="Image">
+                    <span asp-validation-for="Image" class="text-danger"></span>
+                </div>
+
+
+
+                <button type="submit" class="btn btn-primary mr-2">Dəyişdir</button>
+                <a class="btn btn-light" asp-action="Index">Ləğv et</a>
+            </form>
+        </div>
+    </div>
+</div>

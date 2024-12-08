@@ -89,7 +89,11 @@ internal class SliderService : ISliderService
 
     public async Task<List<SliderGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
     {
-        var sliders = await _repository.GetAll(_getIncludeFunc(language)).ToListAsync();
+        var query = _repository.GetAll(_getIncludeFunc(language));
+
+        query = _repository.OrderByDescending(query, x => x.UpdatedAt);
+
+        var sliders = await query.ToListAsync();
 
         var dtos = _mapper.Map<List<SliderGetDto>>(sliders);
 

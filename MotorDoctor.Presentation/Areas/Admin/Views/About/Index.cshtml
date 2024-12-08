@@ -2,65 +2,71 @@
 @{
     int count = 1;
 }
-<div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Haqqında mətnləri</h4>
-            <p class="card-description">
-                <a asp-action="Create" class="btn btn-success">Yenisini yarat</a>
-            </p>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                Şəkil
-                            </th>
-                          
-                            <th>
-                                Adı
-                            </th>
-                            <th>
-                                Sıra nömrəsi
-                            </th>
-                            <th>
-                                Proseslər
-                            </th>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Haqqında mətnləri</h4>
+                        <p class="card-description">
+                            <a asp-action="Create" class="btn btn-success">Yenisini yarat</a>
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Şəkil
+                                        </th>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var about in Model)
-                        {
-                            <tr>
-                                <td class="py-1">
-                                    @(count++)
-                                </td>
-                                <td>
-                                    <img src="@about.ImagePath" />
-                                </td>
-                              
-                                <td>
-                                    @about.Name
-                                </td>
-                                <td>
-                                    @about.OrderNo
-                                </td>
+                                        <th>
+                                            Adı
+                                        </th>
+                                        <th>
+                                            Sıra nömrəsi
+                                        </th>
+                                        <th>
+                                            Proseslər
+                                        </th>
 
-                                <td>
-                                    <a asp-action="Update" asp-route-id="@about.Id" class="btn btn-warning"><i class="mdi mdi-grease-pencil"></i></a>
-                                    <a asp-action="Delete" asp-route-id="@about.Id" class="btn btn-danger deleteBtn"><i class="mdi mdi-delete"></i></a>
-                                </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var about in Model)
+                                    {
+                                        <tr>
+                                            <td class="py-1">
+                                                @(count++)
+                                            </td>
+                                            <td>
+                                                <img src="@about.ImagePath" />
+                                            </td>
 
-                            </tr>
+                                            <td>
+                                                @about.Name
+                                            </td>
+                                            <td>
+                                                @about.OrderNo
+                                            </td>
 
-                        }
+                                            <td>
+                                                <a asp-action="Update" asp-route-id="@about.Id" class="btn btn-warning"><i class="mdi mdi-grease-pencil"></i></a>
+                                                <a asp-action="Delete" asp-route-id="@about.Id" class="btn btn-danger deleteBtn"><i class="mdi mdi-delete"></i></a>
+                                            </td>
 
-                    </tbody>
-                </table>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

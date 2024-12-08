@@ -24,7 +24,7 @@
                 <input asp-for="@Model.SettingDetails[0].LanguageId" value="1" type="hidden" />
                 <div class="form-group">
                     <label for="exampleInputUsername1">Azərbaycanca ad</label>
-                    <input class="form-control" required asp-for="@Model.SettingDetails[0].Value" placeholder="Dəyər daxil edin">
+                    <textarea class="form-control" required asp-for="@Model.SettingDetails[0].Value" placeholder="Dəyər daxil edin"></textarea>
                     <span asp-validation-for="@Model.SettingDetails[0].Value" class="text-danger"></span>
                 </div>
 
@@ -36,7 +36,7 @@
                 <input asp-for="@Model.SettingDetails[1].LanguageId" value="2" type="hidden" />
                 <div class="form-group">
                     <label for="exampleInputUsername1">İngiliscə ad</label>
-                    <input class="form-control" required asp-for="@Model.SettingDetails[1].Value" placeholder="Dəyər daxil edin">
+                    <textarea class="form-control" required asp-for="@Model.SettingDetails[1].Value" placeholder="Dəyər daxil edin"></textarea>
                     <span asp-validation-for="@Model.SettingDetails[1].Value" class="text-danger"></span>
                 </div>
 
@@ -47,7 +47,7 @@
                 <input asp-for="@Model.SettingDetails[2].LanguageId" value="3" type="hidden" />
                 <div class="form-group">
                     <label for="exampleInputUsername1">Rusca ad</label>
-                    <input class="form-control" required asp-for="@Model.SettingDetails[2].Value" placeholder="Dəyər daxil edin">
+                    <textarea class="form-control" required asp-for="@Model.SettingDetails[2].Value" placeholder="Dəyər daxil edin"></textarea>
                     <span asp-validation-for="@Model.SettingDetails[2].Value" class="text-danger"></span>
                 </div>
 

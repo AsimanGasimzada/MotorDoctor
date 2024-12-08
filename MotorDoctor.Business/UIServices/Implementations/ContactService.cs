@@ -32,7 +32,7 @@ internal class ContactService : IContactService
 
         string emailBody = _getTemplateContent(dto);
 
-        await _emailService.SendEmailAsync(new() { Body = emailBody, ToEmail = "asimanjg@code.edu.az", Subject = "Contact Info" });
+        await _emailService.SendEmailAsync(new() { Body = emailBody, ToEmail = "info@motordoctor.az", Subject = "Contact Info" });
 
         return true;
 

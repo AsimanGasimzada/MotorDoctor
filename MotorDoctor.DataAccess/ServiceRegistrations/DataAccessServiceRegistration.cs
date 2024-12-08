@@ -32,6 +32,7 @@ public static class DataAccessServiceRegistration
     private static void _addRepositories(IServiceCollection services)
     {
         services.AddScoped<IAboutRepository, AboutRepository>();
+        services.AddScoped<IAdvertisementRepository, AdvertisementRepository>();
         services.AddScoped<IAttedanceRepository, AttedanceRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IBranchRepository, BranchRepository>();
@@ -55,6 +56,7 @@ public static class DataAccessServiceRegistration
         services.AddSingleton<AboutLocalizer>();
         services.AddSingleton<AccountLocalizer>();
         services.AddSingleton<BasketLocalizer>();
+        services.AddSingleton<BranchLocalizer>();
         services.AddSingleton<ContactLocalizer>();
         services.AddSingleton<ErrorLocalizer>();
         services.AddSingleton<HomeLocalizer>();

@@ -20,8 +20,10 @@
 
             <div class="container my-4 mt-5">
                 <div class="card border-0   smaller-card">
-                    <img src="@about.ImagePath"
-                         class="card-img-top smaller-img" alt="Ideas for Action">
+                  @if(!string.IsNullOrWhiteSpace(about.ImagePath)){
+                        <img src="@about.ImagePath"
+                             class="card-img-top smaller-img" alt="@about.Name">
+                  }
                     <div class="card-body">
                         <div class="d-flex justify-content-between text-muted mb-2">
                             <a href="#" class="text-decoration-none bigger-text"></a>

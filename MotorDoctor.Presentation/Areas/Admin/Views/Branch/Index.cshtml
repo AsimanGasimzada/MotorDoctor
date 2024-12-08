@@ -2,60 +2,67 @@
 @{
     int count = 1;
 }
-<div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Filiallar</h4>
-            <p class="card-description">
-                <a asp-action="Create" class="btn btn-success">Yenisini yarat</a>
-            </p>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                Ad
-                            </th>
-                            <th>
-                                Ünvan
-                            </th>
-                            <th>
-                                Proseslər
-                            </th>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var branch in Model)
-                        {
-                            <tr>
-                                <td class="py-1">
-                                    @(count++)
-                                </td>
 
-                                <td>
-                                    @branch.Name
-                                </td>
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Filiallar</h4>
+                        <p class="card-description">
+                            <a asp-action="Create" class="btn btn-success">Yenisini yarat</a>
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Ad
+                                        </th>
+                                        <th>
+                                            Ünvan
+                                        </th>
+                                        <th>
+                                            Proseslər
+                                        </th>
 
-                                <td>
-                                    @branch.Location
-                                </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var branch in Model)
+                                    {
+                                        <tr>
+                                            <td class="py-1">
+                                                @(count++)
+                                            </td>
 
-                                <td>
-                                    <a asp-action="Update" asp-route-id="@branch.Id" class="btn btn-warning"><i class="mdi mdi-grease-pencil"></i></a>
-                                    <a asp-action="Delete" asp-route-id="@branch.Id" class="btn btn-danger deleteBtn"><i class="mdi mdi-delete"></i></a>
-                                </td>
+                                            <td>
+                                                @branch.Name
+                                            </td>
 
-                            </tr>
+                                            <td>
+                                                @branch.Location
+                                            </td>
 
-                        }
+                                            <td>
+                                                <a asp-action="Update" asp-route-id="@branch.Id" class="btn btn-warning"><i class="mdi mdi-grease-pencil"></i></a>
+                                                <a asp-action="Delete" asp-route-id="@branch.Id" class="btn btn-danger deleteBtn"><i class="mdi mdi-delete"></i></a>
+                                            </td>
 
-                    </tbody>
-                </table>
+                                        </tr>
+
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>

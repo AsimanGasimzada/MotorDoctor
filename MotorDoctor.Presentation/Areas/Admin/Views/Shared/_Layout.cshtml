@@ -43,7 +43,7 @@
                 <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
                     <span class="icon-menu"></span>
                 </button>
-             
+
             </div>
         </nav>
         <!-- partial -->
@@ -71,6 +71,7 @@
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Attendance">Servislər</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Setting">Parametrlər</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Brand">Partnyorlar</a></li>
+                                <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Advertisement">Reklamlar</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Branch">Filiallar</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Category">Kateqoriyalar</a></li>
                                 <li class="nav-item"> <a class="nav-link" asp-action="Index" asp-controller="Product">Məhsullar</a></li>
@@ -99,7 +100,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-bs-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
                             <i class="icon-head menu-icon"></i>
-                            <span class="menu-title">@(User.Identity?.Name  ?? "Admin")</span>
+                            <span class="menu-title">@(User.Identity?.Name ?? "Admin")</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="auth">
@@ -182,7 +183,7 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script src="sweetalert2.min.js"></script>
 
-  
+
 
     <script>
         window.addEventListener('scroll', () => {

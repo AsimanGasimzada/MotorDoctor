@@ -14,17 +14,26 @@
         <div class="swiper-wrapper">
             @foreach (var slider in Model.Sliders)
             {
-                <div class="swiper-slide">
-                    <div class="slider-title">
-                        <h1 class="slider-heading text-difference-color">@slider.Title</h1>
-                        <p class="pb-4 text-difference-color">
+                    <div class="swiper-slide">
+                            <div class="slider-title" style="word-wrap:break-word;overflow-wrap: break-word;">
+                            <h1 class="slider-heading text-difference-color">@slider.Title</h1>
+                            <p class="pb-4 text-difference-color">
                             @slider.Description
-                        </p>
-                        <a asp-action="Index" asp-controller="Shop" class="custom-button">@slider.ButtonTitle</a>
+                            </p>
+                        @if (string.IsNullOrWhiteSpace(slider.ButtonPath))
+                        {
+                                    <a asp-action="Index" asp-controller="Shop" class="custom-button">@slider.ButtonTitle</a>
+
+                        }
+                        else
+                        {
+
+                                    <a href="@slider.ButtonPath" class="custom-button">@slider.ButtonTitle</a>
+                        }
+                        </div>
+                        <div class="overlay"></div>
+                        <img src="@slider.ImagePath" alt="slider"/>
                     </div>
-                    <div class="overlay"></div>
-                    <img src="@slider.ImagePath" />
-                </div>
             }
 
         </div>
@@ -52,41 +61,41 @@
                 {
 
 
-                    <div class="product-card col-lg-6 col-md-12 col-12" data="fashion">
+                        <div class="product-card col-lg-6 col-md-12 col-12" data="fashion">
 
-                        <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
-                            <span style="mix-blend-mode: difference;color:white;" id="">@product.ParentCategory?.Name</span>
-                            <img src="@product.ParentCategory.ImagePath" alt="product" />
-                        </a>
-                        <div class="product-card-details">
-                            <div class="product-detail-content">
-                                <div class="product-detail-content-left">
-                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a>@product.Brand?.Name</a>
-                                    <a class="product-detail-title">@product.Name</a>
-                                    <a>@product.Category.Name</a>
-                                </div>
-                                <div class="product-detail-content-right">
+                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
+                                <span style="mix-blend-mode: difference;color:white;" id="">@product.ParentCategory?.Name</span>
+                                <img src="@product.ParentCategory?.ImagePath" alt="product" />
+                            </a>
+                            <div class="product-card-details">
+                                <div class="product-detail-content">
+                                    <div class="product-detail-content-left">
+                                        <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a>@product.Brand?.Name</a>
+                                        <a class="product-detail-title">@product.Name</a>
+                                        <a>@product.Category.Name</a>
+                                    </div>
+                                    <div class="product-detail-content-right">
 
                                     @{
                                         var isExist = await wishlistService.IsExistByProductIdAsync(product.Id);
                                     }
-                                    <button class="add-to-fav-button" data-productId="@product.ProductSizes.FirstOrDefault()?.Id">
-                                        <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
-                                    </button>
+                                        <button class="add-to-fav-button" data-productId="@product.ProductSizes.FirstOrDefault()?.Id">
+                                            <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
+                                        </button>
+                                    </div>
                                 </div>
+                                <p>₼@product.ProductSizes.FirstOrDefault()?.Price</p>
                             </div>
-                            <p>₼@product.ProductSizes.FirstOrDefault()?.Price</p>
-                        </div>
-                        <button class="add-to-basket-button">
+                            <button class="add-to-basket-button">
 
-                            <a asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@product.ProductSizes.FirstOrDefault()?.Id" class="add-To-Basket-Button" style="display:flex;text-align:center;align-items:center;justify-content:center;width:100%;height:100%;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17">
-                                    <path d="M14 3.5h-3a3.5 3.5 0 0 0-7 0H1a1 1 0 0 0-1 1V15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4.5a1 1 0 0 0-1-1ZM7.5 2A1.5 1.5 0 0 1 9 3.5H6A1.5 1.5 0 0 1 7.5 2ZM13 15H2V5.5h2v1a1 1 0 0 0 2 0v-1h3v1a1 1 0 0 0 2 0v-1h2Z">
-                                    </path>
-                                </svg>
-                            </a>
-                        </button>
-                    </div>
+                                <a asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@product.ProductSizes.FirstOrDefault()?.Id" class="add-To-Basket-Button" style="display:flex;text-align:center;align-items:center;justify-content:center;width:100%;height:100%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17">
+                                        <path d="M14 3.5h-3a3.5 3.5 0 0 0-7 0H1a1 1 0 0 0-1 1V15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4.5a1 1 0 0 0-1-1ZM7.5 2A1.5 1.5 0 0 1 9 3.5H6A1.5 1.5 0 0 1 7.5 2ZM13 15H2V5.5h2v1a1 1 0 0 0 2 0v-1h3v1a1 1 0 0 0 2 0v-1h2Z">
+                                        </path>
+                                    </svg>
+                                </a>
+                            </button>
+                        </div>
                 }
             </div>
         </div>
@@ -102,7 +111,7 @@
             <button class="show-all-btn">@_localizer.GetValue("ShowAll")</button>
             @foreach (var category in Model.FeaturedCategories)
             {
-                <button class="filter-btn" data-category="@category.ParentId">@category.Parent?.Name</button>
+                    <button class="filter-btn" data-category="@category.ParentId">@category.Parent?.Name</button>
             }
 
         </div>
@@ -112,67 +121,68 @@
                 {
 
 
-                    <div class="featured-products-card 	 col-lg-3 col-md-6 col-12" data-category="@product.Category.ParentId">
+                        <div class="featured-products-card 	 col-lg-3 col-md-6 col-12" data-category="@product.Category.ParentId">
 
                         @{
                             var isExist = await wishlistService.IsExistByProductIdAsync(product.Id);
                         }
-                        <button class="add-to-fav-button" data-productId="@product.ProductSizes.FirstOrDefault()?.Id">
-                            <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
-                        </button>
+                            <button class="add-to-fav-button" data-productId="@product.ProductSizes.FirstOrDefault()?.Id">
+                                <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
+                            </button>
 
-                        <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
-                            <span class=""></span>
-                            <span class=""></span>
+                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
+                                <span class=""></span>
+                                <span class=""></span>
 
-                            <div class="swiper productCardSlider swiper-initialized swiper-horizontal swiper-backface-hidden">
-                                <div class="swiper-wrapper" id="swiper-wrapper-c347a114ec1613e9" aria-live="polite">
-                                    <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5"
-                                         data-swiper-slide-index="0" style="width: 251px; margin-right: 30px">
-                                        <img src="@product.MainImagePath" alt="productImg" />
-                                    </div>
+                                <div class="swiper productCardSlider swiper-initialized swiper-horizontal swiper-backface-hidden">
+                                    <div class="swiper-wrapper" id="swiper-wrapper-c347a114ec1613e9" aria-live="polite">
+                                        <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 5"
+                                             data-swiper-slide-index="0" style="width: 251px; margin-right: 30px">
+                                            <img src="@product.MainImagePath" alt="productImg" />
+                                        </div>
                                     @foreach (var imagePath in product.ImagePaths)
                                     {
-                                        <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 5"
-                                             data-swiper-slide-index="1" style="width: 251px; margin-right: 30px">
-                                            <img src="@imagePath"
-                                                 alt="productImg" />
-                                        </div>
+                                                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 5"
+                                                     data-swiper-slide-index="1" style="width: 251px; margin-right: 30px">
+                                                    <img src="@imagePath"
+                                                         alt="productImg" />
+                                                </div>
 
                                     }
+                                    </div>
+                                    <button>
+                                        <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"
+                                             aria-controls="swiper-wrapper-c347a114ec1613e9"></div>
+                                    </button>
+                                    <button>
+
+                                        <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"
+                                             aria-controls="swiper-wrapper-c347a114ec1613e9"></div>
+                                    </button>
+                                    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                                 </div>
-                                <button>
-                                    <div class="swiper-button-next" tabindex="0" role="button" aria-label="Next slide"
-                                         aria-controls="swiper-wrapper-c347a114ec1613e9"></div>
-                                </button>
-                                <button>
-                                    <div class="swiper-button-prev" tabindex="0" role="button" aria-label="Previous slide"
-                                         aria-controls="swiper-wrapper-c347a114ec1613e9"></div>
-                                </button>
-                                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                            </div>
-                        </a>
-                        <div class="product-card-content">
-                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a>@product.Brand.Name</a>
-                            <a class="product-title">@product.Name</a>
-                            <a class="product-category">@product.Category.Name</a>
-                            <div>
-                                <span>₼@product.ProductSizes.FirstOrDefault()?.Price</span>
-
-                                <span style="color: #727272; text-decoration: line-through"></span>
-                            </div>
-                        </div>
-
-                        <button class="add-to-basket-button">
-
-                            <a asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@product.ProductSizes.FirstOrDefault()?.Id" class="add-To-Basket-Button" style="display:flex;text-align:center;align-items:center;justify-content:center;width:100%;height:100%;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17">
-                                    <path d="M14 3.5h-3a3.5 3.5 0 0 0-7 0H1a1 1 0 0 0-1 1V15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4.5a1 1 0 0 0-1-1ZM7.5 2A1.5 1.5 0 0 1 9 3.5H6A1.5 1.5 0 0 1 7.5 2ZM13 15H2V5.5h2v1a1 1 0 0 0 2 0v-1h3v1a1 1 0 0 0 2 0v-1h2Z">
-                                    </path>
-                                </svg>
                             </a>
-                        </button>
-                    </div>
+                            <div class="product-card-content">
+                                <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a>@product.Brand.Name</a>
+                                <a class="product-title">@product.Name</a>
+                                <a class="product-category">@product.Category.Name</a>
+                                <div>
+                                    <span>₼@product.ProductSizes.FirstOrDefault()?.Price</span>
+
+                                    <span style="color: #727272; text-decoration: line-through"></span>
+                                </div>
+                            </div>
+
+                            <button class="add-to-basket-button">
+
+                                <a asp-action="AddToBasket" asp-controller="Basket" asp-route-id="@product.ProductSizes.FirstOrDefault()?.Id" class="add-To-Basket-Button" style="display:flex;text-align:center;align-items:center;justify-content:center;width:100%;height:100%;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17">
+                                        <path d="M14 3.5h-3a3.5 3.5 0 0 0-7 0H1a1 1 0 0 0-1 1V15a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V4.5a1 1 0 0 0-1-1ZM7.5 2A1.5 1.5 0 0 1 9 3.5H6A1.5 1.5 0 0 1 7.5 2ZM13 15H2V5.5h2v1a1 1 0 0 0 2 0v-1h3v1a1 1 0 0 0 2 0v-1h2Z">
+                                        </path>
+                                    </svg>
+                                </a>
+                            </button>
+                        </div>
 
                 }
             </div>
@@ -188,16 +198,16 @@
             <div class="categories-content text-center">
                 @foreach (var category in Model.FeaturedParentCategories)
                 {
-                    <div class="category-items">
-                        <img src="@category.ImagePath"
-                             alt="Image 3" class="product-image" />
-                        <a asp-action="Index" asp-controller="Shop" asp-route-categoryId="@category.Id" class="category-item">
-                            <span class="category-title">
+                        <div class="category-items">
+                            <img src="@category.ImagePath"
+                                 alt="Image 3" class="product-image" />
+                            <a asp-action="Index" asp-controller="Shop" asp-route-categoryId="@category.Id" class="category-item">
+                                <span class="category-title">
                                 @category.Name
-                                <span class="category-count">(@category.ProductCount)</span>
-                            </span>
-                        </a>
-                    </div>
+                                    <span class="category-count">(@category.ProductCount)</span>
+                                </span>
+                            </a>
+                        </div>
                 }
 
             </div>
@@ -211,9 +221,9 @@
                 <div class="swiper-wrapper">
                     @foreach (var brand in Model.Brands)
                     {
-                        <div class="swiper-slide">
-                            <img src="@brand.ImagePath" alt="@brand.Name" />
-                        </div>
+                            <div class="swiper-slide">
+                                <img src="@brand.ImagePath" alt="@brand.Name" />
+                            </div>
 
                     }
                 </div>
@@ -237,15 +247,15 @@
     <!-- Street Vibe Section Start -->
     @if (Model.About is { })
     {
-        <section id="street-vibe" style="background-image:url(@Model.About.ImagePath)">
-            <div class="street-title">
-                <h2 class="text-readable">@Model.About.Name</h2>
-                <p class="text-readable">
+            <section id="street-vibe" style="background-image:url(@Model.About.ImagePath)">
+                <div class="street-title">
+                    <h2 class="text-readable">@Model.About.Name</h2>
+                    <p class="text-readable">
                     @Html.Raw(Model.About.Description)
-                </p>
-                <a class="custom-button" asp-action="Index" asp-controller="About">@_localizer.GetValue("ReadMore")</a>
-            </div>
-        </section>
+                    </p>
+                    <a class="custom-button" asp-action="Index" asp-controller="About">@_localizer.GetValue("ReadMore")</a>
+                </div>
+            </section>
     }
     <!-- Street Vibe Section End -->
     <!-- Categories Slider Section Start -->
@@ -254,15 +264,15 @@
             <div class="swiper-wrapper">
                 @foreach (var category in Model.ParentCategories)
                 {
-                    <div class="swiper-slide">
-                        <div class="category-element">
-                            <h5>@category.Name</h5>
-                            <div class="category-image" style="width:200px;height:200px;overflow:hidden">
-                                <img src="@category.ImagePath"
-                                     alt="@category.Name" style="object-fit:cover;width:100%;height:auto;" />
-                            </div>
+                        <div class="swiper-slide">
+                            <a asp-action="Index" asp-controller="Shop" asp-route-categoryId="@category.Id" class="category-element">
+                                <h5>@category.Name</h5>
+                                <div class="category-image" style="width:200px;height:200px;overflow:hidden">
+                                    <img src="@category.ImagePath"
+                                         alt="@category.Name" style="object-fit:cover;width:100%;height:auto;" />
+                                </div>
+                            </a>
                         </div>
-                    </div>
                 }
             </div>
         </div>
@@ -273,32 +283,32 @@
 <!-- Main End -->
 @section Scripts {
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const showAllButton = document.querySelector('.show-all-btn');
-            const productCards = document.querySelectorAll('.featured-products-card');
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                const showAllButton = document.querySelector('.show-all-btn');
+                const productCards = document.querySelectorAll('.featured-products-card');
 
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function () {
-                    const category = this.getAttribute('data-category');
+                filterButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const category = this.getAttribute('data-category');
 
+                        productCards.forEach(card => {
+                            if (card.getAttribute('data-category') === category) {
+                                card.style.display = 'block';
+                            } else {
+                                card.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+
+                showAllButton.addEventListener('click', function () {
                     productCards.forEach(card => {
-                        if (card.getAttribute('data-category') === category) {
-                            card.style.display = 'block';
-                        } else {
-                            card.style.display = 'none';
-                        }
+                        card.style.display = 'block';
                     });
                 });
             });
-
-            showAllButton.addEventListener('click', function () {
-                productCards.forEach(card => {
-                    card.style.display = 'block';
-                });
-            });
-        });
-    </script>
+        </script>
 
 }

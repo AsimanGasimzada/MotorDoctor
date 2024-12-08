@@ -31,12 +31,12 @@ internal class AboutService : IAboutService
         if (!ModelState.IsValid)
             return false;
 
-        if (!dto.Image.ValidateSize(2))
+        if (!dto.Image?.ValidateSize(2) ?? false)
         {
             ModelState.AddModelError("Image", "Şəkil ölçüsü 2 mb dan çox ola bilməz.");
             return false;
         }
-        if (!dto.Image.ValidateType())
+        if (!dto.Image?.ValidateType() ?? false)
         {
             ModelState.AddModelError("Image", "Yalnız şəkil formatında fayl daxil edə bilərsiniz");
             return false;
@@ -75,9 +75,12 @@ internal class AboutService : IAboutService
 
         var about = _mapper.Map<About>(dto);
 
-        string imagePath = await _cloudinaryService.FileCreateAsync(dto.Image);
+        if (dto.Image is { })
+        {
+            string imagePath = await _cloudinaryService.FileCreateAsync(dto.Image);
 
-        about.ImagePath = imagePath;
+            about.ImagePath = imagePath;
+        }
 
         await _repository.CreateAsync(about);
         await _repository.SaveChangesAsync();
@@ -97,7 +100,8 @@ internal class AboutService : IAboutService
         _repository.Delete(about);
         await _repository.SaveChangesAsync();
 
-        await _cloudinaryService.FileDeleteAsync(about.ImagePath);
+        if (!string.IsNullOrWhiteSpace(about.ImagePath))
+            await _cloudinaryService.FileDeleteAsync(about.ImagePath);
     }
 
     public async Task<List<AboutGetDto>> GetAllAsync(Languages language = Languages.Azerbaijan)
@@ -196,7 +200,10 @@ internal class AboutService : IAboutService
         if (dto.Image is { })
         {
             string newImagePath = await _cloudinaryService.FileCreateAsync(dto.Image);
-            await _cloudinaryService.FileDeleteAsync(existAbout.ImagePath);
+
+            if (!string.IsNullOrWhiteSpace(existAbout.ImagePath))
+                await _cloudinaryService.FileDeleteAsync(existAbout.ImagePath);
+
             existAbout.ImagePath = newImagePath;
         }
 

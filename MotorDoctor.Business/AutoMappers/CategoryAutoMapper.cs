@@ -16,6 +16,10 @@ internal class CategoryAutoMapper : Profile
             .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Name : string.Empty))
             .ForMember(x => x.ProductCount, x => x.MapFrom(x => x.Children.Sum(x => x.Products.Count)));
 
+        CreateMap<Category, ParentCategoryForFilterDto>()
+            .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Name : string.Empty))
+            ;
+
         CreateMap<Category, CategoryRelationDto>()
             .ForMember(x => x.Name, x => x.MapFrom(x => x.CategoryDetails.FirstOrDefault() != null ? x.CategoryDetails.FirstOrDefault()!.Name : string.Empty));
     }

@@ -7,5 +7,6 @@ public class SliderUpdateDto : IDto
     public int Id { get; set; }
     public IFormFile? Image { get; set; }
     public string? ImagePath { get; set; }
+    public string? ButtonPath { get; set; }
     public List<SliderDetailUpdateDto> SliderDetails { get; set; } = [];
 }

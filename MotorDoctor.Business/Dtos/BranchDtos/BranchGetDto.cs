@@ -8,5 +8,6 @@ public class BranchGetDto : IDto
     public string Location { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
     public string WorkHours { get; set; } = null!;
+    public string LocationPath { get; set; } = null!;
 }
 

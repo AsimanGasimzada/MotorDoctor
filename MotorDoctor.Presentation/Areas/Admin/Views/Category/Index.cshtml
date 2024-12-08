@@ -2,68 +2,76 @@
 @{
     int count = 1;
 }
-<div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Kateqoriyalar</h4>
-            <p class="card-description">
-                <a asp-action="Create" class="btn btn-success">Yenisini yarat</a>
-            </p>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>
-                                Şəkil
-                            </th>
-                            <th>
-                                Ad
-                            </th>
-                            <th>
-                                Üst kategoriya
-                            </th>
-                            <th>
-                                Proseslər
-                            </th>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var category in Model)
-                        {
-                            <tr>
-                                <td class="py-1">
-                                    @(count++)
-                                </td>
-                                <td>
-                                    @(!string.IsNullOrWhiteSpace(category.ImagePath) && category.ImagePath != "null" ? Html.Raw($"<img src='{category.ImagePath}' alt='{category.Name}' />") : "")
-                                </td>
 
-                                <td>
-                                    @category.Name
-                                </td>
-                                <td>
-                                    @(category.Parent?.Name ?? "-")
-                                </td>
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Kateqoriyalar</h4>
+                        <p class="card-description">
+                            <a asp-action="Create" class="btn btn-success">Yenisini yarat</a>
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Şəkil
+                                        </th>
+                                        <th>
+                                            Ad
+                                        </th>
+                                        <th>
+                                            Üst kategoriya
+                                        </th>
+                                        <th>
+                                            Proseslər
+                                        </th>
 
-                                <td>
-                                    <a asp-action="Update" asp-route-id="@category.Id" class="btn btn-warning"><i class="mdi mdi-grease-pencil"></i></a>
-                                    @if (category.Children.Count == 0 && category.Products.Count == 0)
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var category in Model)
                                     {
+                                        <tr>
+                                            <td class="py-1">
+                                                @(count++)
+                                            </td>
+                                            <td>
+                                                @(!string.IsNullOrWhiteSpace(category.ImagePath) && category.ImagePath != "null" ? Html.Raw($"<img src='{category.ImagePath}' alt='{category.Name}' />") : "")
+                                            </td>
 
-                                        <a asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger deleteBtn"><i class="mdi mdi-delete"></i></a>
+                                            <td>
+                                                @category.Name
+                                            </td>
+                                            <td>
+                                                @(category.Parent?.Name ?? "-")
+                                            </td>
+
+                                            <td>
+                                                <a asp-action="Update" asp-route-id="@category.Id" class="btn btn-warning"><i class="mdi mdi-grease-pencil"></i></a>
+                                                @if (category.Children.Count == 0 && category.Products.Count == 0)
+                                                {
+
+                                                    <a asp-action="Delete" asp-route-id="@category.Id" class="btn btn-danger deleteBtn"><i class="mdi mdi-delete"></i></a>
+                                                }
+                                            </td>
+
+                                        </tr>
+
                                     }
-                                </td>
 
-                            </tr>
-
-                        }
-
-                    </tbody>
-                </table>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -39,7 +39,9 @@ localizationOptions.RequestCultureProviders.Insert(0, new CustomRequestCulturePr
 }));
 
 
-//app.UseMiddleware<GlobalExceptionHandler>();
+if (!app.Environment.IsDevelopment())
+    app.UseMiddleware<GlobalExceptionHandler>();
+
 
 
 app.UseRequestLocalization(localizationOptions);

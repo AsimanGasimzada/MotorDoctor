@@ -191,9 +191,23 @@ const videoFrame = document.getElementById('video-frame')
 
 // search
 function openSearch() {
-    document.getElementById("searchOverlay").style.display = "block";
+    let searchArea = document.getElementById("searchOverlay");
+    searchArea.style.display = "block";
+    console.log(searchArea);
     document.body.classList.add("no-scroll"); // Prevent scrolling
 }
+
+
+function openMobileSearch() {
+    document.getElementById("mobileSearchOverlay").style.display = "block";
+    document.body.classList.add("no-scroll"); // Prevent scrolling
+}
+
+function closeMobileSearch() {
+    document.getElementById("mobileSearchOverlay").style.display = "none";
+    document.body.classList.remove("no-scroll"); // Allow scrolling again
+}
+
 
 function closeSearch() {
     document.getElementById("searchOverlay").style.display = "none";

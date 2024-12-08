@@ -123,6 +123,9 @@
   <data name="BasketTitle" xml:space="preserve">
     <value>Səbət</value>
   </data>
+  <data name="Branch" xml:space="preserve">
+    <value>Filiallar</value>
+  </data>
   <data name="Contact" xml:space="preserve">
     <value>Əlaqə</value>
   </data>

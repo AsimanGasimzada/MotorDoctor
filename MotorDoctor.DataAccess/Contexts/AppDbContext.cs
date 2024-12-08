@@ -35,6 +35,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
 
     public required DbSet<About> Abouts { get; set; }
     public required DbSet<AboutDetail> AboutDetails { get; set; }
+    public required DbSet<Advertisement> Advertisements { get; set; }
     public required DbSet<Attendance> Attendances { get; set; }
     public required DbSet<AttendanceDetail> AttendanceDetails { get; set; }
     public required DbSet<BasketItem> BasketItems { get; set; }
