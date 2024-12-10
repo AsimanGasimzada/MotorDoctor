@@ -224,7 +224,7 @@
                                 {
                                     @foreach (var product in Model.Products.Items)
                                     {
-                            <div class="featured-products-card col-lg-4 col-md-6 col-12"  style="overflow:hidden">
+                            <div class="featured-products-card col-lg-4 col-md-6 col-12" style="overflow:hidden">
                                             @{
                                                 var isExist = await wishlistService.IsExistByProductIdAsync(product.Id);
                                             }
@@ -276,7 +276,7 @@
                                         <span style="
                                   color: #727272;
                                   text-decoration: line-through;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                "></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                        "></span>
                                     </div>
                                 </div>
 
@@ -336,6 +336,8 @@
 <!-- Shop section End -->
 @section Scripts {
     <script>
+
+
 
         const sortSelect=document.getElementById("sortSelect");
         const form=document.querySelector(".shopFilterForm");
@@ -400,7 +402,12 @@
              maxPriceValue.textContent = `₼${maxPrice.value}`;
          });
 
-
+        window.addEventListener('load', () => {
+                  const scrollPosition = sessionStorage.getItem(`scrollPosition-${window.location.pathname}`);
+                  if (scrollPosition) {
+                      window.scrollTo(0, parseInt(0, 10));
+                  }
+              });
 
 
 
