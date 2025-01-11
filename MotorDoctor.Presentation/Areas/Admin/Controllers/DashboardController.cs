@@ -6,8 +6,17 @@ namespace MotorDoctor.Presentation.Areas.Admin.Controllers;
 [Authorize(Roles = "Admin")]
 public class DashboardController : Controller
 {
-    public IActionResult Index()
+   private readonly IDashboardService _dashboardService;
+
+    public DashboardController(IDashboardService dashboardService)
     {
-        return View();
+        _dashboardService = dashboardService;
+    }
+
+    public async Task<IActionResult> Index()
+    {
+        var result=await _dashboardService.GetDashboardAsync();
+
+        return View(result);
     }
 }

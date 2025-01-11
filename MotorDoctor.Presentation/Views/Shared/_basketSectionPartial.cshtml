@@ -28,12 +28,21 @@
                         </div>
                         <div class="wishlist-info">
                             <a asp-action="Detail" asp-controller="Shop" asp-route-id="@basketItem.ProductSize.ProductId">@basketItem.ProductSize.Product.Name</a>
-                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@basketItem.ProductSize.ProductId"><span>@basketItem.ProductSize.Product.Category.Name - @basketItem.ProductSize.Size</span></a>
+                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@basketItem.ProductSize.ProductId"><span>@basketItem.ProductSize.Product.Categories.FirstOrDefault()?.Name - @basketItem.ProductSize.Size</span></a>
                         </div>
                     </td>
                     <td class="right-side-wishlist" style="display:flex; justify-content:space-around; text-align:center;">
                         <div class="product-price" style="width:200px">
-                            <span>₼<span class="productSizePrice">@basketItem.ProductSize.Price</span></span>
+                            @if (basketItem.ProductSize.Discount > 0)
+                            {
+                                <span><span class="productSizePrice"><s>@basketItem.ProductSize.Price</s> ₼@basketItem.ProductSize.Price.CalculateDiscountedPrice(basketItem.ProductSize.Discount)</span></span>
+
+                            }
+                            else
+                            {
+
+                                <span>₼<span class="productSizePrice">@basketItem.ProductSize.Price</span></span>
+                            }
                         </div>
 
                         <div class="counter-container" style="min-width:200px;display:flex;justify-content:space-around">
@@ -48,7 +57,7 @@
 
                         <div class="right-side-wishlist" style="width:200px">
                             <div class="mx-5 product-price">
-                                <span>₼<span class="productSizeTotalPrice">@(basketItem.Count * basketItem.ProductSize.Price)</span></span>
+                                <span>₼<span class="productSizeTotalPrice">@(basketItem.Count * basketItem.ProductSize.Price.CalculateDiscountedPrice(basketItem.ProductSize.Discount))</span></span>
                             </div>
                         </div>
                     </td>
@@ -69,13 +78,13 @@
                 <!-- Subtotal -->
                 <div class="totals-item">
                     <span class="label">@_localizer.GetValue("Discount")</span>
-                    <span class="value">₼@Model.Discount</span>
+                    <span class="value">₼@(Model.Subtotal-Model.DiscountedTotal)</span>
                 </div>
 
                 <!-- Total -->
                 <div class="totals-item">
                     <span class="label">@_localizer.GetValue("Total")</span>
-                    <span class="value"><strong>₼<span class="totalOutput">@Model.Total</span></strong></span>
+                    <span class="value"><strong>₼<span class="totalOutput">@Model.DiscountedTotal</span></strong></span>
                 </div>
 
                 <a asp-action="Index" asp-controller="Order" class="btn-checkout">@_localizer.GetValue("SubmitOrder")</a>

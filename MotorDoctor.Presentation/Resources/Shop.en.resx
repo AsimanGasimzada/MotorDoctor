@@ -144,6 +144,9 @@
   <data name="Description" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="Discounted" xml:space="preserve">
+    <value>Discounted</value>
+  </data>
   <data name="Filter" xml:space="preserve">
     <value>Filter</value>
   </data>

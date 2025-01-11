@@ -135,6 +135,12 @@
   <data name="Details" xml:space="preserve">
     <value>Detallar</value>
   </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Endirim</value>
+  </data>
+  <data name="DiscountedPrice" xml:space="preserve">
+    <value>Endirimli Qiymət</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Əsas səhifə</value>
   </data>
@@ -164,6 +170,9 @@
   </data>
   <data name="PhoneNumberInput" xml:space="preserve">
     <value>Telefon nömrənizi daxil edin</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Qiymət</value>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>Say</value>

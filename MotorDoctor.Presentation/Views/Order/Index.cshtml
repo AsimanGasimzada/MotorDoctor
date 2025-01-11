@@ -1,8 +1,6 @@
 ﻿@model OrderCreateDto
 @inject OrderLocalizer _localizer
-@{
-    decimal totalPrice = Model.OrderItems?.Sum(x => x.Count * x.ProductSize.Price) ?? 0;
-}
+
 <br />
 <br />
 <br />
@@ -41,15 +39,34 @@
                                     <span>@item.ProductSize.Product.Name</span>
                                 </a>
                                 <span>@_localizer.GetValue("Size"): @item.ProductSize.Size</span>
+                                @if (item.ProductSize.Discount > 0)
+                                {
+                                    <span>@_localizer.GetValue("Price"): <s>@item.ProductSize.Price</s> @item.ProductSize.Price.CalculateDiscountedPrice(item.ProductSize.Discount)</span>
+
+                                }
+                                else
+                                {
+                                    <span>@_localizer.GetValue("Price"): @item.ProductSize.Price</span>
+
+                                }
                                 <span>@_localizer.GetValue("Quantity"): @item.Count</span>
                             </div>
-                            <span class="price">₼@(item.ProductSize.Price * item.Count)</span>
+                            <span class="price">₼@(item.ProductSize.Price.CalculateDiscountedPrice(item.ProductSize.Discount) * item.Count)</span>
                         </div>
                     }
 
                     <div class="total">
                         <strong>@_localizer.GetValue("Total"):</strong>
-                        <strong>₼@totalPrice</strong>
+                        <strong>₼@Model.Total</strong>
+                    </div>
+                    <div class="total">
+                        <strong>@_localizer.GetValue("Discount"):</strong>
+                        <strong>₼@(Model.Total - Model.DiscountedTotal)</strong>
+                    </div>
+                    <hr />
+                    <div class="total">
+                        <strong>@_localizer.GetValue("DiscountedPrice"):</strong>
+                        <strong>₼@Model.DiscountedTotal</strong>
                     </div>
                 </div>
                 <div class="checkout-form-section">

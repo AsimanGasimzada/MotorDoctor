@@ -7,10 +7,11 @@ public class ProductCreateDto : IDto
 {
     public string Code { get; set; } = null!;
     public List<CategoryRelationDto>? Categories { get; set; } = [];
-    public int CategoryId { get; set; }
+    public List<int> CategoryIds { get; set; } = [];
     public List<BrandRelationDto>? Brands { get; set; } = [];
     public int BrandId { get; set; }
-    public IFormFile MainImage { get; set; }=null!;
+    public string Slug { get; set; } = null!;
+    public IFormFile MainImage { get; set; } = null!;
     public List<IFormFile> Images { get; set; } = [];
     public List<ProductSizeCreateDto> ProductSizes { get; set; } = [];
     public List<ProductDetailCreateDto> ProductDetails { get; set; } = [];

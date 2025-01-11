@@ -10,12 +10,18 @@
 
     <div class="form-group">
         <label>Ölçü</label>
-        <input class="form-control" asp-for="ProductSizes[index].Size" type="text" required />
+        <input class="form-control" asp-for="ProductSizes[index].Size" type="text" />
     </div>
 
     <div class="form-group">
         <label>Qiymət</label>
-        <input class="form-control" asp-for="ProductSizes[index].Price" type="number" required />
+        <input class="form-control" asp-for="ProductSizes[index].Price" required />
+    </div>
+
+
+    <div class="form-group">
+        <label>Endirim faizi</label>
+        <input class="form-control" asp-for="ProductSizes[index].Discount"/>
     </div>
 
     <div class="form-group">

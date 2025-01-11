@@ -7,7 +7,7 @@ public class ProductUpdateDto : IDto
     public int Id { get; set; }
     public string Code { get; set; } = null!;
     public List<CategoryRelationDto>? Categories { get; set; } = [];
-    public int CategoryId { get; set; }
+    public List<int> CategoryIds { get; set; } = [];
     public List<BrandRelationDto>? Brands { get; set; } = [];
     public int BrandId { get; set; }
 
@@ -16,8 +16,7 @@ public class ProductUpdateDto : IDto
     public List<IFormFile> Images { get; set; } = [];
     public List<string> ImagePaths { get; set; } = [];
     public List<int> ImageIds { get; set; } = [];
-
-
+    public string Slug { get; set; } = null!;
     public List<ProductSizeUpdateDto> ProductSizes { get; set; } = [];
     public List<ProductDetailUpdateDto> ProductDetails { get; set; } = [];
 }

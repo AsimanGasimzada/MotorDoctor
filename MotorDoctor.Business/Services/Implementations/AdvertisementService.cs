@@ -59,6 +59,13 @@ internal class AdvertisementService : IAdvertisementService
         await _cloudinaryService.FileDeleteAsync(advertisement.ImagePath);
     }
 
+    public async Task<int> GetAllAdvertisementViewCount()
+    {
+        var sum=await _repository.GetAll().SumAsync(x=>x.ViewCount);
+
+        return sum;
+    }
+
     public async Task<List<AdvertisementGetDto>> GetAllAsync()
     {
         var advertisements = await _repository.GetAll().ToListAsync();
@@ -74,6 +81,8 @@ internal class AdvertisementService : IAdvertisementService
 
         if (advertisement is null)
             throw new NotFoundException("Bu id-də məlumat mövcud deyil");
+
+        await _updateViewCount(advertisement);
 
         var dto = _mapper.Map<AdvertisementGetDto>(advertisement);
 
@@ -126,5 +135,12 @@ internal class AdvertisementService : IAdvertisementService
         await _repository.SaveChangesAsync();
 
         return true;
+    }
+
+    private async Task _updateViewCount(Advertisement advertisement)
+    {
+        advertisement.ViewCount++;
+        _repository.Update(advertisement);
+        await _repository.SaveChangesAsync();
     }
 }

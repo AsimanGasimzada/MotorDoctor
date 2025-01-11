@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using MotorDoctor.Business.Exceptions;
@@ -21,8 +22,10 @@ internal class OrderService : IOrderService
     private readonly ErrorLocalizer _errorLocalizer;
     private readonly IMapper _mapper;
     private readonly IAuthService _authService;
+    private readonly IEmailService _emailService;
+    private readonly UserManager<AppUser> _userManager;
 
-    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService, IProductService productService, IAuthService authService)
+    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService, IProductService productService, IAuthService authService, IEmailService emailService, UserManager<AppUser> userManager)
     {
         _repository = repository;
         _mapper = mapper;
@@ -32,6 +35,8 @@ internal class OrderService : IOrderService
         _statusService = statusService;
         _productService = productService;
         _authService = authService;
+        _emailService = emailService;
+        _userManager = userManager;
     }
     public async Task CancelOrderAsync(int id)
     {
@@ -96,10 +101,18 @@ internal class OrderService : IOrderService
 
         var order = _mapper.Map<Order>(dto);
 
+        order.TotalPrice = basket.Total;
+        order.DiscountedTotalPrice = basket.DiscountedTotal;
+
         var status = await _statusService.GetFirstAsync();
         order.StatusId = status.Id;
 
         string userId = _getUserId()!;
+        var user = await _userManager.FindByIdAsync(userId);
+
+        //if (user is null)
+        //    throw new UnAuthorizedException();
+
         order.AppUserId = userId;
 
         await _repository.CreateAsync(order);
@@ -109,6 +122,88 @@ internal class OrderService : IOrderService
             await _productService.IncreaseSalesCountAsync(item.ProductSizeId, item.Count);
 
         await _basketService.ClearBasketAsync();
+        string emailBody = $@"
+<!DOCTYPE html>
+<html lang=""az"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Yeni Sifariş Bildirişi</title>
+    <style>
+        body {{
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            color: #000000;
+        }}
+        .email-container {{
+            max-width: 600px;
+            margin: 20px auto;
+            background: #ffffff;
+            border: 1px solid #000000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }}
+        .header {{
+            background-color: #000000;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }}
+        .header h1 {{
+            margin: 0;
+            font-size: 24px;
+            text-transform: uppercase;
+        }}
+        .content {{
+            padding: 20px;
+        }}
+        .content p {{
+            margin: 10px 0;
+            line-height: 1.6;
+        }}
+        .content .order-details {{
+            background: #f9f9f9;
+            padding: 10px;
+            border: 1px solid #000000;
+            margin-top: 10px;
+        }}
+        .footer {{
+            background-color: #f9f9f9;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            color: #000000;
+        }}
+    </style>
+</head>
+<body>
+    <div class=""email-container"">
+        <div class=""header"">
+            <h1>MotorDoctor</h1>
+        </div>
+        <div class=""content"">
+            <p>Hörmətli Admin,</p>
+            <p>Vebsaytda yeni sifariş yerləşdirilib. Sifariş detalları aşağıdadır:</p>
+            <div class=""order-details"">
+                <p><strong>Müştərinin Adı:</strong> {user?.UserName}</p>
+                <p><strong>E-poçt:</strong> {user?.Email}</p>
+                <p><strong>Telefon:</strong> {dto.PhoneNumber}</p>
+                <p><strong>Sifariş Tarixi:</strong> {order.CreatedAt.ToShortDateString()}</p>
+                <p><a href=""https://motordoctor.az/admin/order"" style=""color: #000000; text-decoration: underline;"">Sifarişin detalları üçün keçid</a></p>
+            </div>
+            <p>Zəhmət olmasa, sifarişi nəzərdən keçirin və lazımi tədbirlər görün.</p>
+        </div>
+        <div class=""footer"">
+            <p>Bu avtomatik göndərilən məktubdur. Zəhmət olmasa, cavab göndərməyin.</p>
+        </div>
+    </div>
+</body>
+</html>";
+
+
+        await _emailService.SendEmailAsync(new() { ToEmail = "admin@motordoctor.az", Subject = "Yeni sifariş", Body = emailBody });
 
         return true;
     }
@@ -261,10 +356,12 @@ internal class OrderService : IOrderService
         }
 
         dto.OrderItems = _mapper.Map<List<OrderItemCreateDto>>(basket.Items);
+        dto.Total = basket.Total;
+        dto.DiscountedTotal = basket.DiscountedTotal;
+
 
         return dto;
     }
-
 
     private string? _getUserId()
     {
@@ -286,5 +383,100 @@ internal class OrderService : IOrderService
                             .Include(x => x.AppUser!);
     }
 
+    public async Task AutoFillStaticDiscountedPrices()
+    {
+        var orders = await _repository.GetAll().ToListAsync();
+
+        foreach (var order in orders)
+        {
+            order.DiscountedTotalPrice = order.TotalPrice;
+
+            _repository.Update(order);
+        }
+
+        await _repository.SaveChangesAsync();
+    }
+
+
+    public async Task<List<SalesDataDto>> GetMonthlySalesWithYearAsync()
+    {
+        var orders = _repository.GetAll();
+
+        var salesData = await orders
+         .GroupBy(o => new { o.CreatedAt.Year, o.CreatedAt.Month })
+         .Select(g => new SalesDataDto
+         {
+             Year = g.Key.Year,
+             Month = g.Key.Month,
+             TotalSales = g.Sum(o => o.DiscountedTotalPrice)
+         })
+         .ToListAsync();
+
+        // Satış olmayan ayları sıfırla doldur
+        var startDate = salesData.Min(s => new DateTime(s.Year, s.Month, 1));
+        var endDate = salesData.Max(s => new DateTime(s.Year, s.Month, 1));
+
+        var allMonths = Enumerable.Range(0, (endDate.Year - startDate.Year) * 12 + endDate.Month - startDate.Month + 1)
+            .Select(offset => new DateTime(startDate.Year, startDate.Month, 1).AddMonths(offset))
+            .Select(date => new SalesDataDto
+            {
+                Year = date.Year,
+                Month = date.Month,
+                TotalSales = 0 // Default olaraq 0
+            })
+            .ToList();
+
+        foreach (var sale in salesData)
+        {
+            var match = allMonths.FirstOrDefault(m => m.Year == sale.Year && m.Month == sale.Month);
+            if (match != null)
+            {
+                match.TotalSales = sale.TotalSales;
+            }
+        }
+
+        return allMonths.OrderBy(x => x.Year).ThenBy(x => x.Month).ToList();
+    }
+
+    public async Task<CurrentMonthSalesDataDto> GetCurrentMonthsSalesAsync()
+    {
+        var orders = await _repository.GetFilter(x => x.CreatedAt.Month == DateTime.Now.Month && x.CreatedAt.Year==DateTime.Now.Year, include: x => x.Include(x => x.OrderItems)).ToListAsync();
+
+        CurrentMonthSalesDataDto dto = new()
+        {
+            TotalSales = orders.Sum(x => x.DiscountedTotalPrice),
+            OrderCount = orders.Count()
+        };
+
+        return dto;
+    }
+
+    public async Task<TopUserDto> GetTopUserOfCurrentMonthAsync()
+    {
+        var startOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        var endOfMonth = startOfMonth.AddMonths(1).AddDays(-1);
+
+        var orders = _repository.GetAll(include: x => x.Include(x => x.AppUser!));
+
+        var topUser = await orders
+            .Where(o => o.CreatedAt >= startOfMonth && o.CreatedAt <= endOfMonth && o.AppUserId != null)
+            .GroupBy(o => new { o.AppUserId, o.AppUser!.Name, o.AppUser.Surname, o.AppUser!.PhoneNumber })
+            .Select(g => new TopUserDto
+            {
+                Id = g.Key.AppUserId!,
+                FullName = g.Key.Name + " " + g.Key.Surname,
+                OrderCount = g.Count(),
+                TotalSpent = g.Sum(o => o.TotalPrice),
+                PhoneNumber = g.Key.PhoneNumber
+            })
+            .OrderByDescending(x => x.OrderCount)
+            .ThenByDescending(x => x.TotalSpent)
+            .FirstOrDefaultAsync();
+
+        if (topUser is null)
+            throw new NotFoundException();
+
+        return topUser;
+    }
 
 }

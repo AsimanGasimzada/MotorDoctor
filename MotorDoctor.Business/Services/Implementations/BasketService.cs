@@ -177,19 +177,25 @@ internal class BasketService : IBasketService
             var basketItems = await _repository.GetFilter(x => x.AppUserId == userId,
                            x => x.Include(x => x.ProductSize).ThenInclude(x => x.Product)
                                       .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))
-                                      .Include(x => x.ProductSize.Product.Category.CategoryDetails.Where(x => x.LanguageId == (int)language))
+                                      .Include(x => x.ProductSize.Product.ProductCategories)
+                                      .ThenInclude(x => x.Category.CategoryDetails.Where(x => x.LanguageId == (int)language))
                                       .Include(x => x.ProductSize.Product.ProductImages)).ToListAsync();
 
             var dtos = _mapper.Map<List<BasketItemGetDto>>(basketItems);
 
+            decimal discountedPrice = dtos.Sum(x => (x.Count * (x.ProductSize.Price - x.ProductSize.Price * x.ProductSize.Discount / 100)));
             decimal totalPrice = dtos.Sum(x => (x.Count * x.ProductSize.Price));
+
+            totalPrice = Math.Round(totalPrice, 2);
+            discountedPrice = Math.Round(discountedPrice, 2);
+
             var basketDto = new BasketGetDto()
             {
                 Items = dtos,
                 Count = dtos.Count,
                 Subtotal = totalPrice,
                 Total = totalPrice,
-                Discount = 0,
+                DiscountedTotal = discountedPrice,
             };
 
             return basketDto;
@@ -213,14 +219,20 @@ internal class BasketService : IBasketService
                 dto.ProductSize = productSize;
             }
 
+
+            decimal discountedPrice = dtos.Sum(x => (x.Count * (x.ProductSize.Price - x.ProductSize.Price * x.ProductSize.Discount / 100)));
             decimal totalPrice = dtos.Sum(x => (x.Count * x.ProductSize.Price));
+
+            totalPrice = Math.Round(totalPrice, 2);
+            discountedPrice = Math.Round(discountedPrice, 2);
+
             var basketDto = new BasketGetDto()
             {
                 Items = dtos,
                 Count = dtos.Count,
                 Subtotal = totalPrice,
                 Total = totalPrice,
-                Discount = 0,
+                DiscountedTotal = discountedPrice,
             };
 
             return basketDto;

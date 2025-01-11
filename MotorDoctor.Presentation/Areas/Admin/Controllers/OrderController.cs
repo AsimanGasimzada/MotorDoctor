@@ -55,4 +55,19 @@ public class OrderController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        await _service.DeleteAsync(id);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> AutoFillOrders()
+    {
+        await _service.AutoFillStaticDiscountedPrices();
+
+        return Ok("done");
+    }
 }

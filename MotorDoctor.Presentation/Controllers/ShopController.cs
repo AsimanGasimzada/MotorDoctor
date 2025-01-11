@@ -39,7 +39,7 @@ public class ShopController : Controller
             filterDto = new()
             {
                 CategoryIds = category.Children?.Count > 0 ? category.Children.Select(x => x.Id).ToList() : [category.Id],
-                MaxPrice = 1000
+                MaxPrice = 2500
             };
         }
 
@@ -72,7 +72,7 @@ public class ShopController : Controller
         return Redirect(returnUrl);
     }
 
-    public async Task<IActionResult> Detail(int id)
+    public async Task<IActionResult> Detail(string? slug, int id)
     {
         var product = await _productService.GetAsync(id, _language);
         var comments = await _commentService.GetProductCommentsAsync(id);
@@ -97,4 +97,8 @@ public class ShopController : Controller
 
         return Redirect(returnUrl);
     }
+
+
+
+  
 }

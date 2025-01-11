@@ -107,6 +107,8 @@ internal class SliderService : ISliderService
         if (slider is null)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
+        await _updateViewCount(slider);
+
         var dto = _mapper.Map<SliderGetDto>(slider);
 
         return dto;
@@ -190,5 +192,12 @@ internal class SliderService : ISliderService
     {
         LanguageHelper.CheckLanguageId(ref language);
         return x => x.Include(x => x.SliderDetails.Where(x => x.LanguageId == (int)language)).ThenInclude(x => x.Language);
+    }
+
+    private async Task _updateViewCount(Slider slider)
+    {
+        slider.ViewCount++;
+        _repository.Update(slider);
+        await _repository.SaveChangesAsync();
     }
 }

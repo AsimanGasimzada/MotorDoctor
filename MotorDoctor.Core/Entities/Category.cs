@@ -7,5 +7,5 @@ public class Category : BaseAuditableEntity
     public Category? Parent { get; set; }
     public ICollection<CategoryDetail> CategoryDetails { get; set; } = [];
     public ICollection<Category> Children { get; set; } = [];
-    public ICollection<Product> Products { get; set; } = [];
+    public ICollection<ProductCategory> ProductCategories { get; set; } = [];
 }

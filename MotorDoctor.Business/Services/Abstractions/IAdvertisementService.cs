@@ -2,5 +2,6 @@
 
 public interface IAdvertisementService : IGetService<AdvertisementGetDto>, IModifyService<AdvertisementCreateDto, AdvertisementUpdateDto>
 {
+    Task<int> GetAllAdvertisementViewCount();
 }
 

@@ -120,6 +120,9 @@
   <data name="Collection" xml:space="preserve">
     <value>MotorDoctor KOLLEKSİYASI</value>
   </data>
+  <data name="Discounted" xml:space="preserve">
+    <value>ENDİRİMLİ</value>
+  </data>
   <data name="FeaturedCategories" xml:space="preserve">
     <value>SEÇİLMİŞ KATEQORİYALAR</value>
   </data>

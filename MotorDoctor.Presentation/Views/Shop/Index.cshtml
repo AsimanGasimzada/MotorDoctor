@@ -1,5 +1,4 @@
-﻿@using MotorDoctor.Core.Enum
-@model ShopFilterDto
+﻿@model ShopFilterDto
 @inject IWishlistService wishlistService
 @inject ShopLocalizer _localizer
 @section Styles {
@@ -30,7 +29,7 @@
 <!-- Shop section Start -->
 <main>
     <div class="container-fluid  ">
-        <form method="post" class="container shopFilterForm">
+        <form method="post" class="container shopFilterForm submitForm" id="form-id">
             <div class="row g-4">
                 <div class="col-lg-3">
                     <div class="row g-4">
@@ -189,7 +188,7 @@
                     <div class="advertisementArea">
                                         @foreach (var advertisement in Model.Advertisements)
                                         {
-                            <a href="@advertisement.Url" style="width:100%;margin:0 auto" class="addSection">
+                            <a asp-action="AdvertisementRedirect" asp-controller="Home" asp-route-id="@advertisement.Id" style="width:100%;margin:0 auto" class="addSection">
                                 <img src="@advertisement.ImagePath" />
 
                             </a>
@@ -224,6 +223,9 @@
                                 {
                                     @foreach (var product in Model.Products.Items)
                                     {
+                                        var size = product.ProductSizes.OrderByDescending(x => x.Discount).FirstOrDefault();
+
+
                             <div class="featured-products-card col-lg-4 col-md-6 col-12" style="overflow:hidden">
                                             @{
                                                 var isExist = await wishlistService.IsExistByProductIdAsync(product.Id);
@@ -232,8 +234,13 @@
                                     <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
                                 </button>
 
-                                <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
-                                    <span class=""></span>
+                                <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id" asp-route-slug="@product.Slug">
+                                                @if (size?.Discount > 0)
+                                                {
+                                        <span class="new-product-icon">@_localizer.GetValue("Discounted")</span>
+                                                }
+
+
                                     <span class=""></span>
 
                                     <div class="swiper productCardSlider swiper-initialized swiper-horizontal swiper-backface-hidden">
@@ -267,16 +274,26 @@
                                     </div>
                                 </a>
                                 <div class="product-card-content">
-                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id"> </a><a>@product.Brand.Name</a>
+                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id" asp-route-slug="@product.Slug"> </a><a>@product.Brand.Name</a>
                                     <a class="product-title">@product.Name</a>
-                                    <a class="product-category">@product.Category.Name</a>
+                                    <a class="product-category">@product.Categories.FirstOrDefault()?.Name</a>
                                     <div>
-                                        <span>₼@product.ProductSizes.FirstOrDefault()?.Price</span>
+
+                                                    @if (size?.Discount > 0)
+                                                    {
+                                            <span style="color: #727272; text-decoration: line-through">₼@size.Price</span>
+                                            <span>₼@(size.Price.CalculateDiscountedPrice(size.Discount))</span>
+
+                                                    }
+                                                    else
+                                                    {
+                                            <span>₼@size?.Price</span>
+                                                    }
 
                                         <span style="
                                   color: #727272;
                                   text-decoration: line-through;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        "></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "></span>
                                     </div>
                                 </div>
 
@@ -292,7 +309,7 @@
                                     }
 
                         <div class="pagination-container">
-                            <ul class="pagination">
+                            <ul class="pagination" style="display:flex;flex-wrap:wrap;justify-content:center">
                                 <li class="page-item"><a data-page="@(Model.Products.CurrentPage - 1)" class="page-link">&laquo;</a></li>
                                             @for (int i = 1; i <= Model.Products.PageCount; i++)
                                             {
@@ -336,7 +353,7 @@
 <!-- Shop section End -->
 @section Scripts {
     <script>
-
+        window.history.replaceState(null, '', window.location.href);
 
 
         const sortSelect=document.getElementById("sortSelect");

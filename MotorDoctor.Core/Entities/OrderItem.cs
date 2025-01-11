@@ -3,6 +3,7 @@
 public class OrderItem : BaseAuditableEntity
 {
     public decimal StaticPrice { get; set; }
+    public decimal StaticDiscount { get; set; }
     public int Count { get; set; }
     public int ProductSizeId { get; set; }
     public ProductSize ProductSize { get; set; } = null!;

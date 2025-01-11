@@ -94,7 +94,8 @@ internal class WishlistService : IWishlistService
                            x => x.Include(x => x.ProductSize).ThenInclude(x => x.Product)
                                       .ThenInclude(x => x.ProductDetails.Where(x => x.LanguageId == (int)language))
                                       .Include(x => x.ProductSize.Product.ProductImages)
-                                      .Include(x => x.ProductSize.Product.Category.CategoryDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
+                                      .Include(x => x.ProductSize.Product.ProductCategories)
+                                      .ThenInclude(x=>x.Category.CategoryDetails.Where(x => x.LanguageId == (int)language))).ToListAsync();
 
             var dtos = _mapper.Map<List<WishlistItemGetDto>>(wishlistItems);
 

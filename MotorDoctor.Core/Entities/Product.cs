@@ -3,14 +3,16 @@
 public class Product : BaseAuditableEntity
 {
     public int SalesCount { get; set; } = 0;
+    public string Slug { get; set; } = null!;
     public string Code { get; set; } = null!;
     public Brand Brand { get; set; } = null!;
     public int BrandId { get; set; }
-    public Category Category { get; set; } = null!;
-    public int CategoryId { get; set; }
+    //public Category Category { get; set; } = null!;
+    //public int CategoryId { get; set; }
     public ICollection<ProductImage> ProductImages { get; set; } = [];
     public ICollection<ProductDetail> ProductDetails { get; set; } = [];
     public ICollection<ProductSize> ProductSizes { get; set; } = [];
     public ICollection<Comment> Comments { get; set; } = [];
+    public ICollection<ProductCategory> ProductCategories { get; set; } = [];
 
 }

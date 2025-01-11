@@ -135,6 +135,12 @@
   <data name="Details" xml:space="preserve">
     <value>Details</value>
   </data>
+  <data name="Discount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="DiscountedPrice" xml:space="preserve">
+    <value>Discounted Price</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
@@ -164,6 +170,9 @@
   </data>
   <data name="PhoneNumberInput" xml:space="preserve">
     <value>Enter your phone number</value>
+  </data>
+  <data name="Price" xml:space="preserve">
+    <value>Price</value>
   </data>
   <data name="Quantity" xml:space="preserve">
     <value>Quantity</value>

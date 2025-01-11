@@ -54,5 +54,6 @@ public static class BusinessServiceRegistration
         services.AddScoped<IHomeService, HomeService>();
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<ILayoutService, LayoutService>();
+        services.AddScoped<IDashboardService,DashboardService>();
     }
 }

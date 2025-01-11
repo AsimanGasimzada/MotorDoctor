@@ -24,6 +24,16 @@ body {
 
 
 
+.productSizeSelectInput {
+    text-align: center;
+    max-width: 30%;
+    margin: 0 10px;
+    display: inline;
+}
+
+
+
+
 .whatsapp-icon {
     position: fixed;
     bottom: 20px;
@@ -63,6 +73,10 @@ body {
         .whatsapp-icon i {
             font-size: 25px;
         }
+
+    .productSizeSelectInput {
+        max-width: 70%;
+    }
 }
 
 @media (max-width: 480px) {
@@ -136,7 +150,7 @@ ol {
     padding: 15px;
     font-size: 17px;
     border: none;
-    outline:none;
+    outline: none;
     width: 80%;
     background: white;
 }
@@ -744,7 +758,8 @@ body.no-scroll {
 
 .new-product-icon {
     position: absolute;
-    width: 35px;
+    width: auto;
+    padding:0 5px;
     height: 15px;
     border-radius: 2px;
     text-align: center;
@@ -1591,6 +1606,8 @@ body.no-scroll {
         transition: outline 0.35s ease-in;
         padding: 65px 35px 25px;
         cursor: pointer;
+        overflow: hidden;
+        word-break: break-all;
     }
 
         #featured-products .featured-products-container .featured-products-card .new-product-icon {
@@ -1809,7 +1826,7 @@ body.no-scroll {
             z-index: 3;
             font-weight: 700;
             text-transform: uppercase;
-            font-size: 42px;
+            font-size: 36px;
             position: relative;
             white-space: nowrap;
         }
@@ -2169,7 +2186,7 @@ body.no-scroll {
                 #categories .categories-container .categories-content .category-item .category-title {
                     font-weight: 700;
                     text-transform: uppercase;
-                    font-size: 27px;
+                    font-size: 20px;
                     position: relative;
                     white-space: nowrap;
                 }
@@ -2240,6 +2257,8 @@ body.no-scroll {
     font-size: clamp(30px, 5vw, 46px);
     font-weight: 700;
     margin: 0;
+    overflow: hidden;
+    word-break: break-all;
 }
 
 #detail-product .product-content .product-heading span {
@@ -2499,6 +2518,30 @@ body.no-scroll {
         margin: 0 !important;
     }
 }
+
+/*
+    .wishlist-table {
+        table-layout: fixed;
+        width: 100%;
+        overflow:hidden;
+        
+    }
+
+@media (min-width: 1200px) {
+
+    .wishlist-info {
+        word-break: break-all;
+        overflow:hidden;
+        min-width:200px;
+        max-width:300px;
+    }
+}
+
+.wishlist-info {
+    word-break: break-all;
+    overflow: hidden;
+    min-width:50px;
+}*/
 
 #wishlist .product-wishlist {
     padding: 40px 0 0px;
@@ -3009,7 +3052,7 @@ body.no-scroll {
 
     .order-item img {
         width: 80px;
-        height: 80px;
+        height: 90px;
         border: 2px solid black;
         margin-right: 10px;
     }
@@ -3018,7 +3061,7 @@ body.no-scroll {
         flex: 1;
         display: flex;
         flex-direction: column;
-        gap: 5px;
+        gap: 0px;
     }
 
     .order-item .price {
@@ -3242,5 +3285,3 @@ body.no-scroll {
     font-size: 14px;
     color: #888;
 }
-
-

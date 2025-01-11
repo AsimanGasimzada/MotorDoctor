@@ -12,7 +12,6 @@ public class BaseEntityInterceptor : SaveChangesInterceptor
     {
         _contextAccessor = contextAccessor;
     }
-
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         UpdateEntity(eventData.Context);

@@ -9,4 +9,6 @@ public class OrderCreateDto : IDto
     public string Street { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
     public List<OrderItemCreateDto>? OrderItems { get; set; } = [];
+    public decimal Total { get; set; }
+    public decimal DiscountedTotal { get; set; }
 }

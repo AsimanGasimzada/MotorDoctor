@@ -36,4 +36,9 @@ public static class ExtensionMethods
 
         return returnUrl;
     }
+
+    public static decimal CalculateDiscountedPrice(this decimal price, decimal discount)
+    {
+        return Math.Round((price - price * discount / 100), 2);
+    }
 }

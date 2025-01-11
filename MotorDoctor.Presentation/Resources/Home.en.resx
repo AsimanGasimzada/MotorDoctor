@@ -120,6 +120,9 @@
   <data name="Collection" xml:space="preserve">
     <value>MotorDoctor Collection</value>
   </data>
+  <data name="Discounted" xml:space="preserve">
+    <value>Discounted</value>
+  </data>
   <data name="FeaturedCategories" xml:space="preserve">
     <value>Featured Categories</value>
   </data>

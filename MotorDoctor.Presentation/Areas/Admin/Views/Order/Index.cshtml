@@ -11,6 +11,13 @@
                         <h4 class="card-title">Sifarişlər</h4>
                         <p class="card-description">
                             <a asp-action="Create" class="btn btn-success">Yenisini yarat</a>
+                            <select class="orderFilterInput">
+                                <option value="0">Hamısı</option>
+                                <option value="1">Sifariş edilmişlər</option>
+                                <option value="2">Yolda olanlar</option>
+                                <option value="3">Tamamlanmış</option>
+                                <option value="4">Ləğv edilmişlər</option>
+                            </select>
                         </p>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -31,22 +38,25 @@
                                         <th>
                                             Proseslər
                                         </th>
+                                        <th>
+                                            Silmək
+                                        </th>
 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
-                                        <tr>
+                                        <tr class="orderItem" data-status="@order.Status.Id">
                                             <td class="py-1">
                                                 @(count++)
                                             </td>
                                             <td>
-                                                @order.CreatedAt.ToString("yyyy, MM MMMM")
+                                                @order.CreatedAt.ToString("yyyy, dd MMMM")
                                             </td>
 
                                             <td>
-                                                @order.TotalPrice ₼
+                                                @order.DiscountedTotalPrice ₼
                                             </td>
                                             <td>
                                                 @order.Status.Name
@@ -66,7 +76,9 @@
                                                     <a asp-action="CancelOrder" asp-route-id="@order.Id" class="btn btn-danger "><i class="mdi mdi-pause"></i></a>
                                                 }
                                             </td>
-
+                                            <td>
+                                                <a asp-action="Delete" asp-route-id="@order.Id" class="btn btn-danger deleteBtn"><i class="mdi mdi-delete"></i></a>
+                                            </td>
                                         </tr>
 
                                     }
@@ -80,3 +92,30 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+
+    <script>
+        const filterInput=document.querySelector(".orderFilterInput");
+        const orderItems=document.querySelectorAll(".orderItem");
+
+
+        filterInput.addEventListener("change",(e)=>{
+            e.preventDefault();
+            orderItems.forEach(item=>{
+
+            if(item.dataset.status==e.target.value)
+            {
+                item.style.display="table-row"
+            }
+            else if(e.target.value=="0"){
+                          item.style.display="table-row"
+            }
+            else{
+                item.style.display="none"
+
+            }
+            })
+        })
+    </script>
+}

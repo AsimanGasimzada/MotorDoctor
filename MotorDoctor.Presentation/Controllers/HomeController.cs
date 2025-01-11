@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
+using MotorDoctor.Business.Services.Abstractions;
 using MotorDoctor.Business.UIServices.Abstractions;
 using MotorDoctor.Core.Enum;
 using MotorDoctor.Presentation.Extensions;
@@ -13,12 +14,16 @@ public class HomeController : Controller
     private readonly ILanguageService _languageService;
     private readonly ISubscriberService _subscriberService;
     private readonly Languages _language;
-    public HomeController(IHomeService homeService, ILanguageService languageService, ISubscriberService subscriberService)
+    private readonly ISliderService _sliderService;
+    private readonly IAdvertisementService _advertisementService;
+    public HomeController(IHomeService homeService, ILanguageService languageService, ISubscriberService subscriberService, ISliderService sliderService, IAdvertisementService advertisementService)
     {
         _homeService = homeService;
         _languageService = languageService;
         _subscriberService = subscriberService;
         _language = _languageService.RenderSelectedLanguage();
+        _sliderService = sliderService;
+        _advertisementService = advertisementService;
     }
 
     public async Task<IActionResult> Index()
@@ -39,29 +44,65 @@ public class HomeController : Controller
     }
 
 
-    public IActionResult Error(string json)
+    public IActionResult Error(string? json)
     {
         if (!string.IsNullOrEmpty(json))
         {
-            var dto = JsonConvert.DeserializeObject<ErrorDto>(json);
+
+            string decodedJson = Uri.UnescapeDataString(json);
+
+            var dto = JsonConvert.DeserializeObject<ErrorDto>(decodedJson);
             return View(dto);
         }
 
         return View(new ErrorDto
         {
             StatusCode = 500,
-            Message = "G�zl?nilm?y?n x?ta ba? verdi."
+            Message = "Gözlənilməyən xəta baş verdi."
         });
     }
 
 
     public async Task<IActionResult> AddSubscriber(SubscriberCreateDto dto)
     {
-        var result = await _subscriberService.CreateAsync(dto, ModelState);
+        try
+        {
+            var result = await _subscriberService.CreateAsync(dto, ModelState);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
 
         string returnUrl = Request.GetReturnUrl();
 
         return Redirect(returnUrl);
     }
 
+    public IActionResult ClearCache()
+    {
+        _homeService.ClearInMemoryCache();
+
+        string returnUrl = Request.GetReturnUrl();
+
+        return Redirect(returnUrl);
+
+    }
+
+    public async Task<IActionResult> SliderRedirect(int id)
+    {
+        var slider = await _sliderService.GetAsync(id);
+
+        if (!string.IsNullOrWhiteSpace(slider.ButtonPath))
+            return Redirect(slider.ButtonPath);
+
+        return RedirectToAction("Index", "Shop");
+    }
+
+    public async Task<IActionResult> AdvertisementRedirect(int id)
+    {
+        var advertisement = await _advertisementService.GetAsync(id);
+
+        return Redirect(advertisement.Url);
+    }
 }

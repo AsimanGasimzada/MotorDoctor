@@ -11,4 +11,8 @@ public interface IOrderService : IModifyService<OrderCreateDto, OrderUpdateDto>,
     Task RepairOrderAsync(int id);
     Task NextOrderStatusAsync(int id);
     Task PrevOrderStatusAsync(int id);
+    Task AutoFillStaticDiscountedPrices();
+    Task<List<SalesDataDto>> GetMonthlySalesWithYearAsync();
+    Task<CurrentMonthSalesDataDto> GetCurrentMonthsSalesAsync();
+    Task<TopUserDto> GetTopUserOfCurrentMonthAsync();
 }

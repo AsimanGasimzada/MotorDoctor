@@ -9,5 +9,5 @@ public class UnAuthorizedException : Exception, IBaseException
 
     }
 
-    public HttpStatusCode StatusCode { get ; set; }=HttpStatusCode.Unauthorized;
+    public HttpStatusCode StatusCode { get; set; } = HttpStatusCode.Unauthorized;
 }

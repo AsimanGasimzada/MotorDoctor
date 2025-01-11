@@ -180,9 +180,19 @@
                             </a>
                         </bold>
                         <span>Ölçü: @item.ProductSize.Size</span>
+                        @if (item.StaticDiscount > 0)
+                        {
+                            <span>Qiymət: <s>@item.StaticPrice</s> @item.StaticPrice.CalculateDiscountedPrice(item.StaticDiscount) </span>
+
+                        }
+                        else
+                        {
+                            <span>Qiymət: @item.StaticPrice</span>
+
+                        }
                         <span>Say: @item.Count</span>
                     </div>
-                    <span class="price">₼@(item.ProductSize.Price * item.Count)</span>
+                    <span class="price">₼@(item.StaticPrice.CalculateDiscountedPrice(item.StaticDiscount) * item.Count)</span>
                 </div>
             }
 
@@ -190,10 +200,19 @@
                 <strong>Cəm:</strong>
                 <strong>₼@Model.TotalPrice</strong>
             </div>
+            <div class="total">
+                <strong>Endirim:</strong>
+                <strong>₼@(Model.TotalPrice - Model.DiscountedTotalPrice)</strong>
+            </div>
+            <hr />
+            <div class="total">
+                <strong>Endirimli qiymət:</strong>
+                <strong>₼@Model.DiscountedTotalPrice</strong>
+            </div>
         </div>
         <div class="checkout-form-section">
             <h1>Sifariş məlumatları</h1>
-            <form  class="checkout-form">
+            <form class="checkout-form">
                 <div class="form-group">
                     <label for="city">Şəhər</label>
                     <input id="city" disabled asp-for="City" required placeholder="Enter your city">
@@ -201,12 +220,12 @@
 
                 <div class="form-group">
                     <label for="region">Rayon</label>
-                    <input id="region" disabled asp-for="Region" >
+                    <input id="region" disabled asp-for="Region">
                 </div>
 
                 <div class="form-group">
                     <label for="street">Küçə</label>
-                    <input id="street" disabled asp-for="Street" >
+                    <input id="street" disabled asp-for="Street">
                 </div>
 
 
@@ -219,14 +238,14 @@
 
                 <div class="form-group">
                     <label for="status">Status</label>
-                    <input  disabled id="status" asp-for="Status.Name"  >
+                    <input disabled id="status" asp-for="Status.Name">
                 </div>
 
 
 
                 <div class="form-group">
                     <label for="status">Email</label>
-                    <input disabled id="status" asp-for="AppUser.Email"  >
+                    <input disabled id="status" asp-for="AppUser.Email">
                 </div>
 
 

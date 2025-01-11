@@ -12,4 +12,5 @@ public class BestSellerProductGetDto : IDto
     public string MainImagePath { get; set; } = null!;
     public List<string> ImagePaths { get; set; } = [];
     public List<ProductSizeGetDto> ProductSizes { get; set; } = [];
+    public string Slug { get; set; } = null!;
 }

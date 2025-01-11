@@ -28,6 +28,7 @@ public class GlobalExceptionHandler
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         var statusCode = HttpStatusCode.InternalServerError;
+
         string errorName = "Xəta baş verdi";
         string errorMessage = "Gözlənilməyən xəta baş verdi. Server ilə əlaqə saxlayın";
 
@@ -48,12 +49,11 @@ public class GlobalExceptionHandler
         }
 
         context.Response.ContentType = "application/json";
-        context.Response.StatusCode = (int)statusCode;
 
         var errorDto = new ErrorDto
         {
-            StatusCode = context.Response.StatusCode,
-            Message = SanitizeErrorMessage(errorMessage),
+            StatusCode = (int)statusCode,
+            Message = errorMessage,
             Name = errorName
         };
 
@@ -65,16 +65,16 @@ public class GlobalExceptionHandler
         }
         else
         {
-            var errorJson = JsonConvert.SerializeObject(errorDto);
-            var sanitizedJson = Uri.EscapeDataString(errorJson);
 
-            var errorPath = $"/Home/Error?json={sanitizedJson}";
-            context.Response.Redirect(errorPath);
+            var errorPath = "/Home/Error";
+            var query = $"?json={Uri.EscapeDataString(result)}"; 
+            var fullPath = $"{errorPath}{query}";
+
+            context.Response.Redirect(fullPath);
+            await Task.CompletedTask;
+
         }
     }
 
-    private string SanitizeErrorMessage(string errorMessage)
-    {
-        return new string(errorMessage.Where(c => !char.IsControl(c)).ToArray());
-    }
+
 }

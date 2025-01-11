@@ -36,12 +36,16 @@ internal class ProductService : IProductService
         if (!ModelState.IsValid)
             return false;
 
-        var isExistCategory = await _categoryService.IsExistAsync(dto.CategoryId);
 
-        if (!isExistCategory)
+        foreach (var categoryId in dto.CategoryIds)
         {
-            ModelState.AddModelError("CategoryId", "Belə Kateqoriya mövcud deyil zəhmət olmasa yenidən daxil edin");
-            return false;
+            var isExistCategory = await _categoryService.IsExistAsync(categoryId);
+
+            if (!isExistCategory)
+            {
+                ModelState.AddModelError("CategoryIds", "Belə Kateqoriya mövcud deyil zəhmət olmasa yenidən daxil edin");
+                return false;
+            }
         }
 
         var isExistBrand = await _brandService.IsExistAsync(dto.BrandId);
@@ -49,6 +53,14 @@ internal class ProductService : IProductService
         if (!isExistBrand)
         {
             ModelState.AddModelError("BrandId", "Belə Brend mövcud deyil zəhmət olmasa yenidən daxil edin");
+            return false;
+        }
+
+        var isExistSlug = await _repository.IsExistAsync(x => x.Slug == dto.Slug);
+
+        if (isExistSlug)
+        {
+            ModelState.AddModelError("Slug", "Açar söz artıq mövcuddur başqasını istifadə edin");
             return false;
         }
 
@@ -110,6 +122,7 @@ internal class ProductService : IProductService
         var product = _mapper.Map<Product>(dto);
 
         product.ProductImages = [];
+        product.ProductCategories = [];
 
 
         string mainImagePath = await _cloudinaryService.FileCreateAsync(dto.MainImage);
@@ -121,6 +134,12 @@ internal class ProductService : IProductService
             string imagePath = await _cloudinaryService.FileCreateAsync(file);
             ProductImage image = new() { Path = imagePath };
             product.ProductImages.Add(image);
+        }
+
+        foreach (var categoryId in dto.CategoryIds)
+        {
+            ProductCategory productCategory = new() { CategoryId = categoryId };
+            product.ProductCategories.Add(productCategory);
         }
 
         await _repository.CreateAsync(product);
@@ -180,7 +199,10 @@ internal class ProductService : IProductService
                 query = query.Where(x => x.ProductDetails.Any(x => x.Name.Contains(filterDto.Search)));
 
             if (filterDto.CategoryIds.Count is not 0)
-                query = query.Where(x => filterDto.CategoryIds.Any(c => c == x.CategoryId) || filterDto.CategoryIds.Any(c => c == x.Category.ParentId));
+                query = query.Where(p => p.ProductCategories
+                    .Any(pc => filterDto.CategoryIds.Contains(pc.CategoryId) ||
+                               (pc.Category.ParentId != null && filterDto.CategoryIds.Contains((int)pc.Category.ParentId))));
+
 
             if (filterDto.BrandIds.Count is not 0)
                 query = query.Where(x => filterDto.BrandIds.Any(c => c == x.BrandId));
@@ -287,6 +309,8 @@ internal class ProductService : IProductService
         if (product is null)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
+        await _updateViewCount(product);
+
         var dto = _mapper.Map<ProductGetDto>(product);
 
         return dto;
@@ -294,27 +318,44 @@ internal class ProductService : IProductService
 
     public async Task<List<BestSellerProductGetDto>> GetBestProductsAsync(Languages language = Languages.Azerbaijan)
     {
-        var query = _repository.GetAll(x => x.Include(x => x.ProductImages).Include(x => x.Category)
-                                    .ThenInclude(x => x.Parent!).Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)));
-
-        query = _repository.OrderByDescending(query, x => x.SalesCount);
+        var query = _repository.GetAll(include: _getIncludeFuncForBestseller(language))
+                               .OrderByDescending(x => x.SalesCount);
 
         var bestSellerProduct = await query.FirstOrDefaultAsync();
 
         if (bestSellerProduct is null)
-            return new();
+            return new List<BestSellerProductGetDto>();
 
-        var secondBestSellerProduct = await query.FirstOrDefaultAsync(x => x != bestSellerProduct && x.CategoryId != bestSellerProduct.CategoryId && x.Category.ParentId != bestSellerProduct.Category.ParentId);
+        var bestSellerParentCategoryIds = bestSellerProduct.ProductCategories
+            .Select(pc => pc.Category.ParentId)
+            .Where(parentId => parentId.HasValue)
+            .Distinct()
+            .ToList();
 
-        if (secondBestSellerProduct is null)
-            return new();
+        var secondRequest = await _repository.GetFilter(
+            x => x != bestSellerProduct &&
+                 x.ProductCategories.Any(pc =>
+                     pc.Category.ParentId.HasValue &&
+                     !bestSellerParentCategoryIds.Contains(pc.Category.ParentId!.Value)),
+            include: _getIncludeFuncForBestseller(language))
+            .OrderByDescending(x => x.SalesCount)
+            .Take(1)
+            .ToListAsync();
 
-        List<Product> list = [bestSellerProduct, secondBestSellerProduct];
+        if (!secondRequest.Any())
+            return new List<BestSellerProductGetDto>();
 
-        var dtos = _mapper.Map<List<BestSellerProductGetDto>>(list);
+        var secondBestSellerProduct = secondRequest.First();
+
+        var productList = new List<Product> { bestSellerProduct, secondBestSellerProduct };
+
+        var dtos = _mapper.Map<List<BestSellerProductGetDto>>(productList);
 
         return dtos;
     }
+
+
+
 
     public async Task<ProductCreateDto> GetCreatedDtoAsync()
     {
@@ -402,12 +443,15 @@ internal class ProductService : IProductService
         if (existProduct is null)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
-        var isExistCategory = await _categoryService.IsExistAsync(dto.CategoryId);
-
-        if (!isExistCategory)
+        foreach (var categoryId in dto.CategoryIds)
         {
-            ModelState.AddModelError("CategoryId", "Belə Kateqoriya mövcud deyil zəhmət olmasa yenidən daxil edin");
-            return false;
+            var isExistCategory = await _categoryService.IsExistAsync(categoryId);
+
+            if (!isExistCategory)
+            {
+                ModelState.AddModelError("CategoryIds", "Belə Kateqoriya mövcud deyil zəhmət olmasa yenidən daxil edin");
+                return false;
+            }
         }
 
         var isExistBrand = await _brandService.IsExistAsync(dto.BrandId);
@@ -415,6 +459,14 @@ internal class ProductService : IProductService
         if (!isExistBrand)
         {
             ModelState.AddModelError("BrandId", "Belə Brend mövcud deyil zəhmət olmasa yenidən daxil edin");
+            return false;
+        }
+
+        var isExistSlug = await _repository.IsExistAsync(x => x.Slug == dto.Slug && x.Id != dto.Id);
+
+        if (isExistSlug)
+        {
+            ModelState.AddModelError("Slug", "Açar söz artıq mövcuddur başqasını istifadə edin");
             return false;
         }
 
@@ -536,20 +588,79 @@ internal class ProductService : IProductService
             }
         }
 
+        //remove old categories
+        foreach (var productCategory in existProduct.ProductCategories.ToList())
+        {
+            var isExist = dto.CategoryIds.Any(x => x == productCategory.CategoryId);
+
+            if (!isExist)
+            {
+                existProduct.ProductCategories.Remove(productCategory);
+            }
+        }
+
+        //added new categories
+        foreach (var newCategoryId in dto.CategoryIds)
+        {
+            var isExist = existProduct.ProductCategories.Any(x => x.CategoryId == newCategoryId);
+
+            if (!isExist)
+            {
+                ProductCategory productCategory = new()
+                {
+                    CategoryId = newCategoryId,
+                    ProductId = existProduct.Id
+                };
+
+                existProduct.ProductCategories.Add(productCategory);
+            }
+        }
+
         _repository.Update(existProduct);
         await _repository.SaveChangesAsync();
 
         return true;
     }
 
+    public async Task<int> GetAllProductCount()
+    {
+        var productsCount = await _repository.GetAll().CountAsync();
+
+        return productsCount;
+    }
 
     private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFunc(Languages language)
     {
         LanguageHelper.CheckLanguageId(ref language);
-        return x => x.Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.Category.CategoryDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.Brand.BrandDetails.Where(x => x.LanguageId == (int)language));
+        return x => x.Include(x => x.ProductDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.ProductCategories).ThenInclude(x => x.Category.CategoryDetails.Where(x => x.LanguageId == (int)language)).Include(x => x.Brand.BrandDetails.Where(x => x.LanguageId == (int)language));
     }
     private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFunc()
     {
-        return x => x.Include(x => x.ProductDetails).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.Category).Include(x => x.Brand);
+        return x => x.Include(x => x.ProductDetails).Include(x => x.ProductImages).Include(x => x.ProductSizes).Include(x => x.ProductCategories).ThenInclude(x => x.Category).Include(x => x.Brand);
     }
+    private Func<IQueryable<Product>, IIncludableQueryable<Product, object>> _getIncludeFuncForBestseller(Languages language)
+    {
+        LanguageHelper.CheckLanguageId(ref language);
+
+        return query => query
+            .Include(p => p.ProductImages)
+            .Include(x => x.ProductSizes)
+            .Include(p => p.ProductCategories)
+                .ThenInclude(pc => pc.Category)
+                    .ThenInclude(c => c.CategoryDetails.Where(cd => cd.LanguageId == (int)language))
+            .Include(p => p.ProductCategories)
+                .ThenInclude(pc => pc.Category)
+                    .ThenInclude(c => c.Parent)
+                        .ThenInclude(parent => parent!.CategoryDetails.Where(cd => cd.LanguageId == (int)language))
+            .Include(p => p.ProductDetails.Where(pd => pd.LanguageId == (int)language));
+    }
+
+
+    private async Task _updateViewCount(Product product)
+    {
+        product.ViewCount++;
+        _repository.Update(product);
+        await _repository.SaveChangesAsync();
+    }
+
 }

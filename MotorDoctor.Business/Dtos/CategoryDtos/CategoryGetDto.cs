@@ -11,3 +11,14 @@ public class CategoryGetDto : IDto
     public List<CategoryRelationDto> Children { get; set; } = [];
     public List<ProductGetDto> Products { get; set; } = [];
 }
+
+
+
+public class CategoryFeatureGetDto : IDto
+{
+    public int Id { get; set; }
+    public string Name { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public string? ImagePath { get; set; }
+    public List<ProductGetDto> Products { get; set; } = [];
+}

@@ -12,5 +12,6 @@ public interface IProductService : IModifyService<ProductCreateDto, ProductUpdat
     Task IncreaseSalesCountAsync(int productSizeId, int count = 1);
     Task DecreaseSalesCountAsync(int productSizeId, int count = 1);
     Task<List<BestSellerProductGetDto>> GetBestProductsAsync(Languages language = Languages.Azerbaijan);
+    Task<int> GetAllProductCount();
     //Task<List<ProductGetDto>> GetFeaturedProductsAsync(Languages language = Languages.Azerbaijan);
 }

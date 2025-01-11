@@ -22,6 +22,8 @@ public static class DataAccessServiceRegistration
         services.AddScoped<BaseEntityInterceptor>();
         services.AddScoped<DbContextInitalizer>();
 
+        services.AddMemoryCache();
+
         _addRepositories(services);
         _addIdentity(services);
         _addLocalizers(services);
@@ -43,6 +45,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<ISliderRepository, SliderRepository>();
         services.AddScoped<ISettingRepository, SettingRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
         services.AddScoped<IProductSizeRepository, ProductSizeRepository>();
         services.AddScoped<ISubscriberRepository, SubscriberRepository>();
         services.AddScoped<IStatusRepository, StatusRepository>();

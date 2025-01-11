@@ -20,9 +20,12 @@
                     <img src="@item.ProductSize.Product.MainImagePath" alt="Product" />
                 </a>
                 <div class="basket-product-content">
-                    <a class="product-category">@item.ProductSize.Product.Category.Name - @item.ProductSize.Size</a>
+                    <a class="product-category">@item.ProductSize.Product.Categories.FirstOrDefault()?.Name - @item.ProductSize.Size</a>
                     <a asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId" class="product-item">@item.ProductSize.Product.Name</a>
-                    <span class="product-cost">₼@item.ProductSize.Price x @item.Count</span>
+                    <span class="product-cost">@if (item.ProductSize.Discount > 0)
+                        {
+                            <s>₼@item.ProductSize.Price</s> 
+                        } ₼@item.ProductSize.Price.CalculateDiscountedPrice(item.ProductSize.Discount) x @item.Count</span>
                 </div>
                 <a asp-action="RemoveToBasket" asp-controller="Basket" asp-route-id="@item.ProductSizeId" class="remove-basket removeToBasketButton">
                     <i class="fa-solid fa-x"></i>
@@ -33,7 +36,7 @@
     </div>
     <div class="basket-total">
         <span>@_localizer.GetValue("Subtotal"):</span>
-        <span class="amount">@basket.Total</span>
+        <span class="amount">@basket.DiscountedTotal</span>
     </div>
     <div class="basket-buttons">
         <a asp-action="Index" asp-controller="Basket" class="custom-button">@_localizer.GetValue("ViewCart")</a>

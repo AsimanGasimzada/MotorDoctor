@@ -68,7 +68,16 @@ app.MapControllerRoute(
             pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
+    name: "shopDetail",
+    pattern: "shop/{id}/{slug?}",
+    defaults: new { controller = "Shop", action = "Detail" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+
+
 
 await app.RunAsync();

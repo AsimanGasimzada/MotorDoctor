@@ -8,6 +8,6 @@ public class ProductSizeUpdateDtoValidator : AbstractValidator<ProductSizeUpdate
     {
         RuleFor(x => x.Price).GreaterThan(0);
         RuleFor(x => x.Count).GreaterThan(0);
-        RuleFor(x => x.Size).NotEmpty().MaximumLength(256);
+        RuleFor(x => x.Size).MaximumLength(256);
     }
 }

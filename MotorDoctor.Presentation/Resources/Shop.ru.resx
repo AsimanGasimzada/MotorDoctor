@@ -144,6 +144,9 @@
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>
+  <data name="Discounted" xml:space="preserve">
+    <value>Скидкой</value>
+  </data>
   <data name="Filter" xml:space="preserve">
     <value>Фильтр</value>
   </data>

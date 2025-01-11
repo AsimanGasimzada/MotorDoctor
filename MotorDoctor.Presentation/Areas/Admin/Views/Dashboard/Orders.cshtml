@@ -1,0 +1,94 @@
+﻿@using System.Globalization
+@model List<SalesDataDto>
+
+<style>
+    #salesChart {
+        max-width: 1200px; /* Genişliyi artırır */
+        height: 400px; /* Hündürlüyü sabit saxlayır */
+    }
+
+    div[style="overflow-x: auto; width: 100%;"] {
+        overflow-x: auto; /* Yatay scroll açıqdır */
+        white-space: nowrap; /* Yan tərəfdəki qrafikləri bir xəttə sığışdırır */
+    }
+</style>
+
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+           
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Ayların və satışların hazırlanması
+        const labels = @Html.Raw(Json.Serialize(Model.Select(x =>
+    new DateTime(x.Year, x.Month, 1).ToString("MMMM yyyy", new System.Globalization.CultureInfo("az-AZ")))));
+
+        const salesData = @Html.Raw(Json.Serialize(Model.Select(x => x.TotalSales)));
+
+        const ctx = document.getElementById('salesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Monthly Sales',
+                    data: salesData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Sales: ${context.raw.toLocaleString('az-AZ', { style: 'currency', currency: 'AZN' })}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Months'
+                        },
+                        ticks: {
+                            maxRotation: 90,
+                            minRotation: 45
+                        },
+                        display: true
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Sales Amount'
+                        },
+                        beginAtZero: true
+                    }
+                },
+                layout: {
+                    padding: {
+                        left: 10,
+                        right: 10,
+                        top: 10,
+                        bottom: 10
+                    }
+                }
+            }
+        });
+    </script>
+}

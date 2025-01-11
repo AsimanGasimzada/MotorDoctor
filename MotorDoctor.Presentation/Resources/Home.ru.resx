@@ -120,6 +120,9 @@
   <data name="Collection" xml:space="preserve">
     <value>Коллекция MotorDoctor</value>
   </data>
+  <data name="Discounted" xml:space="preserve">
+    <value>Скидкой</value>
+  </data>
   <data name="FeaturedCategories" xml:space="preserve">
     <value>Подборка категорий</value>
   </data>

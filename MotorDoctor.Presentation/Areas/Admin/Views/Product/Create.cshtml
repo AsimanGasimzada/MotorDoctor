@@ -98,6 +98,15 @@
                 <hr />
                 <br />
                 <br />
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Məhsulun açar sözləri (örnək: mehsul-acar-sozu)</label>
+                    <input class="form-control" required asp-for="@Model.Slug" placeholder="Açar söz daxil edin">
+                    <span asp-validation-for="@Model.Slug" class="text-danger"></span>
+                </div>
+
+                <hr />
+                <br />
+                <br />
 
 
 
@@ -123,14 +132,14 @@
 
                     </label>
                     <br />
-                    <select class="form-select form-select-sm" asp-for="CategoryId" required>
-                        <option value="@null" disabled selected>Kateqori seçin</option>
+                    <select data-placeholder="Kateqoriya secin" class=" chosen-select" asp-for="CategoryIds" required>
                         @foreach (var category in Model.Categories ?? new())
                         {
                             <option value="@category.Id">@category.Name</option>
                         }
 
                     </select>
+                    <span asp-validation-for="CategoryIds"></span>
                 </div>
 
                 <hr />
@@ -181,6 +190,8 @@
     </div>
 </div>
 <script>
+
+
 
        let productSizeIndex = 1;
        const addSizeButton = document.querySelector('#addProductSize');
@@ -248,6 +259,13 @@
 
 
 @section Scripts {
+    <script>
+              $(function(){
+            $(".chosen-select").chosen({
+                width:'100%'
+            });
+        })
+    </script>
     <script type="module">
                     import {
             ClassicEditor,

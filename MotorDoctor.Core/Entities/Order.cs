@@ -5,6 +5,7 @@ public class Order : BaseAuditableEntity
     public AppUser? AppUser { get; set; } = null!;
     public string? AppUserId { get; set; } = null!;
     public decimal TotalPrice { get; set; }
+    public decimal DiscountedTotalPrice { get; set; }
     public string Name { get; set; } = null!;
     public string Surname { get; set; } = null!;
     public string City { get; set; } = null!;
