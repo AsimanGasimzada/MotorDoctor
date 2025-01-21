@@ -277,6 +277,7 @@ border-color: white !important;
 
 .page-item {
     margin: 0 2px;
+    cursor:pointer;
 }
 
 .page-link {

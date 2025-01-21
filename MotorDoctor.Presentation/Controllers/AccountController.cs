@@ -6,6 +6,7 @@ using MotorDoctor.Presentation.Extensions;
 
 namespace MotorDoctor.Presentation.Controllers;
 
+[AutoValidateAntiforgeryToken]
 public class AccountController : Controller
 {
     private readonly IAuthService _authService;
@@ -44,6 +45,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
         var result = await _authService.RegisterAsync(dto, ModelState);

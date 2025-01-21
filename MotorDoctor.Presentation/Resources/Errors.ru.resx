@@ -150,6 +150,9 @@
   <data name="InvalidInputException" xml:space="preserve">
     <value>Произошла непредвиденная ошибка. Повторите попытку.</value>
   </data>
+  <data name="InvalidPaymentType" xml:space="preserve">
+    <value>Выберите способ оплаты.</value>
+  </data>
   <data name="InvalidRoleName" xml:space="preserve">
     <value>Роль '{0}' недействительна.</value>
   </data>

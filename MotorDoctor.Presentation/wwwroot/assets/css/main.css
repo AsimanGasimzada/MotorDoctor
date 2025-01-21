@@ -3092,6 +3092,7 @@ body.no-scroll {
 
     .checkout-form input,
     .checkout-form textarea,
+    .checkout-form select,
     .checkout-form button {
         width: 100%;
         border: 2px solid black;

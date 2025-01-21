@@ -9,4 +9,5 @@ public interface IAuthService
     Task<List<UserGetDto>> GetAllUserAsync();
     Task<UserGetDto> GetUserAsync(string id);
     Task<bool> ChangeUserRoleAsync(UserChangeRoleDto dto);
+    Task RemoveBotsAsync();
 }

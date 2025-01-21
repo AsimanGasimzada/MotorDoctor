@@ -18,6 +18,11 @@
                                 <option value="3">Tamamlanmış</option>
                                 <option value="4">Ləğv edilmişlər</option>
                             </select>
+                            <select class="paymentFilterInput">
+                                <option value="0">Hamısı</option>
+                                <option value="@true">Ödəniş edilənlər</option>
+                                <option value="@false">Ödəniş edilməyənlər</option>
+                            </select>
                         </p>
                         <div class="table-responsive">
                             <table class="table table-striped">
@@ -31,6 +36,9 @@
                                         </th>
                                         <th>
                                             Qiymət
+                                        </th>
+                                        <th>
+                                            Ödəniş
                                         </th>
                                         <th>
                                             Status
@@ -47,7 +55,7 @@
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
-                                        <tr class="orderItem" data-status="@order.Status.Id">
+                                        <tr class="orderItem" data-status="@order.Status.Id" data-payment="@order.IsPaid">
                                             <td class="py-1">
                                                 @(count++)
                                             </td>
@@ -57,6 +65,9 @@
 
                                             <td>
                                                 @order.DiscountedTotalPrice ₼
+                                            </td>
+                                            <td>
+                                                @(order.Payment != null ? "Kartla" : "Nağd")@(order.IsPaid ? "=> Ödənilib" : "=> Ödəniş edilməyib")
                                             </td>
                                             <td>
                                                 @order.Status.Name
@@ -97,6 +108,7 @@
 
     <script>
         const filterInput=document.querySelector(".orderFilterInput");
+        const paymentInput=document.querySelector(".paymentFilterInput");
         const orderItems=document.querySelectorAll(".orderItem");
 
 
@@ -114,6 +126,24 @@
             else{
                 item.style.display="none"
 
+            }
+            })
+        })
+
+
+        paymentInput.addEventListener("change",(e)=>{
+            e.preventDefault();
+            orderItems.forEach(item=>{
+
+            if(item.dataset.payment==e.target.value)
+            {
+                item.style.display="table-row"
+            }
+            else if(e.target.value=="0"){
+                          item.style.display="table-row"
+            }
+            else{
+                item.style.display="none"
             }
             })
         })

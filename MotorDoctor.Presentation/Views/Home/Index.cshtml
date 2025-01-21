@@ -57,14 +57,14 @@
 
                     <div class="product-card col-lg-6 col-md-12 col-12" data="fashion">
 
-                        <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id">
+                        <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id">
                             <span style="mix-blend-mode: difference;color:white;" id="">@product.ParentCategory?.Name</span>
                             <img loading="lazy" src="@product.ParentCategory?.ImagePath" alt="product" />
                         </a>
                         <div class="product-card-details">
                             <div class="product-detail-content">
                                 <div class="product-detail-content-left">
-                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id" asp-route-slug="@product.Slug"> </a><a>@product.Brand?.Name</a>
+                                    <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id" asp-route-slug="@product.Slug"> </a><a>@product.Brand?.Name</a>
                                     <a class="product-detail-title">@product.Name</a>
                                     <a>@product.Category.Name</a>
                                 </div>
@@ -125,7 +125,7 @@
                             <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
                         </button>
 
-                        <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id" asp-route-slug="@product.Slug">
+                        <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id" asp-route-slug="@product.Slug">
                             @if (size?.Discount > 0)
                             {
                                 <span class="new-product-icon">@_localizer.GetValue("Discounted")</span>
@@ -160,7 +160,7 @@
                             </div>
                         </a>
                         <div class="product-card-content">
-                            <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id" asp-route-slug="@product.Slug"> </a><a>@product.Brand.Name</a>
+                            <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id" asp-route-slug="@product.Slug"> </a><a>@product.Brand.Name</a>
                             <a class="product-title">@product.Name</a>
                             <a class="product-category">@product.Categories.FirstOrDefault()?.Name</a>
                             <div>

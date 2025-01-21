@@ -50,12 +50,6 @@ app.RenderSelectedLanguage();
 
 await app.InitDatabaseAsync();
 
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    app.UseHsts();
-}
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -69,8 +63,8 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "shopDetail",
-    pattern: "shop/{id}/{slug?}",
-    defaults: new { controller = "Shop", action = "Detail" });
+    pattern: "product/{id}/{slug?}",
+    defaults: new { controller = "Product", action = "Detail" });
 
 app.MapControllerRoute(
     name: "default",

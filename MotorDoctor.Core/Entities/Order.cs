@@ -1,4 +1,6 @@
-﻿namespace MotorDoctor.Core.Entities;
+﻿using MotorDoctor.Core.Enum;
+
+namespace MotorDoctor.Core.Entities;
 
 public class Order : BaseAuditableEntity
 {
@@ -12,6 +14,11 @@ public class Order : BaseAuditableEntity
     public string Region { get; set; } = null!;
     public string Street { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
+    public PaymentTypes PaymentType { get; set; }
+    public string? ConfirmToken { get; set; }
+    public bool IsPaid { get; set; }
+    public Payment? Payment { get; set; }
+    public int? PaymentId { get; set; }
     public int StatusId { get; set; }
     public Status Status { get; set; } = null!;
     public ICollection<OrderItem> OrderItems { get; set; } = [];

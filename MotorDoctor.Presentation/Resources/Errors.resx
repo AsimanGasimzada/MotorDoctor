@@ -150,6 +150,9 @@
   <data name="InvalidInputException" xml:space="preserve">
     <value />
   </data>
+  <data name="InvalidPaymentType" xml:space="preserve">
+    <value />
+  </data>
   <data name="InvalidRoleName" xml:space="preserve">
     <value />
   </data>

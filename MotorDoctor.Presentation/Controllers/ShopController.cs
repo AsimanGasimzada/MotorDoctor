@@ -28,33 +28,22 @@ public class ShopController : Controller
         _advertisementService = advertisementService;
     }
 
-    public async Task<IActionResult> Index(int page = 1, int? categoryId = null)
+    public async Task<IActionResult> Index(int page = 1, int? categoryId = null, ShopFilterDto? dto = null)
     {
-        ProductFilterDto? filterDto = null;
+        if (dto is null)
+            dto = new();
 
         if (categoryId is not null)
         {
             var category = await _categoryService.GetAsync((int)categoryId);
 
-            filterDto = new()
+            dto.ProductFilterDto = new()
             {
                 CategoryIds = category.Children?.Count > 0 ? category.Children.Select(x => x.Id).ToList() : [category.Id],
                 MaxPrice = 2500
             };
         }
 
-
-        var shopFilterDto = await _productService.GetAllWithPageAsync(filterDto, _language, page);
-        shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
-        shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
-        shopFilterDto.Advertisements = await _advertisementService.GetAllAsync();
-
-        return View(shopFilterDto);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Index(ShopFilterDto dto, int page = 1)
-    {
 
         var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
         shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
@@ -63,6 +52,28 @@ public class ShopController : Controller
 
         return View(shopFilterDto);
     }
+
+
+    public IActionResult FilterProducts()
+    {
+        return RedirectToAction("Index");
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> FilterProducts(ShopFilterDto dto, int page = 1)
+    {
+
+        var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
+        shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
+        shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
+        shopFilterDto.Advertisements = await _advertisementService.GetAllAsync();
+
+        return View("Index", shopFilterDto);
+
+    }
+
+
+
     public async Task<IActionResult> DeleteComment(int id)
     {
         await _commentService.DeleteAsync(id);
@@ -72,21 +83,7 @@ public class ShopController : Controller
         return Redirect(returnUrl);
     }
 
-    public async Task<IActionResult> Detail(string? slug, int id)
-    {
-        var product = await _productService.GetAsync(id, _language);
-        var comments = await _commentService.GetProductCommentsAsync(id);
-        var isAllowComment = await _commentService.CheckIsAllowCommentAsync(id);
 
-        ShopDetailDto dto = new()
-        {
-            Product = product,
-            Comments = comments,
-            IsAllowComment = isAllowComment
-        };
-
-        return View(dto);
-    }
 
     [HttpPost]
     public async Task<IActionResult> CreateComment(CommentCreateDto dto)
@@ -99,6 +96,4 @@ public class ShopController : Controller
     }
 
 
-
-  
 }

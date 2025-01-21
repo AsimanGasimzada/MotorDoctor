@@ -212,7 +212,7 @@
         {
 
             <div class="comment-form-container" style="max-width: 80%; margin: 20px auto; border: 1px solid whitesmoke; border-radius: 0; padding: 20px; background-color: #fff; color: #000;">
-                <form id="commentForm" asp-action="CreateComment" asp-route-ProductId="@Model.Product.Id">
+                <form id="commentForm" asp-controller="Shop" asp-action="CreateComment" asp-route-ProductId="@Model.Product.Id">
                     <h4 class="text-center" style="margin-bottom: 20px;">@_localizer.GetValue("LeaveComment")</h4>
 
                     <!-- Comment Text -->

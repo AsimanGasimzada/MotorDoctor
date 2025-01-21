@@ -7,6 +7,7 @@ public class ProductGetDto : IDto
     public string Description { get; set; } = null!;
     public string Code { get; set; } = null!;
     public int SalesCount { get; set; }
+    public int ViewCount { get; set; }
     public List<CategoryRelationDto> Categories { get; set; } = [];
     public BrandRelationDto Brand { get; set; } = null!;
     public string MainImagePath { get; set; } = null!;

@@ -27,6 +27,7 @@ public class ContactController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Index(ContactDto dto)
     {
         var result = await _contactService.SendEmailAsync(dto, ModelState);

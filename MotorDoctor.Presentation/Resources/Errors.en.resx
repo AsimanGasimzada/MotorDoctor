@@ -150,6 +150,9 @@
   <data name="InvalidInputException" xml:space="preserve">
     <value>An unexpected error occurred. Please try again.</value>
   </data>
+  <data name="InvalidPaymentType" xml:space="preserve">
+    <value>Select a payment method.</value>
+  </data>
   <data name="InvalidRoleName" xml:space="preserve">
     <value>'{0}' role is invalid.</value>
   </data>

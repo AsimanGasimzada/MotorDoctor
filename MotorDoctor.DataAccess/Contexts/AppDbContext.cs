@@ -55,6 +55,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public required DbSet<ProductImage> ProductImages { get; set; }
     public required DbSet<ProductSize> ProductSizes { get; set; }
     public required DbSet<ProductCategory> ProductCategories { get; set; }
+    public required DbSet<Payment> Payments { get; set; }
     public required DbSet<Setting> Settings { get; set; }
     public required DbSet<SettingDetail> SettingDetails { get; set; }
     public required DbSet<Slider> Sliders { get; set; }

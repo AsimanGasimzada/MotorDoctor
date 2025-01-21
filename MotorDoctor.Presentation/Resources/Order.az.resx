@@ -120,6 +120,12 @@
   <data name="Accept" xml:space="preserve">
     <value>Bəli</value>
   </data>
+  <data name="Card" xml:space="preserve">
+    <value>Kartla</value>
+  </data>
+  <data name="Cash" xml:space="preserve">
+    <value>Nağd</value>
+  </data>
   <data name="City" xml:space="preserve">
     <value>Şəhər</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="OrderTitle" xml:space="preserve">
     <value>SİFARİŞİ TƏSDİQLƏ</value>
+  </data>
+  <data name="PaymentType" xml:space="preserve">
+    <value>Ödəniş növü</value>
+  </data>
+  <data name="PaymentTypeInput" xml:space="preserve">
+    <value>Ödəniş növünü seçin</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
     <value>Telefon nömrəsi</value>

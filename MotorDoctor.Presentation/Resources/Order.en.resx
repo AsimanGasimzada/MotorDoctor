@@ -120,6 +120,12 @@
   <data name="Accept" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="Card" xml:space="preserve">
+    <value>With card</value>
+  </data>
+  <data name="Cash" xml:space="preserve">
+    <value>Cash</value>
+  </data>
   <data name="City" xml:space="preserve">
     <value>City</value>
   </data>
@@ -164,6 +170,12 @@
   </data>
   <data name="OrderTitle" xml:space="preserve">
     <value>Confirm Order</value>
+  </data>
+  <data name="PaymentType" xml:space="preserve">
+    <value>Payment type</value>
+  </data>
+  <data name="PaymentTypeInput" xml:space="preserve">
+    <value>Select payment type</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
     <value>Phone Number</value>

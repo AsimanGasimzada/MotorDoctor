@@ -17,13 +17,7 @@ internal class LanguageService : ILanguageService
 
     public Languages RenderSelectedLanguage()
     {
-        string? culture = _contextAccessor.HttpContext?.Request.Cookies[COOKIE_KEY];
-
-        if (string.IsNullOrWhiteSpace(culture))
-        {
-            culture = "az";
-            SelectCulture(culture);
-        }
+        string culture = GetSelectedCulture();
 
         var language = _getEnumValue(culture);
 
@@ -65,5 +59,18 @@ internal class LanguageService : ILanguageService
             selectedLanguage = Languages.Russian;
 
         return selectedLanguage;
+    }
+
+    public string GetSelectedCulture()
+    {
+        string? culture = _contextAccessor.HttpContext?.Request.Cookies[COOKIE_KEY];
+
+        if (string.IsNullOrWhiteSpace(culture))
+        {
+            culture = "az";
+            SelectCulture(culture);
+        }
+
+        return culture;
     }
 }

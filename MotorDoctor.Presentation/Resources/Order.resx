@@ -120,6 +120,12 @@
   <data name="Accept" xml:space="preserve">
     <value />
   </data>
+  <data name="Card" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Cash" xml:space="preserve">
+    <value />
+  </data>
   <data name="City" xml:space="preserve">
     <value />
   </data>
@@ -163,6 +169,12 @@
     <value />
   </data>
   <data name="OrderTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PaymentType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PaymentTypeInput" xml:space="preserve">
     <value />
   </data>
   <data name="PhoneNumber" xml:space="preserve">

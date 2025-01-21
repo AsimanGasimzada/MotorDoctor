@@ -204,6 +204,19 @@ internal class AuthService : IAuthService
         return true;
     }
 
+    public async Task RemoveBotsAsync()
+    {
+        var users = await _userManager.Users.ToListAsync();
+
+        foreach (var user in users)
+        {
+            if (user.UserName!.Count(x => x == '-') > 3)
+            {
+                await _userManager.DeleteAsync(user);
+            }
+        }
+    }
+
     private async Task _sendConfirmEmailToken(AppUser user)
     {
         string confirmEmailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);

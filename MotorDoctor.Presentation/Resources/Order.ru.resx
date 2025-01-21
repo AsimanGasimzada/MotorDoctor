@@ -120,6 +120,9 @@
   <data name="Accept" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="Cash" xml:space="preserve">
+    <value>Наличные</value>
+  </data>
   <data name="City" xml:space="preserve">
     <value>Город</value>
   </data>
@@ -164,6 +167,12 @@
   </data>
   <data name="OrderTitle" xml:space="preserve">
     <value>Подтвердить заказ</value>
+  </data>
+  <data name="PaymentType" xml:space="preserve">
+    <value>Тип оплаты</value>
+  </data>
+  <data name="PaymentTypeInput" xml:space="preserve">
+    <value>Выберите тип оплаты</value>
   </data>
   <data name="PhoneNumber" xml:space="preserve">
     <value>Номер телефона</value>

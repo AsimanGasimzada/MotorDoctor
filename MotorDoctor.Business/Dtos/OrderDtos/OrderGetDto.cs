@@ -16,5 +16,7 @@ public class OrderGetDto : IDto
     public UserGetDto AppUser { get; set; } = null!;
     public string Name { get; set; } = null!;
     public string Surname { get; set; } = null!;
+    public bool IsPaid { get; set; }
+    public PaymentGetDto? Payment { get; set; }
 }
 

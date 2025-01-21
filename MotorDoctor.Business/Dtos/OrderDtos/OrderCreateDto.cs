@@ -1,4 +1,6 @@
-﻿namespace MotorDoctor.Business.Dtos;
+﻿using MotorDoctor.Core.Enum;
+
+namespace MotorDoctor.Business.Dtos;
 
 public class OrderCreateDto : IDto
 {
@@ -11,4 +13,5 @@ public class OrderCreateDto : IDto
     public List<OrderItemCreateDto>? OrderItems { get; set; } = [];
     public decimal Total { get; set; }
     public decimal DiscountedTotal { get; set; }
+    public PaymentTypes PaymentType { get; set; }
 }

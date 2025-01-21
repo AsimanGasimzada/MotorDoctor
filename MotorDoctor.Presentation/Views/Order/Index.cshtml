@@ -113,6 +113,16 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="phone">@_localizer.GetValue("PaymentType")</label>
+                            <select asp-for="PaymentType">
+                                <option disabled selected value="@null">@_localizer.GetValue("PaymentTypeInput")</option>
+                                <option value="@PaymentTypes.Cart.ToString()">@_localizer.GetValue("Card")</option>
+                                <option value="@PaymentTypes.Cash.ToString()">@_localizer.GetValue("Cash")</option>
+                            </select>
+                            <span asp-validation-for="PaymentType" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
                             <button type="submit" class="orderSubmitButton">@_localizer.GetValue("Submit")</button>
                         </div>
 

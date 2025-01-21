@@ -29,10 +29,12 @@
 <!-- Shop section Start -->
 <main>
     <div class="container-fluid  ">
-        <form method="post" class="container shopFilterForm submitForm" id="form-id">
+        <form method="post" asp-action="FilterProducts" class="container shopFilterForm submitForm" id="form-id">
             <div class="row g-4">
                 <div class="col-lg-3">
                     <div class="row g-4">
+
+                  
 
                         <div class="col-lg-12">
                             <div class="mb-3">
@@ -158,7 +160,7 @@
                                 </h2>
                                 <div class="accordion-body">
                                     <div class="price-slider">
-                                        <input type="range" asp-for="ProductFilterDto!.MinPrice" min="0" max="1000" value="@(Model.ProductFilterDto?.MinPrice ?? 0)" class="mt-2 form-range" id="minPrice">
+                                        <input type="range" asp-for="ProductFilterDto!.MinPrice" min="0" max="2500" value="@(Model.ProductFilterDto?.MinPrice ?? 0)" class="mt-2 form-range" id="minPrice">
                                         <input type="range" asp-for="ProductFilterDto!.MaxPrice" min="0" max="2500" value="@(Model.ProductFilterDto?.MaxPrice ?? 2500)" class="mt-2 form-range" id="maxPrice">
                                         <div class="price-values d-flex justify-content-between">
                                             <span id="minPriceValue">₼@(Model.ProductFilterDto?.MinPrice ?? 0)</span>
@@ -183,8 +185,19 @@
                         </div>
                     </div>
 
+
                     <br />
                     <br />
+
+                    <div class="mobileAdvertisementArea">
+                                        @foreach (var advertisement in Model.Advertisements)
+                                        {
+                            <a asp-action="AdvertisementRedirect" asp-controller="Home" asp-route-id="@advertisement.Id" style="width:80%;margin:0 auto" class="addSection">
+                                <img src="@advertisement.ImagePath" style="width:100%;object-fit:cover;" />
+
+                            </a>
+                                        }
+                    </div>
                     <div class="advertisementArea">
                                         @foreach (var advertisement in Model.Advertisements)
                                         {
@@ -234,7 +247,7 @@
                                     <i class="@(isExist? "fa-solid" : "fa-regular") fa-heart"></i>
                                 </button>
 
-                                <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id" asp-route-slug="@product.Slug">
+                                <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id" asp-route-slug="@product.Slug">
                                                 @if (size?.Discount > 0)
                                                 {
                                         <span class="new-product-icon">@_localizer.GetValue("Discounted")</span>
@@ -274,7 +287,7 @@
                                     </div>
                                 </a>
                                 <div class="product-card-content">
-                                    <a asp-action="Detail" asp-controller="Shop" asp-route-id="@product.Id" asp-route-slug="@product.Slug"> </a><a>@product.Brand.Name</a>
+                                    <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id" asp-route-slug="@product.Slug"> </a><a>@product.Brand.Name</a>
                                     <a class="product-title">@product.Name</a>
                                     <a class="product-category">@product.Categories.FirstOrDefault()?.Name</a>
                                     <div>
@@ -293,7 +306,7 @@
                                         <span style="
                                   color: #727272;
                                   text-decoration: line-through;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "></span>
                                     </div>
                                 </div>
 
@@ -310,15 +323,37 @@
 
                         <div class="pagination-container">
                             <ul class="pagination" style="display:flex;flex-wrap:wrap;justify-content:center">
-                                <li class="page-item"><a data-page="@(Model.Products.CurrentPage - 1)" class="page-link">&laquo;</a></li>
+                                            @if (Model.Products.CurrentPage > 1)
+                                            {
+                                    <li class="page-item"><a data-page="@(Model.Products.CurrentPage - 1)" class="page-link">&laquo;</a></li>
+                                            }
+
                                             @for (int i = 1; i <= Model.Products.PageCount; i++)
                                             {
-                                    <li class="page-item @(Model.Products.CurrentPage==i ? "active" :"")"><a data-page="@i" class="page-link">@i</a></li>
+                                                if (i == 1 || i == Model.Products.PageCount || 
+                                                (i >= Model.Products.CurrentPage - 1 && i <= Model.Products.CurrentPage + 1)) 
+                                                {
+                                        <li class="page-item @(Model.Products.CurrentPage == i ? "active" : "")">
+                                            <a data-page="@i" class="page-link">@i</a>
+                                        </li>
+                                                }
+                                                else if (i == 2 && Model.Products.CurrentPage > 3) 
+                                                {
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                }
+                                                else if (i == Model.Products.PageCount - 1 && Model.Products.CurrentPage < Model.Products.PageCount - 2) 
+                                                {
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                }
                                             }
-                                <li class="page-item"><a data-page="@(Model.Products.CurrentPage + 1)" class="page-link">&raquo;</a></li>
 
+                                            @if (Model.Products.CurrentPage < Model.Products.PageCount)
+                                            {
+                                    <li class="page-item"><a data-page="@(Model.Products.CurrentPage + 1)" class="page-link">&raquo;</a></li>
+                                            }
                             </ul>
                         </div>
+
 
                                 }
                                 else
@@ -336,7 +371,7 @@
                     <div class="mobileAdvertisementArea">
                                     @foreach (var advertisement in Model.Advertisements)
                                     {
-                            <a href="@advertisement.Url" style="width:80%;margin:0 auto" class="addSection">
+                            <a asp-action="AdvertisementRedirect" asp-controller="Home" asp-route-id="@advertisement.Id" style="width:80%;margin:0 auto" class="addSection">
                                 <img src="@advertisement.ImagePath" style="width:100%;object-fit:cover;" />
 
                             </a>

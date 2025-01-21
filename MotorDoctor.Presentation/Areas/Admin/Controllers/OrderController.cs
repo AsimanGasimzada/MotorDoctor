@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Extensions;
+using MotorDoctor.Presentation.Extensions;
 
 namespace MotorDoctor.Presentation.Areas.Admin.Controllers;
 [Area("Admin")]
@@ -19,6 +20,14 @@ public class OrderController : Controller
         var orders = await _service.GetAllAsync(Constants.SelectedLanguage);
 
         return View(orders);
+    }
+    public async Task<IActionResult> ConfirmPayment(int id)
+    {
+        await _service.ConfirmPaymentAsync(id);
+
+        string returnUrl = Request.GetReturnUrl();
+
+        return Redirect(returnUrl);
     }
 
     public async Task<IActionResult> Detail(int id)

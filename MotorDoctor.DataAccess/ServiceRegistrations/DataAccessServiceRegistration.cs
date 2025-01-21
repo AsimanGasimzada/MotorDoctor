@@ -50,6 +50,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<ISubscriberRepository, SubscriberRepository>();
         services.AddScoped<IStatusRepository, StatusRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPaymentRepository, PaymentRepository>();
         services.AddScoped<IOrderItemRepository, OrderItemRepository>();
         services.AddScoped<IWishlistItemRepository, WishlistItemRepository>();
     }

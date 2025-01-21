@@ -26,7 +26,6 @@ internal class DashboardService : IDashboardService
         var salesDatas = await _orderService.GetMonthlySalesWithYearAsync();
         var currentMonthSalesData = await _orderService.GetCurrentMonthsSalesAsync();
         var bestProducts = await _productService.GetBestProductsAsync();
-        var topUser = await _orderService.GetTopUserOfCurrentMonthAsync();
         var userCount = await _userManager.Users.CountAsync();
         var productCount = await _productService.GetAllProductCount();
         var advertisementViewCount = await _advertisementService.GetAllAdvertisementViewCount();
@@ -36,7 +35,6 @@ internal class DashboardService : IDashboardService
             BestSellerProducts = bestProducts,
             CurrentMonthSales = currentMonthSalesData,
             SalesData = salesDatas,
-            BestUser = topUser,
             UserCount = userCount,
             ProductCount = productCount,
             AdvertisementViewCount = advertisementViewCount,

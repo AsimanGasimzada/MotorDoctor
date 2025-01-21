@@ -150,6 +150,9 @@
   <data name="InvalidInputException" xml:space="preserve">
     <value>Gözlənilməz xəta baş verdi yenidən sınayın.</value>
   </data>
+  <data name="InvalidPaymentType" xml:space="preserve">
+    <value>Ödəniş üsulu seçin.</value>
+  </data>
   <data name="InvalidRoleName" xml:space="preserve">
     <value>'{0}' rol etibarsızdır.</value>
   </data>

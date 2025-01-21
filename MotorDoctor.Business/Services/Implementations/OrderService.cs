@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MailKit;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
@@ -24,8 +25,9 @@ internal class OrderService : IOrderService
     private readonly IAuthService _authService;
     private readonly IEmailService _emailService;
     private readonly UserManager<AppUser> _userManager;
+    private readonly IPaymentService _paymentService;
 
-    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService, IProductService productService, IAuthService authService, IEmailService emailService, UserManager<AppUser> userManager)
+    public OrderService(IOrderRepository repository, IMapper mapper, IBasketService basketService, IHttpContextAccessor contextAccessor, ErrorLocalizer errorLocalizer, IStatusService statusService, IProductService productService, IAuthService authService, IEmailService emailService, UserManager<AppUser> userManager, IPaymentService paymentService)
     {
         _repository = repository;
         _mapper = mapper;
@@ -37,6 +39,7 @@ internal class OrderService : IOrderService
         _authService = authService;
         _emailService = emailService;
         _userManager = userManager;
+        _paymentService = paymentService;
     }
     public async Task CancelOrderAsync(int id)
     {
@@ -110,10 +113,21 @@ internal class OrderService : IOrderService
         string userId = _getUserId()!;
         var user = await _userManager.FindByIdAsync(userId);
 
+        var isExistPaymentType = Enum.GetNames(typeof(PaymentTypes)).Any(x => x == dto.PaymentType.ToString());
+
+        if (!isExistPaymentType)
+        {
+            ModelState.AddModelError("PaymentType", _errorLocalizer.GetValue("InvalidPaymentType"));
+            return false;
+        }
+
         //if (user is null)
         //    throw new UnAuthorizedException();
 
         order.AppUserId = userId;
+
+        string token = Guid.NewGuid().ToString();
+        order.ConfirmToken = token;
 
         await _repository.CreateAsync(order);
         await _repository.SaveChangesAsync();
@@ -203,7 +217,33 @@ internal class OrderService : IOrderService
 </html>";
 
 
-        await _emailService.SendEmailAsync(new() { ToEmail = "admin@motordoctor.az", Subject = "Yeni sifariş", Body = emailBody });
+        //await _emailService.SendEmailAsync(new() { ToEmail = "admin@motordoctor.az", Subject = "Yeni sifariş", Body = emailBody });
+
+        if (dto.PaymentType is PaymentTypes.Cart)
+        {
+
+            PaymentCreateDto paymentDto = new()
+            {
+                Token = token,
+                Description = "Motordoctor Odenis",
+                Amount = order.DiscountedTotalPrice,
+                OrderId = order.Id,
+            };
+
+            var responseDto = await _paymentService.CreateAsync(paymentDto);
+
+            order.PaymentId = responseDto.Id;
+
+            _repository.Update(order);
+            await _repository.SaveChangesAsync();
+
+            if (_contextAccessor.HttpContext is not null)
+            {
+                string paymentUrl = $"{responseDto.Order.HppUrl}?id={responseDto.Order.Id}&password={responseDto.Order.Password}";
+                _contextAccessor.HttpContext.Response.Cookies.Append("paymentUrl", paymentUrl, new CookieOptions() { Expires = DateTime.UtcNow.AddMinutes(1) });
+            }
+
+        }
 
         return true;
     }
@@ -380,7 +420,8 @@ internal class OrderService : IOrderService
         return x => x.Include(x => x.OrderItems).ThenInclude(x => x.ProductSize.Product.ProductDetails.Where(x => x.LanguageId == (int)language))
                             .Include(x => x.OrderItems).ThenInclude(x => x.ProductSize.Product.ProductImages)
                             .Include(x => x.Status.StatusDetails.Where(x => x.LanguageId == (int)language))
-                            .Include(x => x.AppUser!);
+                            .Include(x => x.AppUser!)
+                            .Include(x => x.Payment!);
     }
 
     public async Task AutoFillStaticDiscountedPrices()
@@ -440,7 +481,7 @@ internal class OrderService : IOrderService
 
     public async Task<CurrentMonthSalesDataDto> GetCurrentMonthsSalesAsync()
     {
-        var orders = await _repository.GetFilter(x => x.CreatedAt.Month == DateTime.Now.Month && x.CreatedAt.Year==DateTime.Now.Year, include: x => x.Include(x => x.OrderItems)).ToListAsync();
+        var orders = await _repository.GetFilter(x => x.CreatedAt.Month == DateTime.Now.Month && x.CreatedAt.Year == DateTime.Now.Year, include: x => x.Include(x => x.OrderItems)).ToListAsync();
 
         CurrentMonthSalesDataDto dto = new()
         {
@@ -477,6 +518,21 @@ internal class OrderService : IOrderService
             throw new NotFoundException();
 
         return topUser;
+    }
+
+    public async Task<bool> ConfirmPaymentAsync(int id)
+    {
+        var order = await _repository.GetAsync(x => !x.IsPaid && x.Id == id);
+
+        if (order is null)
+            throw new NotFoundException();
+
+        order.IsPaid=true;
+         
+        _repository.Update(order);
+        await _repository.SaveChangesAsync();
+
+        return true;
     }
 
 }

@@ -15,4 +15,5 @@ public interface IOrderService : IModifyService<OrderCreateDto, OrderUpdateDto>,
     Task<List<SalesDataDto>> GetMonthlySalesWithYearAsync();
     Task<CurrentMonthSalesDataDto> GetCurrentMonthsSalesAsync();
     Task<TopUserDto> GetTopUserOfCurrentMonthAsync();
+    Task<bool> ConfirmPaymentAsync(int id);
 }

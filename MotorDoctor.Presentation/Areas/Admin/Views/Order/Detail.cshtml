@@ -193,6 +193,8 @@
                         <span>Say: @item.Count</span>
                     </div>
                     <span class="price">₼@(item.StaticPrice.CalculateDiscountedPrice(item.StaticDiscount) * item.Count)</span>
+
+
                 </div>
             }
 
@@ -209,6 +211,25 @@
                 <strong>Endirimli qiymət:</strong>
                 <strong>₼@Model.DiscountedTotalPrice</strong>
             </div>
+            <br />
+            <hr />
+
+            <div class="total">
+                <strong>Ödəniş növü:</strong>
+                <strong>@(Model.Payment != null ? "Kartla" : "Nağd")</strong>
+            </div>
+            <div class="total">
+                <strong>Ödəniş statusu:</strong>
+                <strong>@(Model.IsPaid ? " Ödənilib " : " Ödəniş edilməyib") @(Model.IsPaid & Model.Payment != null ? Model.Payment?.ReceptId+"№" : "")</strong>
+            </div>
+
+            @if(!Model.IsPaid){
+                <br />
+                <div class="total">
+                    <strong>Ödənişi təsdiqlə:</strong>
+                    <strong><a asp-action="ConfirmPayment" asp-route-id="@Model.Id" class="btn btn-light">Təsdiqlə</a></strong>
+                </div>
+            }
         </div>
         <div class="checkout-form-section">
             <h1>Sifariş məlumatları</h1>

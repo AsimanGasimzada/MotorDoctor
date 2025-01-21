@@ -19,6 +19,8 @@ public static class BusinessServiceRegistration
 
         AddServices(services);
 
+        services.AddHttpClient();
+
         services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
         services.AddHttpContextAccessor();
 
@@ -50,10 +52,11 @@ public static class BusinessServiceRegistration
         services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<ILanguageService, LanguageService>();
         services.AddScoped<IWishlistService, WishlistService>();
+        services.AddScoped<IPaymentService, PaymentService>();
 
         services.AddScoped<IHomeService, HomeService>();
         services.AddScoped<IContactService, ContactService>();
         services.AddScoped<ILayoutService, LayoutService>();
-        services.AddScoped<IDashboardService,DashboardService>();
+        services.AddScoped<IDashboardService, DashboardService>();
     }
 }
