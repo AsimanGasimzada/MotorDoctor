@@ -10,11 +10,13 @@ public class ProductGetDto : IDto
     public int ViewCount { get; set; }
     public List<CategoryRelationDto> Categories { get; set; } = [];
     public BrandRelationDto Brand { get; set; } = null!;
+    public DensityRelationDto? Density { get; set; }
     public string MainImagePath { get; set; } = null!;
     public List<string> ImagePaths { get; set; } = [];
 
     public List<ProductSizeGetDto> ProductSizes { get; set; } = [];
     public string Slug { get; set; } = null!;
-
-
+    public string KeyWords { get; set; } = null!;
+    public string? Specifications { get; set; }
+    public string? Recommendation { get; set; }
 }

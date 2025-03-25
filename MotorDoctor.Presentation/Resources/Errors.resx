@@ -141,6 +141,9 @@
   <data name="EmptyBasketException" xml:space="preserve">
     <value />
   </data>
+  <data name="FailPayment" xml:space="preserve">
+    <value />
+  </data>
   <data name="InvalidCredentials" xml:space="preserve">
     <value />
   </data>
@@ -190,6 +193,9 @@
     <value />
   </data>
   <data name="RecoveryCodeRedemptionFailed" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SuccedPayment" xml:space="preserve">
     <value />
   </data>
   <data name="UnAuthorizedException" xml:space="preserve">

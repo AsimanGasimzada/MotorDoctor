@@ -7,14 +7,12 @@ namespace MotorDoctor.Presentation.Controllers;
 public class WishlistController : Controller
 {
     private readonly IWishlistService _wishlistService;
-    private readonly ILanguageService _languageService;
     private readonly Languages _language;
 
     public WishlistController(IWishlistService wishlistService, ILanguageService languageService)
     {
         _wishlistService = wishlistService;
-        _languageService = languageService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = languageService.SelectedLanguage;
     }
 
     public async Task<IActionResult> Index()

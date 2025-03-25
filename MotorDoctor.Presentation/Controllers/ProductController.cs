@@ -10,15 +10,13 @@ public class ProductController : Controller
 {
     private readonly IProductService _productService;
     private readonly ICommentService _commentService;
-    private readonly ILanguageService _languageService;
     private readonly Languages _language;
 
     public ProductController(IProductService productService, ICommentService commentService, ILanguageService languageService)
     {
         _productService = productService;
         _commentService = commentService;
-        _languageService = languageService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = languageService.SelectedLanguage;
     }
     public async Task<IActionResult> Detail(string? slug, int id)
     {

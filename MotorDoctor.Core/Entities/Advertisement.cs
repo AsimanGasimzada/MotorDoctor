@@ -4,4 +4,5 @@ public class Advertisement : BaseAuditableEntity
 {
     public string ImagePath { get; set; } = null!;
     public string Url { get; set; } = null!;
+    public bool ForMobile { get; set; } = false;
 }

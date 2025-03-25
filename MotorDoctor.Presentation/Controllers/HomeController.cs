@@ -21,7 +21,7 @@ public class HomeController : Controller
         _homeService = homeService;
         _languageService = languageService;
         _subscriberService = subscriberService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = _languageService.SelectedLanguage;
         _sliderService = sliderService;
         _advertisementService = advertisementService;
     }

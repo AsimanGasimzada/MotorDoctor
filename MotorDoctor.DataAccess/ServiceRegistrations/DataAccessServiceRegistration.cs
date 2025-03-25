@@ -41,6 +41,7 @@ public static class DataAccessServiceRegistration
         services.AddScoped<IBasketItemRepository, BasketItemRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IDensityRepository, DensityRepository>();
         services.AddScoped<ILanguageRepository, LanguageRepository>();
         services.AddScoped<ISliderRepository, SliderRepository>();
         services.AddScoped<ISettingRepository, SettingRepository>();

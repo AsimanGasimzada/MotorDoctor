@@ -13,5 +13,7 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(x => x.PhoneNumber).IsRequired().HasMaxLength(64);
         builder.Property(x => x.Name).IsRequired().HasMaxLength(64);
         builder.Property(x => x.Surname).IsRequired().HasMaxLength(64);
+
+        builder.HasOne(x=>x.Payment).WithOne(x=>x.Order).OnDelete(DeleteBehavior.Cascade);
     }
 }

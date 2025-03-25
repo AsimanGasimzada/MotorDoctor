@@ -7,14 +7,12 @@ namespace MotorDoctor.Presentation.Controllers;
 public class AboutController : Controller
 {
     private readonly IAboutService _aboutService;
-    private readonly ILanguageService _languageService;
     private readonly Languages _language;
 
     public AboutController(IAboutService aboutService, ILanguageService languageService)
     {
         _aboutService = aboutService;
-        _languageService = languageService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = languageService.SelectedLanguage;
     }
 
     public async Task<IActionResult> Index()

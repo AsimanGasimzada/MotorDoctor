@@ -13,14 +13,7 @@ public static class ExtensionMethods
             await initializer.InitDatabaseAsync();
         }
     }
-    public static void RenderSelectedLanguage(this WebApplication app)
-    {
-        using (var scope = app.Services.CreateScope())
-        {
-            var languageService = scope.ServiceProvider.GetRequiredService<ILanguageService>();
-            languageService.RenderSelectedLanguage();
-        }
-    }
+
 
     public static string StripHtmlTags(this string input)
     {

@@ -46,7 +46,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRequestLocalization(localizationOptions);
 
-app.RenderSelectedLanguage();
 
 await app.InitDatabaseAsync();
 

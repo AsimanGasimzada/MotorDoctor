@@ -15,7 +15,6 @@ public class Order : BaseAuditableEntity
     public string Street { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
     public PaymentTypes PaymentType { get; set; }
-    public string? ConfirmToken { get; set; }
     public bool IsPaid { get; set; }
     public Payment? Payment { get; set; }
     public int? PaymentId { get; set; }

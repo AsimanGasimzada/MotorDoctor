@@ -34,7 +34,7 @@
                 <div class="col-lg-3">
                     <div class="row g-4">
 
-                  
+
 
                         <div class="col-lg-12">
                             <div class="mb-3">
@@ -116,6 +116,43 @@
                                 </div>
                             </div>
 
+                            <!-- Density Filter -->
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingDensity">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseDensity" aria-expanded="false" aria-controls="collapseDensity">
+                                                        @_localizer.GetValue("Density")
+                                    </button>
+                                </h2>
+                                <div id="collapseDensity" class="accordion-collapse collapse" aria-labelledby="headingDensity">
+                                    <div class="accordion-body">
+                                        <ul class="list-unstyled">
+                                                            @foreach (var density in Model.Densities)
+                                                            {
+                                                <li class="form-check">
+                                                    <label class="form-check-label w-100 d-flex align-items-center" for="density-@density.Id">
+                                                                        @{
+                                                                            string isCheckDensity = Model.ProductFilterDto?.DensityIds.Any(x => x == density.Id) ?? false ? "checked" : "";
+                                                            <input value="@density.Id"
+                                                                   name="ProductFilterDto.DensityIds"
+                                                                   class="form-check-input me-2"
+                                                                   type="checkbox"
+                                                                   id="density-@density.Id"
+                                                                            @isCheckDensity>
+                                                                        }
+                                                                        @density.Value
+                                                    </label>
+                                                </li>
+                                                            }
+                                        </ul>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+
+
                             <!-- Brand Filter -->
                             <div class="accordion-item">
                                 <h2 class="accordion-header" id="headingBrand">
@@ -149,6 +186,7 @@
 
                                 </div>
                             </div>
+
 
 
                             <!-- Price Filter (Always Visible) -->
@@ -190,16 +228,16 @@
                     <br />
 
                     <div class="mobileAdvertisementArea">
-                                        @foreach (var advertisement in Model.Advertisements)
+                                        @foreach (var advertisement in Model.Advertisements.Where(x => x.ForMobile))
                                         {
-                            <a asp-action="AdvertisementRedirect" asp-controller="Home" asp-route-id="@advertisement.Id" style="width:80%;margin:0 auto" class="addSection">
+                            <a asp-action="AdvertisementRedirect" asp-controller="Home" asp-route-id="@advertisement.Id" style="display:block;width:100%;margin:0 auto;height:100px;overflow:hidden;" class="addSection">
                                 <img src="@advertisement.ImagePath" style="width:100%;object-fit:cover;" />
 
                             </a>
                                         }
                     </div>
                     <div class="advertisementArea">
-                                        @foreach (var advertisement in Model.Advertisements)
+                                        @foreach (var advertisement in Model.Advertisements.Where(x => !x.ForMobile))
                                         {
                             <a asp-action="AdvertisementRedirect" asp-controller="Home" asp-route-id="@advertisement.Id" style="width:100%;margin:0 auto" class="addSection">
                                 <img src="@advertisement.ImagePath" />
@@ -306,7 +344,7 @@
                                         <span style="
                                   color: #727272;
                                   text-decoration: line-through;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "></span>
                                     </div>
                                 </div>
 
@@ -330,18 +368,18 @@
 
                                             @for (int i = 1; i <= Model.Products.PageCount; i++)
                                             {
-                                                if (i == 1 || i == Model.Products.PageCount || 
-                                                (i >= Model.Products.CurrentPage - 1 && i <= Model.Products.CurrentPage + 1)) 
+                                                if (i == 1 || i == Model.Products.PageCount ||
+                                                (i >= Model.Products.CurrentPage - 1 && i <= Model.Products.CurrentPage + 1))
                                                 {
                                         <li class="page-item @(Model.Products.CurrentPage == i ? "active" : "")">
                                             <a data-page="@i" class="page-link">@i</a>
                                         </li>
                                                 }
-                                                else if (i == 2 && Model.Products.CurrentPage > 3) 
+                                                else if (i == 2 && Model.Products.CurrentPage > 3)
                                                 {
                                         <li class="page-item disabled"><span class="page-link">...</span></li>
                                                 }
-                                                else if (i == Model.Products.PageCount - 1 && Model.Products.CurrentPage < Model.Products.PageCount - 2) 
+                                                else if (i == Model.Products.PageCount - 1 && Model.Products.CurrentPage < Model.Products.PageCount - 2)
                                                 {
                                         <li class="page-item disabled"><span class="page-link">...</span></li>
                                                 }
@@ -369,7 +407,7 @@
                     <br />
 
                     <div class="mobileAdvertisementArea">
-                                    @foreach (var advertisement in Model.Advertisements)
+                                    @foreach (var advertisement in Model.Advertisements.Where(x => !x.ForMobile))
                                     {
                             <a asp-action="AdvertisementRedirect" asp-controller="Home" asp-route-id="@advertisement.Id" style="width:80%;margin:0 auto" class="addSection">
                                 <img src="@advertisement.ImagePath" style="width:100%;object-fit:cover;" />

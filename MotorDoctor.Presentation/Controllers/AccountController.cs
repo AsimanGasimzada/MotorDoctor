@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 using MotorDoctor.Presentation.Extensions;
 
 namespace MotorDoctor.Presentation.Controllers;
@@ -10,14 +11,14 @@ namespace MotorDoctor.Presentation.Controllers;
 public class AccountController : Controller
 {
     private readonly IAuthService _authService;
-    private readonly ILanguageService _languageService;
     private readonly Languages _language;
+    private readonly AccountLocalizer _localizer;
 
-    public AccountController(IAuthService authService, ILanguageService languageService)
+    public AccountController(IAuthService authService, ILanguageService languageService, AccountLocalizer localizer)
     {
         _authService = authService;
-        _languageService = languageService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = languageService.SelectedLanguage;
+        _localizer = localizer;
     }
 
     public IActionResult Login()
@@ -70,6 +71,49 @@ public class AccountController : Controller
     public async Task<IActionResult> VerifyEmail(VerifyEmailDto dto)
     {
         var result = await _authService.VerifyEmailAsync(dto, ModelState);
+
+        return RedirectToAction("Index", "Home");
+    }
+
+    public IActionResult ForgotPassword()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
+    {
+        var result = await _authService.SendForgotPasswordEmailAsync(dto, ModelState);
+
+        if (result is false)
+            return View(dto);
+
+        TempData["SuccedAlert"] = _localizer.GetValue("SuccedForgotPassword");
+
+
+        return RedirectToAction(nameof(Login));
+    }
+
+    public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+    {
+        var result = await _authService.CheckResetPasswordTokenAsync(dto);
+
+        if (result is false)
+            return RedirectToAction(nameof(Login));
+
+        return View(dto);
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [ActionName("ResetPassword")]
+    public async Task<IActionResult> SubmitResetPassword(ResetPasswordDto dto)
+    {
+        var result = await _authService.ResetPasswordAsync(dto, ModelState);
+
+        if (result is false)
+            return View(dto);
 
         return RedirectToAction("Index", "Home");
     }

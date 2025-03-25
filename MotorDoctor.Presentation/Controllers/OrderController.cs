@@ -2,23 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using MotorDoctor.Business.Dtos;
 using MotorDoctor.Core.Enum;
+using MotorDoctor.DataAccess.Localizers;
 
 namespace MotorDoctor.Presentation.Controllers;
 
 public class OrderController : Controller
 {
     private readonly IOrderService _orderService;
-    private readonly ILanguageService _languageService;
     private readonly Languages _language;
     private readonly IPaymentService _paymentService;
+    private readonly OrderLocalizer _localizer;
 
-
-    public OrderController(IOrderService orderService, ILanguageService languageService, IPaymentService paymentService)
+    public OrderController(IOrderService orderService, ILanguageService languageService, IPaymentService paymentService, OrderLocalizer localizer)
     {
         _orderService = orderService;
-        _languageService = languageService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = languageService.SelectedLanguage;
         _paymentService = paymentService;
+        _localizer = localizer;
     }
 
     public async Task<IActionResult> Index()
@@ -54,7 +54,9 @@ public class OrderController : Controller
             return Redirect(url);
         }
 
-        return RedirectToAction("Index", "Shop");
+        TempData["SuccedAlert"] = _localizer.GetValue("SuccedPayment");
+
+        return RedirectToAction("List", "Order");
     }
     [Authorize]
     public async Task<IActionResult> List()
@@ -66,7 +68,7 @@ public class OrderController : Controller
 
     public async Task<IActionResult> TestPayment()
     {
-        var result = await _paymentService.CreateAsync(new() { Amount = 100, Description = "Salam", Token = Guid.NewGuid().ToString(), OrderId = 40 });
+        var result = await _paymentService.CreateAsync(new() { Amount = 100, Description = "Salam", OrderId = 40 });
         var order = result.Order;
 
         Response.Redirect($"{order.HppUrl}?id={order.Id}&password={order.Password}");
@@ -78,6 +80,16 @@ public class OrderController : Controller
     public async Task<IActionResult> CheckPayment(PaymentCheckDto dto)
     {
         var result = await _paymentService.CheckPaymentAsync(dto);
+
+        if (result)
+        {
+            TempData["SuccedAlert"] = _localizer.GetValue("SuccedPayment");
+
+            if (User.Identity?.IsAuthenticated ?? false)
+                return RedirectToAction("List", "Order");
+        }
+
+        TempData["FailAlert"] = _localizer.GetValue("FailPayment");
 
         return RedirectToAction("Index", "Shop");
     }

@@ -39,6 +39,7 @@ public static class BusinessServiceRegistration
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<ICommentService, CommentService>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
+        services.AddScoped<IDensityService, DensityService>();
         services.AddScoped<ISliderService, SliderService>();
         services.AddScoped<ISettingService, SettingService>();
         services.AddScoped<IBrandService, BrandService>();

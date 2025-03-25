@@ -206,7 +206,7 @@ internal class AuthService : IAuthService
 
     public async Task RemoveBotsAsync()
     {
-        var users = await _userManager.Users.ToListAsync();
+        var users = await _userManager.Users.Take(1000).ToListAsync();
 
         foreach (var user in users)
         {
@@ -232,7 +232,7 @@ internal class AuthService : IAuthService
         var link = _urlHelper.Action(context);
 
 
-        string emailBody = _getTemplateContent(link ?? "");
+        string emailBody = _getVerifyEmailBody(link ?? "");
 
 
         EmailSendDto emailSendDto = new()
@@ -244,8 +244,79 @@ internal class AuthService : IAuthService
 
         await _emailService.SendEmailAsync(emailSendDto);
     }
+    public async Task<bool> SendForgotPasswordEmailAsync(ForgotPasswordDto dto, ModelStateDictionary ModelState)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.EmailOrUsername);
 
-    private string _getTemplateContent(string url)
+        if (user is null)
+            user = await _userManager.FindByNameAsync(dto.EmailOrUsername);
+
+        if (user is null)
+        {
+            ModelState.AddModelError("", _errorLocalizer.GetValue("UserNotFound"));
+            return false;
+        }
+
+        string resetPasswordToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+        UrlActionContext context = new()
+        {
+            Action = "ResetPassword",
+            Controller = "Account",
+            Values = new { token = resetPasswordToken, email = user.Email },
+            Protocol = _contextAccessor.HttpContext?.Request.Scheme
+        };
+
+        var link = _urlHelper.Action(context);
+
+        string body = _getForgotPasswordBody(link ?? "");
+
+        await _emailService.SendEmailAsync(new()
+        {
+            Body = body,
+            ToEmail = user.Email ?? "",
+            Subject = "Forgot Password"
+        });
+
+
+        return true;
+    }
+
+
+    public async Task<bool> CheckResetPasswordTokenAsync(ResetPasswordDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        if (user is null)
+            return false;
+
+        var result = await _userManager.VerifyUserTokenAsync(user, _userManager.Options.Tokens.PasswordResetTokenProvider, "ResetPassword", dto.Token);
+
+        return result;
+    }
+
+    public async Task<bool> ResetPasswordAsync(ResetPasswordDto dto, ModelStateDictionary ModelState)
+    {
+        if (!ModelState.IsValid)
+            return false;
+
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        if (user is null)
+            throw new UnAuthorizedException(_errorLocalizer.GetValue(nameof(UnAuthorizedException)));
+
+        var result = await _userManager.ResetPasswordAsync(user, dto.Token, dto.Password);
+
+        if (!result.Succeeded)
+        {
+            ModelState.AddModelError("", string.Join(",", result.Errors.Select(x => x.Description)));
+            return false;
+        }
+
+        await _signInManager.SignInAsync(user, false);
+        return true;
+    }
+    private string _getVerifyEmailBody(string url)
     {
 
         string result = $@"
@@ -340,6 +411,107 @@ internal class AuthService : IAuthService
     </div>
 </body>
 </html>";
+
         return result;
     }
+
+    private string _getForgotPasswordBody(string url)
+    {
+        string result = $@"
+<!DOCTYPE html>
+<html lang=""az"">
+<head>
+    <meta charset=""UTF-8"">
+    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+    <title>Şifrəni Sıfırla</title>
+    <style>
+        body {{
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            font-family: Arial, sans-serif;
+            color: #000000;
+        }}
+        .email-container {{
+            max-width: 600px;
+            margin: 20px auto;
+            border: 2px solid #000000;
+            padding: 20px;
+            border-radius: 0;
+            background-color: #ffffff;
+            text-align: center;
+        }}
+        .email-header {{
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }}
+        .email-body {{
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }}
+        .email-button {{
+            display: inline-block;
+            text-decoration: none;
+            background-color: #000000;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: 2px solid #000000;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }}
+        .email-footer {{
+            font-size: 12px;
+            color: #555555;
+            margin-top: 20px;
+        }}
+        hr {{
+            margin: 30px 0;
+            border: none;
+            border-top: 1px solid #000;
+        }}
+    </style>
+</head>
+<body>
+    <div class=""email-container"">
+        <!-- Azərbaycan Dili -->
+        <div class=""email-header"">Şifrəni Sıfırla</div>
+        <div class=""email-body"">
+            Şifrənizi sıfırlamaq üçün aşağıdakı düyməyə klikləyin. Əgər siz bu sorğunu göndərməmisinizsə, bu e-maili nəzərə almayın.
+        </div>
+        <a href=""{url}"" class=""email-button"">Şifrəni Sıfırla</a>
+        <div class=""email-footer"">
+            Bu mesajı siz göndərməmisinizsə, sadəcə onu nəzərə almayın.
+        </div>
+        <hr>
+        <!-- İngilis Dili -->
+        <div class=""email-header"">Reset Password</div>
+        <div class=""email-body"">
+            Click the button below to reset your password. If you did not request this, please ignore this email.
+        </div>
+        <a href=""{url}"" class=""email-button"">Reset Password</a>
+        <div class=""email-footer"">
+            If you didn't request this, you can safely ignore this email.
+        </div>
+        <hr>
+        <!-- Rus Dili -->
+        <div class=""email-header"">Сброс Пароля</div>
+        <div class=""email-body"">
+            Нажмите кнопку ниже, чтобы сбросить пароль. Если вы не запрашивали это, просто проигнорируйте это письмо.
+        </div>
+        <a href=""{url}"" class=""email-button"">Сбросить Пароль</a>
+        <div class=""email-footer"">
+            Если вы не запрашивали этот сброс, просто проигнорируйте это письмо.
+        </div>
+    </div>
+</body>
+</html>";
+
+        return result;
+    }
+
+
 }

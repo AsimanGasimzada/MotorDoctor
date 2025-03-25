@@ -8,14 +8,12 @@ namespace MotorDoctor.Presentation.Controllers;
 public class BasketController : Controller
 {
     private readonly IBasketService _service;
-    private readonly ILanguageService _languageService;
     private readonly Languages _language;
 
     public BasketController(IBasketService service, ILanguageService languageService)
     {
         _service = service;
-        _languageService = languageService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = languageService.SelectedLanguage;
     }
 
     public async Task<IActionResult> Index()
@@ -45,7 +43,6 @@ public class BasketController : Controller
     }
     public IActionResult RedirectForBasket()
     {
-        _languageService.RenderSelectedLanguage();
         return PartialView("_basketModalPartial");
     }
 

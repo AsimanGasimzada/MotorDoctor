@@ -57,7 +57,7 @@
 
                     <div class="product-card col-lg-6 col-md-12 col-12" data="fashion">
 
-                        <a asp-action="Detail" asp-controller="Product" asp-route-id="@product.Id">
+                        <a asp-action="Index" asp-controller="Shop" asp-route-categoryId="@product.ParentCategory?.Id">
                             <span style="mix-blend-mode: difference;color:white;" id="">@product.ParentCategory?.Name</span>
                             <img loading="lazy" src="@product.ParentCategory?.ImagePath" alt="product" />
                         </a>

@@ -8,4 +8,5 @@ public class AdvertisementUpdateDto : IDto
     public string? ImagePath { get; set; }
     public IFormFile? Image { get; set; }
     public string Url { get; set; } = null!;
+    public bool ForMobile { get; set; } = false;
 }

@@ -129,6 +129,12 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Забыли пароль?</value>
   </data>
+  <data name="ForgotPasswordButton" xml:space="preserve">
+    <value>Найти аккаунт</value>
+  </data>
+  <data name="ForgotPasswordTitle" xml:space="preserve">
+    <value>Забыли пароль?</value>
+  </data>
   <data name="HaveAccount" xml:space="preserve">
     <value>У вас есть счет?</value>
   </data>
@@ -158,6 +164,12 @@
   </data>
   <data name="RegisterTitle" xml:space="preserve">
     <value>Зарегистрируйтесь, чтобы продолжить.</value>
+  </data>
+  <data name="ResetPasswordTitle" xml:space="preserve">
+    <value>Сбросьте свой пароль</value>
+  </data>
+  <data name="SuccedForgotPassword" xml:space="preserve">
+    <value>Письмо для сброса пароля успешно отправлено!</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Фамилия</value>

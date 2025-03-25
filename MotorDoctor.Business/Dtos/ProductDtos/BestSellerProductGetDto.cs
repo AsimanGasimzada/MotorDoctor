@@ -9,6 +9,7 @@ public class BestSellerProductGetDto : IDto
     public CategoryRelationDto Category { get; set; } = null!;
     public CategoryRelationDto ParentCategory { get; set; } = null!;
     public BrandRelationDto Brand { get; set; } = null!;
+    public DensityRelationDto? Density { get; set; }
     public string MainImagePath { get; set; } = null!;
     public List<string> ImagePaths { get; set; } = [];
     public List<ProductSizeGetDto> ProductSizes { get; set; } = [];

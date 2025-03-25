@@ -18,6 +18,7 @@
     <!-- SEO Metas -->
     <meta name="keywords" content="@settings["WebsiteKeywords"]" />
     <meta name="description" content="@settings["WebsiteLongDescription"]" />
+    @await RenderSectionAsync("Keywords", required: false)
     <meta name="author" content="@settings["WebsiteAuthor"]" />
 
     <!-- Open Graph Meta Tags (for Social Sharing) -->
@@ -60,6 +61,17 @@
         gtag('js', new Date());
 
         gtag('config', 'AW-16827642863');
+    </script>
+
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-N6LFW37VT3"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-N6LFW37VT3');
     </script>
 
 </head>
@@ -483,6 +495,33 @@
             }
         });
     </script>
+
+    @if (!string.IsNullOrWhiteSpace(TempData["SuccedAlert"]?.ToString()))
+    {
+
+        <script>
+              Swal.fire({
+              position: "center",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 4000,
+              title:'@TempData["SuccedAlert"]'
+            });
+        </script>
+    }
+    else if (!string.IsNullOrWhiteSpace(TempData["FailAlert"]?.ToString()))
+    {
+
+        <script>
+              Swal.fire({
+              position: "center",
+              icon: "error",
+              showConfirmButton: false,
+              timer: 4000,
+              title:'@TempData["FailPayment"]'
+            });
+        </script>
+    }
 
     <script src="~/assets/js/script.js"></script>
     @await RenderSectionAsync("Scripts", false)

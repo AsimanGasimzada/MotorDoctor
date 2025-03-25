@@ -175,7 +175,7 @@
                     <img src="@item.ProductSize.Product.MainImagePath" alt="@item.ProductSize.Product.Name">
                     <div class="product-details">
                         <bold>
-                            <a style="text-decoration:none;font-weight:600" asp-area="@null" asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId">
+                            <a style="text-decoration:none;font-weight:600" asp-area="@null" asp-action="Index" asp-controller="Product" asp-route-id="@item.ProductSize.ProductId" asp-route-slug="@item.ProductSize.Product.Slug">
                                 <span>@item.ProductSize.Product.Name</span>
                             </a>
                         </bold>

@@ -225,4 +225,13 @@
   <data name="UnAuthorizeTitle" xml:space="preserve">
     <value>If you are not registered, you will not be able to receive detailed information about your order.</value>
   </data>
+  <data name="FailPayment" xml:space="preserve">
+    <value>Payment failed, please check again.</value>
+  </data>
+  <data name="SuccedPayment" xml:space="preserve">
+    <value>Your order has been successfully registered!</value>
+  </data>
+  <data name="IsPaid" xml:space="preserve">
+    <value>Is paid</value>
+  </data>
 </root>

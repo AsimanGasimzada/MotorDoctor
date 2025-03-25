@@ -224,6 +224,9 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("ForMobile")
+                        .HasColumnType("bit");
+
                     b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -653,6 +656,44 @@ namespace MotorDoctor.DataAccess.Migrations
                         });
                 });
 
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Density", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Densities");
+                });
+
             modelBuilder.Entity("MotorDoctor.Core.Entities.Language", b =>
                 {
                     b.Property<int>("Id")
@@ -719,9 +760,6 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("ConfirmToken")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -862,6 +900,10 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ConfirmToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -927,8 +969,19 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("DensityId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("KeyWords")
+                        .IsRequired()
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
+
+                    b.Property<string>("Recommendation")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SalesCount")
                         .HasColumnType("int");
@@ -937,6 +990,9 @@ namespace MotorDoctor.DataAccess.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Specifications")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -951,6 +1007,8 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("DensityId");
 
                     b.HasIndex("Slug")
                         .IsUnique();
@@ -2074,7 +2132,7 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.HasOne("MotorDoctor.Core.Entities.Payment", "Payment")
                         .WithOne("Order")
                         .HasForeignKey("MotorDoctor.Core.Entities.Order", "PaymentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("MotorDoctor.Core.Entities.Status", "Status")
                         .WithMany("Orders")
@@ -2116,7 +2174,13 @@ namespace MotorDoctor.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MotorDoctor.Core.Entities.Density", "Density")
+                        .WithMany("Products")
+                        .HasForeignKey("DensityId");
+
                     b.Navigation("Brand");
+
+                    b.Navigation("Density");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.ProductCategory", b =>
@@ -2282,6 +2346,11 @@ namespace MotorDoctor.DataAccess.Migrations
                     b.Navigation("Children");
 
                     b.Navigation("ProductCategories");
+                });
+
+            modelBuilder.Entity("MotorDoctor.Core.Entities.Density", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("MotorDoctor.Core.Entities.Language", b =>

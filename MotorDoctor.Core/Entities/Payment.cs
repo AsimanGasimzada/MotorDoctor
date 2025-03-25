@@ -10,5 +10,6 @@ public class Payment : BaseAuditableEntity
     public string SecretId { get; set; } = null!;
     public PaymentStatuses PaymentStatus { get; set; }
     public decimal Amount { get; set; }
-    public string? Description{ get; set; }
+    public string? Description { get; set; }
+    public string ConfirmToken { get; set; } = null!;
 }

@@ -145,13 +145,45 @@
                 <br />
                 <br />
 
+
                 <div class="form-group">
-                    <label for="exampleInputUsername1">Məhsulun açar sözləri (örnək: mehsul-acar-sozu)</label>
+                    <label for="exampleInputUsername1">Spesifikasiyalar</label>
+                    <textarea class="form-control productSpecifiaction" id="specificationInput" asp-for="@Model.Specifications" placeholder="Spesifikasiya daxil edin"></textarea>
+                    <span asp-validation-for="@Model.Specifications" class="text-danger"></span>
+                </div>
+
+
+
+                <hr />
+                <br />
+                <br />
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Tövsiyyələr</label>
+                    <textarea class="form-control productRecomendation" id="recommendationInput" asp-for="@Model.Recommendation" placeholder="Tövsiyyə daxil edin"></textarea>
+                    <span asp-validation-for="@Model.Recommendation" class="text-danger"></span>
+                </div>
+
+                <hr />
+                <br />
+                <br />
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Məhsulun açar sözləri  URL üçün (örnək: mehsul-acar-sozu)</label>
                     <input class="form-control" required asp-for="@Model.Slug" placeholder="Açar söz daxil edin">
                     <span asp-validation-for="@Model.Slug" class="text-danger"></span>
                 </div>
 
+                <hr />
+                <br />
+                <br />
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Məhsulun açar sözləri SEO üçün (örnək: maşın yağı, 5-30W)</label>
+                    <input class="form-control" required asp-for="@Model.KeyWords" placeholder="Açar söz daxil edin">
+                    <span asp-validation-for="@Model.KeyWords" class="text-danger"></span>
+                </div>
 
+  
                 <hr />
                 <br />
                 <br />
@@ -253,6 +285,28 @@
                 <hr />
                 <br />
                 <br />
+
+
+                <div class="form-group">
+                    <label>
+                        Qatılıqlar
+
+                    </label>
+                    <br />
+                    <select asp-for="DensityId" required class="form-select form-select-sm">
+                        <option value="@null"  selected>Qatılıq seçin, əgər ehtiyac varsa</option>
+                        @foreach (var density in Model.Densities ?? new())
+                        {
+                            <option value="@density.Id">@density.Value</option>
+                        }
+
+                    </select>
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
 
 
                 <div class="form-group">
@@ -423,6 +477,35 @@
             });
 
 
+             ClassicEditor
+            .create(document.querySelector('#specificationInput'), {
+                plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+
+             ClassicEditor
+            .create(document.querySelector('#recommendationInput'), {
+                plugins: [Essentials, Paragraph, Bold, Italic, Font],
+                toolbar: [
+                    'undo', 'redo', '|', 'bold', 'italic', '|',
+                    'fontSize', 'fontFamily', 'fontColor', 'fontBackgroundColor'
+                ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(error => {
+                console.error(error);
+            });
 
 
 

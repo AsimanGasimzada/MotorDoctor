@@ -14,18 +14,18 @@ public class ShopController : Controller
     private readonly IAdvertisementService _advertisementService;
     private readonly ICategoryService _categoryService;
     private readonly ICommentService _commentService;
-    private readonly ILanguageService _languageService;
+    private readonly IDensityService _densityService;
     private readonly Languages _language;
 
-    public ShopController(IProductService productService, IBrandService brandService, ICategoryService categoryService, ICommentService commentService, ILanguageService languageService, IAdvertisementService advertisementService)
+    public ShopController(IProductService productService, IBrandService brandService, ICategoryService categoryService, ICommentService commentService, ILanguageService languageService, IAdvertisementService advertisementService, IDensityService densityService)
     {
         _productService = productService;
         _brandService = brandService;
         _categoryService = categoryService;
         _commentService = commentService;
-        _languageService = languageService;
-        _language = _languageService.RenderSelectedLanguage();
+        _language = languageService.SelectedLanguage;
         _advertisementService = advertisementService;
+        _densityService = densityService;
     }
 
     public async Task<IActionResult> Index(int page = 1, int? categoryId = null, ShopFilterDto? dto = null)
@@ -48,6 +48,7 @@ public class ShopController : Controller
         var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
         shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
         shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
+        shopFilterDto.Densities=await _densityService.GetAllForProductAsync();
         shopFilterDto.Advertisements = await _advertisementService.GetAllAsync();
 
         return View(shopFilterDto);
@@ -65,6 +66,7 @@ public class ShopController : Controller
 
         var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
         shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
+        shopFilterDto.Densities = await _densityService.GetAllForProductAsync();
         shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
         shopFilterDto.Advertisements = await _advertisementService.GetAllAsync();
 

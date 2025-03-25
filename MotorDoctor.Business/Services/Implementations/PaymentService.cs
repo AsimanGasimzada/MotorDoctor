@@ -11,7 +11,6 @@ using MotorDoctor.Core.Entities;
 using MotorDoctor.Core.Enum;
 using MotorDoctor.DataAccess.Repositories.Abstractions;
 using Newtonsoft.Json;
-using System.Globalization;
 using System.Text;
 
 namespace MotorDoctor.Business.Services.Implementations;
@@ -41,35 +40,31 @@ internal class PaymentService : IPaymentService
 
     public async Task<bool> CheckPaymentAsync(PaymentCheckDto dto)
     {
-        var payment = await _repository.GetAsync(x => x.Order.ConfirmToken == dto.Token && x.ReceptId == dto.ID, include: x => x.Include(x => x.Order));
+        var payment = await _repository.GetAsync(x => x.ConfirmToken == dto.Token && x.ReceptId == dto.ID && x.PaymentStatus == PaymentStatuses.Pending, include: x => x.Include(x => x.Order));
 
         if (payment is null)
             throw new NotFoundException();
 
         if (dto.STATUS == PaymentStatuses.FullyPaid)
-        {
-            payment.PaymentStatus = PaymentStatuses.FullyPaid;
             payment.Order.IsPaid = true;
 
-            _repository.Update(payment);
-            await _repository.SaveChangesAsync();
+        payment.PaymentStatus = dto.STATUS;
 
-            return true;
-        }
-
-        _repository.Delete(payment);
+        _repository.Update(payment);
         await _repository.SaveChangesAsync();
 
-        return false;
+        return dto.STATUS == PaymentStatuses.FullyPaid;
     }
 
     public async Task<PaymentResponseDto> CreateAsync(PaymentCreateDto dto)
     {
+        string confirmToken = Guid.NewGuid().ToString();
+
         UrlActionContext context = new()
         {
             Action = "CheckPayment",
             Controller = "Order",
-            Values = new { dto.Token },
+            Values = new { Token = confirmToken },
             Protocol = _contextAccessor.HttpContext?.Request.Scheme
         };
 
@@ -115,13 +110,14 @@ internal class PaymentService : IPaymentService
             OrderId = dto.OrderId,
             ReceptId = result.Order.Id,
             SecretId = result.Order.Secret,
-            PaymentStatus = PaymentStatuses.Pending
+            PaymentStatus = PaymentStatuses.Pending,
+            ConfirmToken = confirmToken
         };
 
         await _repository.CreateAsync(payment);
         await _repository.SaveChangesAsync();
 
-        result.Id= payment.Id;  
+        result.Id = payment.Id;
 
         return result;
     }

@@ -129,6 +129,12 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Forgot Password?</value>
   </data>
+  <data name="ForgotPasswordButton" xml:space="preserve">
+    <value>Find Account</value>
+  </data>
+  <data name="ForgotPasswordTitle" xml:space="preserve">
+    <value>Forgot Password?</value>
+  </data>
   <data name="HaveAccount" xml:space="preserve">
     <value>Have Account?</value>
   </data>
@@ -160,6 +166,12 @@
   </data>
   <data name="RegisterTitle" xml:space="preserve">
     <value>Sign up to continue.</value>
+  </data>
+  <data name="ResetPasswordTitle" xml:space="preserve">
+    <value>Reset your password</value>
+  </data>
+  <data name="SuccedForgotPassword" xml:space="preserve">
+    <value>Password reset email sent successfully!</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Surname</value>

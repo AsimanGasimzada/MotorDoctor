@@ -95,13 +95,48 @@
                     <span asp-validation-for="@Model.Code" class="text-danger"></span>
                 </div>
 
+
+
+                <hr />
+                <br />
+                <br />
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Spesifikasiyalar</label>
+                    <input class="form-control" asp-for="@Model.Specifications" placeholder="Spesifikasiya daxil edin">
+                    <span asp-validation-for="@Model.Specifications" class="text-danger"></span>
+                </div>
+
+
+
+                <hr />
+                <br />
+                <br />
+
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Tövsiyyələr</label>
+                    <input class="form-control" asp-for="@Model.Recommendation" placeholder="Tövsiyyələri daxil edin">
+                    <span asp-validation-for="@Model.Recommendation" class="text-danger"></span>
+                </div>
+
                 <hr />
                 <br />
                 <br />
                 <div class="form-group">
-                    <label for="exampleInputUsername1">Məhsulun açar sözləri (örnək: mehsul-acar-sozu)</label>
+                    <label for="exampleInputUsername1">Məhsulun açar sözləri  URL üçün (örnək: mehsul-acar-sozu)</label>
                     <input class="form-control" required asp-for="@Model.Slug" placeholder="Açar söz daxil edin">
                     <span asp-validation-for="@Model.Slug" class="text-danger"></span>
+                </div>
+
+                <hr />
+                <br />
+                <br />
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Məhsulun açar sözləri SEO üçün (örnək: maşın yağı, 5-30W)</label>
+                    <input class="form-control" required asp-for="@Model.KeyWords" placeholder="Açar söz daxil edin">
+                    <span asp-validation-for="@Model.KeyWords" class="text-danger"></span>
                 </div>
 
                 <hr />
@@ -159,6 +194,27 @@
                         @foreach (var brand in Model.Brands ?? new())
                         {
                             <option value="@brand.Id">@brand.Name</option>
+                        }
+
+                    </select>
+                </div>
+
+                <hr />
+                <br />
+                <br />
+
+
+                <div class="form-group">
+                    <label>
+                        Qatılıqlar
+
+                    </label>
+                    <br />
+                    <select asp-for="DensityId" required class="form-select form-select-sm">
+                        <option value="@null"  selected>Qatılıq seçin, əgər ehtiyac varsa</option>
+                        @foreach (var density in Model.Densities ?? new())
+                        {
+                            <option value="@density.Id">@density.Value</option>
                         }
 
                     </select>

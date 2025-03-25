@@ -67,20 +67,21 @@
         align-items: center;
         margin-bottom: 10px;
     }
-    .orderInfo{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        text-align:center;
-        margin:10px 0;
+
+    .orderInfo {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-align: center;
+        margin: 10px 0;
     }
 
-        .product img {
-            width: 50px;
-            height: 50px;
-            margin-right: 10px;
-            border: 1px solid white;
-        }
+    .product img {
+        width: 50px;
+        height: 50px;
+        margin-right: 10px;
+        border: 1px solid white;
+    }
 
     .product-name {
         flex: 2;
@@ -124,6 +125,7 @@
                             <span class="date">@order.CreatedAt.ToString("yyyy, MM MMMM")</span>
                             <span class="price">₼@order.TotalPrice</span>
                             <span class="status">@order.Status.Name</span>
+                            <span class="status">@(order.IsPaid ? _localizer.GetValue("IsPaid") : _localizer.GetValue("NotPaid"))</span>
                         </button>
                         <div class="accordion-content">
                             <div class="orderInfo" style="border-bottom:2px solid black;">
@@ -136,11 +138,11 @@
                             {
                                 <div class="product">
                                     <img src="@item.ProductSize.Product.MainImagePath" alt="@item.ProductSize.Product.Name">
-                                    <span class="product-name"><a asp-action="Detail" asp-controller="Shop" asp-route-id="@item.ProductSize.ProductId" style="text-decoration:none;color:black;">@item.ProductSize.Product.Name</a></span>
+                                    <span class="product-name"><a asp-action="Index" asp-controller="Product" asp-route-id="@item.ProductSize.ProductId" asp-route-slug="@item.ProductSize.Product.Slug" style="text-decoration:none;color:black;">@item.ProductSize.Product.Name</a></span>
                                     <span class="product-name">@item.ProductSize.Size</span>
-                                    <span class="product-price">₼@item.ProductSize.Price</span>
+                                    <span class="product-price">₼@item.StaticPrice.CalculateDiscountedPrice(item.StaticDiscount)</span>
                                     <span class="product-quantity">x @item.Count</span>
-                                    <span class="product-quantity">₼@(item.Count * item.ProductSize.Price)</span>
+                                    <span class="product-quantity">₼@(item.Count * item.StaticPrice.CalculateDiscountedPrice(item.StaticDiscount))</span>
                                 </div>
                             }
                         </div>

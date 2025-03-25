@@ -9,6 +9,13 @@ internal class LanguageService : ILanguageService
 {
     private readonly IHttpContextAccessor _contextAccessor;
     private const string COOKIE_KEY = "SelectedLanguage";
+    public Languages SelectedLanguage
+    {
+        get
+        {
+            return _getEnumValue(GetSelectedCulture());
+        }
+    }
 
     public LanguageService(IHttpContextAccessor contextAccessor)
     {

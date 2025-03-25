@@ -10,4 +10,7 @@ public interface IAuthService
     Task<UserGetDto> GetUserAsync(string id);
     Task<bool> ChangeUserRoleAsync(UserChangeRoleDto dto);
     Task RemoveBotsAsync();
+    Task<bool> SendForgotPasswordEmailAsync(ForgotPasswordDto dto, ModelStateDictionary ModelState);
+    Task<bool> CheckResetPasswordTokenAsync(ResetPasswordDto dto);
+    Task<bool> ResetPasswordAsync(ResetPasswordDto dto, ModelStateDictionary ModelState);
 }

@@ -150,6 +150,9 @@
   <data name="Filter" xml:space="preserve">
     <value />
   </data>
+  <data name="IsPaid" xml:space="preserve">
+    <value />
+  </data>
   <data name="LeaveComment" xml:space="preserve">
     <value />
   </data>
@@ -163,6 +166,9 @@
     <value />
   </data>
   <data name="PriceLowToHigh" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Recommendation" xml:space="preserve">
     <value />
   </data>
   <data name="Reject" xml:space="preserve">
@@ -187,6 +193,9 @@
     <value />
   </data>
   <data name="SortByPopularity" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Specifications" xml:space="preserve">
     <value />
   </data>
   <data name="YourComment" xml:space="preserve">

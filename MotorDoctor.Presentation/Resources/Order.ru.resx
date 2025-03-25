@@ -120,6 +120,9 @@
   <data name="Accept" xml:space="preserve">
     <value>Да</value>
   </data>
+  <data name="Card" xml:space="preserve">
+    <value>С картой</value>
+  </data>
   <data name="Cash" xml:space="preserve">
     <value>Наличные</value>
   </data>
@@ -221,5 +224,14 @@
   </data>
   <data name="UnAuthorizeTitle" xml:space="preserve">
     <value>Если вы не зарегистрированы, вы не сможете получить подробную информацию о своем заказе.</value>
+  </data>
+  <data name="FailPayment" xml:space="preserve">
+    <value>Платеж не прошел, проверьте еще раз.</value>
+  </data>
+  <data name="SuccedPayment" xml:space="preserve">
+    <value>Ваш заказ успешно зарегистрирован!</value>
+  </data>
+  <data name="IsPaid" xml:space="preserve">
+    <value>Oплаченный</value>
   </data>
 </root>

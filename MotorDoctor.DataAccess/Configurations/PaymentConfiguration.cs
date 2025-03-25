@@ -11,6 +11,6 @@ internal class PaymentConfiguration : IEntityTypeConfiguration<Payment>
 
         builder.HasOne(x => x.Order).WithOne(x => x.Payment)
             .HasForeignKey<Order>(x => x.PaymentId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.SetNull);
     }
 }

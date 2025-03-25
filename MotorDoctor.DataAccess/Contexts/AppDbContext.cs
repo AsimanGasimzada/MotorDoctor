@@ -14,26 +14,6 @@ public class AppDbContext : IdentityDbContext<AppUser>
         _baseEntityInterceptor = baseEntityInterceptor;
     }
 
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        modelBuilder.AddSeedData();
-
-        modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
-        modelBuilder.Entity<ProductSize>().HasQueryFilter(x => !x.IsDeleted);
-        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
-        modelBuilder.Entity<Comment>().HasQueryFilter(x => !x.IsDeleted);
-        modelBuilder.Entity<Order>().HasQueryFilter(x => !x.IsDeleted);
-
-        base.OnModelCreating(modelBuilder);
-    }
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.AddInterceptors(_baseEntityInterceptor);
-
-        base.OnConfiguring(optionsBuilder);
-    }
-
     public required DbSet<About> Abouts { get; set; }
     public required DbSet<AboutDetail> AboutDetails { get; set; }
     public required DbSet<Advertisement> Advertisements { get; set; }
@@ -47,6 +27,7 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public required DbSet<Category> Categories { get; set; }
     public required DbSet<CategoryDetail> CategoryDetails { get; set; }
     public required DbSet<Comment> Comments { get; set; }
+    public required DbSet<Density> Densities { get; set; }
     public required DbSet<Language> Languages { get; set; }
     public required DbSet<Order> Orders { get; set; }
     public required DbSet<OrderItem> OrderItems { get; set; }
@@ -64,5 +45,32 @@ public class AppDbContext : IdentityDbContext<AppUser>
     public required DbSet<StatusDetail> StatusDetails { get; set; }
     public required DbSet<Subscriber> Subscribers { get; set; }
     public required DbSet<WishlistItem> WishlistItems { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.AddSeedData();
+        _addQueryFilters(modelBuilder);
+
+        base.OnModelCreating(modelBuilder);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors(_baseEntityInterceptor);
+
+        base.OnConfiguring(optionsBuilder);
+    }
+
+    private static void _addQueryFilters(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Advertisement>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Product>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<ProductSize>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Category>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Comment>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Order>().HasQueryFilter(x => !x.IsDeleted);
+        modelBuilder.Entity<Density>().HasQueryFilter(x => !x.IsDeleted);
+    }
 
 }

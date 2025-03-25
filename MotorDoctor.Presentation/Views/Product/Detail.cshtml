@@ -5,6 +5,9 @@
 @{
     var isExistWishlist = await wishlistService.IsExistByProductIdAsync(Model.Product.Id);
 }
+@section Keywords {
+    <meta name="keywords" content="@Model.Product.KeyWords" />
+}
 <br />
 <br />
 <br />
@@ -132,8 +135,22 @@
                             </div>
                             <div class="tag">
                                 <span>@_localizer.GetValue("Brand"):</span>
-                                <a href="#">@Model.Product.Brand.Name</a>
+                                <a >@Model.Product.Brand.Name</a>
                             </div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Product.Recommendation))
+                            {
+                                <div class="tag">
+                                    <span>@_localizer.GetValue("Recommendation"):</span>
+                                    <a>@Html.Raw(Model.Product.Recommendation)</a>
+                                </div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Product.Specifications))
+                            {
+                                <div class="tag">
+                                    <span>@_localizer.GetValue("Specifications"):</span>
+                                    <a>@Html.Raw(Model.Product.Specifications)</a>
+                                </div>
+                            }
                         </div>
                     </div>
                 </div>

@@ -225,4 +225,16 @@
   <data name="UnAuthorizeTitle" xml:space="preserve">
     <value />
   </data>
+  <data name="FailPayment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SuccedPayment" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IsPaid" xml:space="preserve">
+    <value />
+  </data>
+  <data name="NotPaid" xml:space="preserve">
+    <value />
+  </data>
 </root>

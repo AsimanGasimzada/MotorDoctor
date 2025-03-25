@@ -16,9 +16,10 @@ internal class ProductService : IProductService
     private readonly ICloudinaryService _cloudinaryService;
     private readonly ICategoryService _categoryService;
     private readonly IBrandService _brandService;
+    private readonly IDensityService _densityService;
     private readonly ErrorLocalizer _errorLocalizer;
 
-    public ProductService(IProductRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ICategoryService categoryService, IBrandService brandService, ErrorLocalizer errorLocalizer)
+    public ProductService(IProductRepository repository, IMapper mapper, ICloudinaryService cloudinaryService, ICategoryService categoryService, IBrandService brandService, ErrorLocalizer errorLocalizer, IDensityService densityService)
     {
         _repository = repository;
         _mapper = mapper;
@@ -26,6 +27,7 @@ internal class ProductService : IProductService
         _categoryService = categoryService;
         _brandService = brandService;
         _errorLocalizer = errorLocalizer;
+        _densityService = densityService;
     }
 
 
@@ -54,6 +56,17 @@ internal class ProductService : IProductService
         {
             ModelState.AddModelError("BrandId", "Belə Brend mövcud deyil zəhmət olmasa yenidən daxil edin");
             return false;
+        }
+
+        if (dto.DensityId is int densityId)
+        {
+            var isExistDensity = await _densityService.IsExistAsync(densityId);
+
+            if (!isExistDensity)
+            {
+                ModelState.AddModelError("DensityId", "Belə qatılıq mövcud deyil zəhmət olmasa yenidən daxil edin");
+                return false;
+            }
         }
 
         var isExistSlug = await _repository.IsExistAsync(x => x.Slug == dto.Slug);
@@ -159,7 +172,7 @@ internal class ProductService : IProductService
             count = 0;
 
         product.SalesCount -= count;
-        product.ProductSizes.FirstOrDefault(x => x.Id == productSizeId)!.Count -= count;
+        product.ProductSizes.FirstOrDefault(x => x.Id == productSizeId)!.Count += count;
 
         _repository.Update(product);
         await _repository.SaveChangesAsync();
@@ -206,6 +219,9 @@ internal class ProductService : IProductService
 
             if (filterDto.BrandIds.Count is not 0)
                 query = query.Where(x => filterDto.BrandIds.Any(c => c == x.BrandId));
+
+            if (filterDto.DensityIds.Count is not 0)
+                query = query.Where(x => filterDto.DensityIds.Any(c => c == x.DensityId));
 
             if (filterDto.MaxPrice is not 0)
                 query = query.Where(x => x.ProductSizes.Any(x => x.Price < filterDto.MaxPrice));
@@ -376,10 +392,11 @@ internal class ProductService : IProductService
     {
         var categories = await _categoryService.GetAllForProductAsync();
         var brands = await _brandService.GetAllForProductAsync();
+        var densities = await _densityService.GetAllForProductAsync();
 
         dto.Categories = categories;
         dto.Brands = brands;
-
+        dto.Densities = densities;
 
         return dto;
     }
@@ -395,9 +412,11 @@ internal class ProductService : IProductService
 
         var categories = await _categoryService.GetAllForProductAsync();
         var brands = await _brandService.GetAllForProductAsync();
+        var densities = await _densityService.GetAllForProductAsync();
 
         dto.Categories = categories;
         dto.Brands = brands;
+        dto.Densities = densities;
 
         return dto;
     }
@@ -424,7 +443,7 @@ internal class ProductService : IProductService
             count = 0;
 
         product.SalesCount += count;
-        product.ProductSizes.FirstOrDefault(x => x.Id == productSizeId)!.Count += count;
+        product.ProductSizes.FirstOrDefault(x => x.Id == productSizeId)!.Count -= count;
 
         _repository.Update(product);
         await _repository.SaveChangesAsync();
@@ -460,6 +479,17 @@ internal class ProductService : IProductService
         {
             ModelState.AddModelError("BrandId", "Belə Brend mövcud deyil zəhmət olmasa yenidən daxil edin");
             return false;
+        }
+
+        if (dto.DensityId is int densityId)
+        {
+            var isExistDensity = await _densityService.IsExistAsync(densityId);
+
+            if (!isExistDensity)
+            {
+                ModelState.AddModelError("DensityId", "Belə qatılıq mövcud deyil zəhmət olmasa yenidən daxil edin");
+                return false;
+            }
         }
 
         var isExistSlug = await _repository.IsExistAsync(x => x.Slug == dto.Slug && x.Id != dto.Id);

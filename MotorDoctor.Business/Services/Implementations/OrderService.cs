@@ -126,9 +126,6 @@ internal class OrderService : IOrderService
 
         order.AppUserId = userId;
 
-        string token = Guid.NewGuid().ToString();
-        order.ConfirmToken = token;
-
         await _repository.CreateAsync(order);
         await _repository.SaveChangesAsync();
 
@@ -224,7 +221,6 @@ internal class OrderService : IOrderService
 
             PaymentCreateDto paymentDto = new()
             {
-                Token = token,
                 Description = "Motordoctor Odenis",
                 Amount = order.DiscountedTotalPrice,
                 OrderId = order.Id,

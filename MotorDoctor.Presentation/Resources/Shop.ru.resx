@@ -150,6 +150,9 @@
   <data name="Filter" xml:space="preserve">
     <value>Фильтр</value>
   </data>
+  <data name="IsPaid" xml:space="preserve">
+    <value>Оплаченный</value>
+  </data>
   <data name="LeaveComment" xml:space="preserve">
     <value>Оставить комментарий</value>
   </data>
@@ -164,6 +167,9 @@
   </data>
   <data name="PriceLowToHigh" xml:space="preserve">
     <value>Сортировать по цене от низкой до высокой</value>
+  </data>
+  <data name="Recommendation" xml:space="preserve">
+    <value>Рекомендация</value>
   </data>
   <data name="Reject" xml:space="preserve">
     <value>Нет</value>
@@ -188,6 +194,9 @@
   </data>
   <data name="SortByPopularity" xml:space="preserve">
     <value>Сортировать по популярности</value>
+  </data>
+  <data name="Specifications" xml:space="preserve">
+    <value>Технические характеристики</value>
   </data>
   <data name="YourComment" xml:space="preserve">
     <value>Ваш комментарий</value>

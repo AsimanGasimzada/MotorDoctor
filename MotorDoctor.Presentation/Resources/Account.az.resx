@@ -129,6 +129,12 @@
   <data name="ForgotPassword" xml:space="preserve">
     <value>Şifrəni unutmusan?</value>
   </data>
+  <data name="ForgotPasswordButton" xml:space="preserve">
+    <value>Hesabını tap</value>
+  </data>
+  <data name="ForgotPasswordTitle" xml:space="preserve">
+    <value>Şifrəni unutmusan?</value>
+  </data>
   <data name="HaveAccount" xml:space="preserve">
     <value>Hesabın var?</value>
   </data>
@@ -158,6 +164,12 @@
   </data>
   <data name="RegisterTitle" xml:space="preserve">
     <value>Davam etmək üçün qeydiyyatdan keçin.</value>
+  </data>
+  <data name="ResetPasswordTitle" xml:space="preserve">
+    <value>Şifrənizi sıfırlayın</value>
+  </data>
+  <data name="SuccedForgotPassword" xml:space="preserve">
+    <value>Şifrə yeniləmə maili uğurla göndərilmişdir!</value>
   </data>
   <data name="Surname" xml:space="preserve">
     <value>Soyad</value>

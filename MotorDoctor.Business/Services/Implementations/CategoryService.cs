@@ -92,7 +92,7 @@ internal class CategoryService : ICategoryService
 
     public async Task DeleteAsync(int id)
     {
-        var category = await _repository.GetAsync(id, x => x.Include(x => x.Children).Include(x => x.ProductCategories));
+        var category = await _repository.GetAsync(id, x => x.Include(x => x.Children).Include(x => x.ProductCategories.Where(x => x.Product.IsDeleted==false)).ThenInclude(x => x.Product));
 
         if (category is null)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));

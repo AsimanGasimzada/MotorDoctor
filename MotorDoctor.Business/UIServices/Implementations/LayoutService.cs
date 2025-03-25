@@ -9,12 +9,14 @@ internal class LayoutService : ILayoutService
     private readonly IAttendanceService _attendanceService;
     private readonly ISettingService _settingService;
     private readonly IBasketService _basketService;
+    private readonly Languages _language;
 
-    public LayoutService(IAttendanceService attendanceService, ISettingService settingService, IBasketService basketService)
+    public LayoutService(IAttendanceService attendanceService, ISettingService settingService, IBasketService basketService, ILanguageService languageService)
     {
         _attendanceService = attendanceService;
         _settingService = settingService;
         _basketService = basketService;
+        _language = languageService.SelectedLanguage;
     }
 
     public async Task<List<AttendanceGetDto>> GetAttendancesAsync(Languages language = Languages.Azerbaijan)
@@ -29,9 +31,9 @@ internal class LayoutService : ILayoutService
 
     public string GetSelectedLanguage()
     {
-        if (Constants.SelectedLanguage == Languages.English)
+        if (_language == Languages.English)
             return "en";
-        else if (Constants.SelectedLanguage == Languages.Russian)
+        else if (_language == Languages.Russian)
             return "ru";
 
         return "az";

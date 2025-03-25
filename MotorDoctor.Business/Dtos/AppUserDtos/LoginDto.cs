@@ -11,4 +11,3 @@ public class LoginDto : IDto
     public bool RememberMe { get; set; } = false;
     public string? ReturnUrl { get; set; }
 }
-

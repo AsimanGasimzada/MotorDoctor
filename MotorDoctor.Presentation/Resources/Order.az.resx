@@ -225,4 +225,16 @@
   <data name="UnAuthorizeTitle" xml:space="preserve">
     <value>Qeydiyyatdan keçmədiyiniz təqdirdə sifarişiniz haqqında geniş məlumat ala bilməyəcəksiniz</value>
   </data>
+  <data name="FailPayment" xml:space="preserve">
+    <value>Uğursuz ödəniş, yenidən yoxlayın.</value>
+  </data>
+  <data name="SuccedPayment" xml:space="preserve">
+    <value>Sifarişiniz uğurla qeydə alındı!</value>
+  </data>
+  <data name="IsPaid" xml:space="preserve">
+    <value>Ödəniş olunub</value>
+  </data>
+  <data name="NotPaid" xml:space="preserve">
+    <value>Ödənilməyib</value>
+  </data>
 </root>
