@@ -1,0 +1,55 @@
+﻿@model ProductGetDto
+
+<div class="container mt-4">
+    <h2 class="mb-3">Məhsul Detalları</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <img id="mainImage" src="@Model.MainImagePath" class="img-fluid rounded shadow" alt="Product Image">
+            <div class="mt-3 d-flex gap-2">
+                <img src="@Model.MainImagePath" class="img-thumbnail" width="80" onclick="document.getElementById('mainImage').src=this.src">
+                @foreach (var img in Model.ImagePaths)
+                {
+                        <img src="@img" class="img-thumbnail" width="80" onclick="document.getElementById('mainImage').src=this.src">
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>@Model.Name</h3>
+            <p><strong>Kod:</strong> @Model.Code</p>
+            <p><strong>Açıqlama:</strong> @Html.Raw(Model.Description)</p>
+            <p><strong>Slug:</strong> @Model.Slug</p>
+            <p><strong>Açar Sözlər:</strong> @Model.KeyWords</p>
+            <p><strong>Göstərilmə Sayı:</strong> @Model.ViewCount</p>
+            <p><strong>Satış Sayı:</strong> @Model.SalesCount</p>
+            <p><strong>Brend:</strong> @Model.Brand.Name</p>
+            @if (Model.Density != null)
+            {
+                    <p><strong>Qatılıq:</strong> @Model.Density.Value</p>
+            }
+            @if (!string.IsNullOrEmpty(Model.Specifications))
+            {
+                        <p><strong>Spesifikasiyalar:</strong> @Html.Raw(Model.Specifications)</p>
+            }
+            @if (!string.IsNullOrEmpty(Model.Recommendation))
+            {
+                    <p><strong>Tövsiyə:</strong>@Html.Raw( Model.Recommendation)</p>
+            }
+        </div>
+    </div>
+    <hr>
+    <h4>Kateqoriyalar</h4>
+    <ul>
+        @foreach (var category in Model.Categories)
+        {
+                <li>@category.Name</li>
+        }
+    </ul>
+    <hr>
+    <h4>Ölçülər</h4>
+    <ul>
+        @foreach (var size in Model.ProductSizes)
+        {
+                <li>@size.Size - @size.Price AZN - @size.Count ədəd</li>
+        }
+    </ul>
+</div>

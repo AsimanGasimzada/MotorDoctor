@@ -210,7 +210,7 @@
 
                     </label>
                     <br />
-                    <select asp-for="DensityId" required class="form-select form-select-sm">
+                    <select asp-for="DensityId" class="form-select form-select-sm">
                         <option value="@null"  selected>Qatılıq seçin, əgər ehtiyac varsa</option>
                         @foreach (var density in Model.Densities ?? new())
                         {

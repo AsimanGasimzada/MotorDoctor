@@ -37,7 +37,9 @@ public class BasketController : Controller
 
     public async Task<IActionResult> AddToBasket(int id, int count = 1)
     {
-        await _service.AddToBasketAsync(id, count);
+        var result = await _service.AddToBasketAsync(id, count);
+
+        TempData["BasketResult"] = result ? "success" : "error";
 
         return RedirectToAction(nameof(RedirectForBasket));
     }

@@ -425,9 +425,11 @@ internal class ProductService : IProductService
     {
         var categories = await _categoryService.GetAllForProductAsync();
         var brands = await _brandService.GetAllForProductAsync();
+        var densities = await _densityService.GetAllForProductAsync();  
 
         dto.Categories = categories;
         dto.Brands = brands;
+        dto.Densities = densities;
 
         return dto;
     }

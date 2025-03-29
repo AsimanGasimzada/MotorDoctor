@@ -31,14 +31,20 @@ internal class BasketService : IBasketService
 
     public async Task<bool> AddToBasketAsync(int id, int count = 1)
     {
-        var isExistProductSize = await _productSizeService.IsExistAsync(id);
+        var productSize = await _productSizeService.GetAsync(id);
 
-        if (isExistProductSize is false)
+        if (productSize is null)
+            throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
+
+        if (productSize.Count == 0)
             throw new NotFoundException(_errorLocalizer.GetValue(nameof(NotFoundException)));
 
 
         if (count < 1)
             count = 1;
+
+        if (count > productSize.Count)
+            count = productSize.Count;
 
         if (_checkAuthorized())
         {
@@ -49,6 +55,9 @@ internal class BasketService : IBasketService
             if (existBasketItem is { })
             {
                 existBasketItem.Count += count;
+
+                if (existBasketItem.Count > productSize.Count)
+                    existBasketItem.Count = productSize.Count;
 
                 _repository.Update(existBasketItem);
                 await _repository.SaveChangesAsync();

@@ -91,7 +91,7 @@
                         <select class="form-select productSizeSelectInput" aria-label="Default select example" @(Model.Product.ProductSizes.Count == 1 ? "disabled" : "")>
                             @foreach (var productSize in Model.Product.ProductSizes)
                             {
-                                <option value="@productSize.Id">@(productSize.Size != null ? $"{productSize.Size} -" : "")  @productSize.Price.CalculateDiscountedPrice(productSize.Discount) ₼</option>
+                                <option data-count="@productSize.Count" value="@productSize.Id">@(productSize.Size != null ? $"{productSize.Size} -" : "")  @productSize.Price.CalculateDiscountedPrice(productSize.Discount) ₼</option>
                             }
                         </select>
                         <br />
@@ -135,7 +135,7 @@
                             </div>
                             <div class="tag">
                                 <span>@_localizer.GetValue("Brand"):</span>
-                                <a >@Model.Product.Brand.Name</a>
+                                <a>@Model.Product.Brand.Name</a>
                             </div>
                             @if (!string.IsNullOrWhiteSpace(Model.Product.Recommendation))
                             {
@@ -323,12 +323,18 @@
         const decreaseButton=document.querySelector('.decrease-product')
         const increaseButton=document.querySelector('.increase-product')
         const productCountInput=document.querySelector('.product-count')
+        const sizeInput=document.querySelector('.productSizeSelectInput')
+        const wishlistBtn=document.querySelector(".addToFavButton");
+
 
         increaseButton.addEventListener('click',(e)=>{
             e.preventDefault();
             let count=parseInt(productCountInput.innerText);
-            if(count>99)
+
+            let maxCount= parseInt( sizeInput.options[sizeInput.selectedIndex].dataset.count);
+            if(count>=maxCount)
                        return;
+
             productCountInput.innerText=count+1;
         })
 
@@ -341,8 +347,17 @@
             productCountInput.innerText=count-1;
         })
 
-        const wishlistBtn=document.querySelector(".addToFavButton");
-        const sizeInput=document.querySelector('.productSizeSelectInput')
+
+        sizeInput.addEventListener("input",(e)=>{
+            let maxCount= parseInt( sizeInput.options[sizeInput.selectedIndex].dataset.count);
+
+
+            if(parseInt(productCountInput.innerText)>maxCount)
+            {
+                productCountInput.innerText=maxCount;
+            }
+        })
+
 
          wishlistBtn.addEventListener("click",async (e)=>{
                     e.preventDefault();

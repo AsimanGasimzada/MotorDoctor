@@ -78,4 +78,11 @@ public class ProductController : Controller
 
         return PartialView("_productCreateSizePartial");
     }
+
+    public async Task<IActionResult> Detail(int id)
+    {
+        var result = await _service.GetAsync(id);
+
+        return View(result);
+    }
 }

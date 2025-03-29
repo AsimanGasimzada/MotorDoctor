@@ -26,7 +26,7 @@ internal class LayoutService : ILayoutService
 
     public async Task<BasketGetDto> GetBasketAsync()
     {
-        return await _basketService.GetBasketAsync(Constants.SelectedLanguage);
+        return await _basketService.GetBasketAsync(_language);
     }
 
     public string GetSelectedLanguage()

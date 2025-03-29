@@ -141,6 +141,9 @@
   <data name="ConfirmDelete" xml:space="preserve">
     <value>Вы уверены, что хотите удалить комментарий?</value>
   </data>
+  <data name="Density" xml:space="preserve">
+    <value>Вязкость</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Описание</value>
   </data>

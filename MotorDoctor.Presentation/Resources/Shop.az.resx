@@ -141,6 +141,9 @@
   <data name="ConfirmDelete" xml:space="preserve">
     <value>Komenti silmək istədiyinizdən əminsiniz?</value>
   </data>
+  <data name="Density" xml:space="preserve">
+    <value>Qatılıq</value>
+  </data>
   <data name="Description" xml:space="preserve">
     <value>Açıqlama</value>
   </data>

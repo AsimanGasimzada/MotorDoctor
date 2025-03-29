@@ -197,14 +197,126 @@
                                     </button>
                                 </h2>
                                 <div class="accordion-body">
-                                    <div class="price-slider">
+                                                    @*  <div class="price-slider">
                                         <input type="range" asp-for="ProductFilterDto!.MinPrice" min="0" max="2500" value="@(Model.ProductFilterDto?.MinPrice ?? 0)" class="mt-2 form-range" id="minPrice">
                                         <input type="range" asp-for="ProductFilterDto!.MaxPrice" min="0" max="2500" value="@(Model.ProductFilterDto?.MaxPrice ?? 2500)" class="mt-2 form-range" id="maxPrice">
                                         <div class="price-values d-flex justify-content-between">
                                             <span id="minPriceValue">₼@(Model.ProductFilterDto?.MinPrice ?? 0)</span>
                                             <span id="maxPriceValue">₼@(Model.ProductFilterDto?.MaxPrice ?? 2500)</span>
                                         </div>
+                                    </div> *@
+                                    <style>
+                                        .dual-range-wrapper {
+                                            position: relative;
+                                            width: 100%;
+                                            height: 6px;
+                                            background: #ddd;
+                                            border-radius: 6px;
+                                            margin-top: 20px;
+                                        }
+
+                                        .dual-range-track {
+                                            position: absolute;
+                                            height: 6px;
+                                            background: #000;
+                                            border-radius: 6px;
+                                        }
+
+                                        .dual-range-input {
+                                            width: 100%;
+                                            position: absolute;
+                                            -webkit-appearance: none;
+                                            background: transparent;
+                                            pointer-events: none;
+                                            top: 0px;
+                                            left: 0px;
+                                        }
+
+                                            .dual-range-input::-webkit-slider-runnable-track {
+                                                height: 6px;
+                                                background: transparent;
+                                            }
+
+                                            .dual-range-input::-webkit-slider-thumb {
+                                                -webkit-appearance: none;
+                                                width: 18px;
+                                                height: 18px;
+                                                background: #000;
+                                                border-radius: 50%;
+                                                border: 2px solid #fff;
+                                                box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+                                                pointer-events: auto;
+                                                cursor: pointer;
+                                                margin-top: -6px;
+                                            }
+
+                                        .dual-range-values {
+                                            text-align: center;
+                                            margin-top: 20px;
+                                            font-size: 18px;
+                                            font-weight: bold;
+                                        }
+                                    </style>
+
+                                    <div class="dual-range-wrapper">
+                                        <div class="dual-range-track" id="dualRangeTrack"></div>
+                                        <input type="range" class="dual-range-input" id="dualRangeMin" asp-for="ProductFilterDto!.MinPrice" min="0" max="2500" value="@(Model.ProductFilterDto?.MinPrice ?? 0)">
+                                        <input type="range" class="dual-range-input" id="dualRangeMax" asp-for="ProductFilterDto!.MaxPrice" min="0" max="2500" value="@(Model.ProductFilterDto?.MaxPrice ?? 2500)">
                                     </div>
+                                    <div class="dual-range-values">
+                                        <span id="dualMinValue">₼@(Model.ProductFilterDto?.MinPrice ?? 0)</span> - <span id="dualMaxValue">₼@(Model.ProductFilterDto?.MaxPrice ?? 2500)</span>
+                                    </div>
+
+                                    <script>
+                                        const dualRangeMin = document.getElementById("dualRangeMin");
+                                        const dualRangeMax = document.getElementById("dualRangeMax");
+                                        const dualMinValue = document.getElementById("dualMinValue");
+                                        const dualMaxValue = document.getElementById("dualMaxValue");
+                                        const dualRangeTrack = document.getElementById("dualRangeTrack");
+                                        const dualMinGap = 10;
+
+                                        function updateDualRange(e) {
+                                            let min = parseInt(dualRangeMin.value);
+                                            let max = parseInt(dualRangeMax.value);
+                                            let minRange = parseInt(dualRangeMin.min);
+                                            let maxRange = parseInt(dualRangeMin.max);
+
+                                            if (max - min < dualMinGap) {
+                                                 if(e==undefined){
+
+                                                    dualRangeMax.value = @Model.ProductFilterDto?.MaxPrice
+                                                    dualRangeMin.value = @Model.ProductFilterDto?.MinPrice
+                                            }else{
+
+                                                if (e.target === dualRangeMin) {
+                                                    dualRangeMin.value = max - dualMinGap;
+                                                } else {
+                                                    dualRangeMax.value = min + dualMinGap;
+                                                }}
+                                            }
+
+                                            dualMinValue.textContent = dualRangeMin.value +"₼";
+                                            dualMaxValue.textContent = dualRangeMax.value +"₼";
+
+                                            let minPercent = ((dualRangeMin.value - minRange) / (maxRange - minRange)) * 100;
+                                            let maxPercent = ((dualRangeMax.value - minRange) / (maxRange - minRange)) * 100;
+
+
+                                            dualRangeTrack.style.left = minPercent + "%";
+                                            dualRangeTrack.style.width = (maxPercent - minPercent) + "%";
+                                        }
+
+
+
+
+                                        dualRangeMin.addEventListener("input", (e)=>{
+                                            updateDualRange(e);
+                                        });
+                                        dualRangeMax.addEventListener("input", (e)=>{
+                                            updateDualRange(e);
+                                        });
+                                        updateDualRange();
+                                    </script>
                                 </div>
 
                             </div>
@@ -344,7 +456,7 @@
                                         <span style="
                                   color: #727272;
                                   text-decoration: line-through;
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        "></span>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                "></span>
                                     </div>
                                 </div>
 
@@ -360,37 +472,51 @@
                                     }
 
                         <div class="pagination-container">
-                            <ul class="pagination" style="display:flex;flex-wrap:wrap;justify-content:center">
+                            <ul class="pagination" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;">
                                             @if (Model.Products.CurrentPage > 1)
                                             {
-                                    <li class="page-item"><a data-page="@(Model.Products.CurrentPage - 1)" class="page-link">&laquo;</a></li>
+                                    <li class="page-item">
+                                        <a data-page="@(Model.Products.CurrentPage - 1)" class="page-link" aria-label="Previous">&laquo;</a>
+                                    </li>
                                             }
 
-                                            @for (int i = 1; i <= Model.Products.PageCount; i++)
+                                            @if (Model.Products.PageCount > 1)
                                             {
-                                                if (i == 1 || i == Model.Products.PageCount ||
-                                                (i >= Model.Products.CurrentPage - 1 && i <= Model.Products.CurrentPage + 1))
+                                    <li class="page-item @(Model.Products.CurrentPage == 1 ? "active" : "")">
+                                        <a data-page="1" class="page-link">1</a>
+                                    </li>
+
+                                                if (Model.Products.CurrentPage > 3)
+                                                {
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                                }
+
+                                                for (int i = Math.Max(2, Model.Products.CurrentPage - 2); i <= Math.Min(Model.Products.PageCount - 1, Model.Products.CurrentPage + 2); i++)
                                                 {
                                         <li class="page-item @(Model.Products.CurrentPage == i ? "active" : "")">
                                             <a data-page="@i" class="page-link">@i</a>
                                         </li>
                                                 }
-                                                else if (i == 2 && Model.Products.CurrentPage > 3)
+
+                                                if (Model.Products.CurrentPage < Model.Products.PageCount - 3)
                                                 {
                                         <li class="page-item disabled"><span class="page-link">...</span></li>
                                                 }
-                                                else if (i == Model.Products.PageCount - 1 && Model.Products.CurrentPage < Model.Products.PageCount - 2)
-                                                {
-                                        <li class="page-item disabled"><span class="page-link">...</span></li>
-                                                }
+
+                                    <li class="page-item @(Model.Products.CurrentPage == Model.Products.PageCount ? "active" : "")">
+                                        <a data-page="@Model.Products.PageCount" class="page-link">@Model.Products.PageCount</a>
+                                    </li>
                                             }
 
                                             @if (Model.Products.CurrentPage < Model.Products.PageCount)
                                             {
-                                    <li class="page-item"><a data-page="@(Model.Products.CurrentPage + 1)" class="page-link">&raquo;</a></li>
+                                    <li class="page-item">
+                                        <a data-page="@(Model.Products.CurrentPage + 1)" class="page-link" aria-label="Next">&raquo;</a>
+                                    </li>
                                             }
                             </ul>
                         </div>
+
 
 
                                 }
@@ -473,24 +599,6 @@
             });
         });
 
-         const minPrice = document.getElementById("minPrice");
-         const maxPrice = document.getElementById("maxPrice");
-         const minPriceValue = document.getElementById("minPriceValue");
-         const maxPriceValue = document.getElementById("maxPriceValue");
-
-         minPrice.addEventListener("input", () => {
-             if (parseInt(minPrice.value) > parseInt(maxPrice.value)) {
-                 minPrice.value = maxPrice.value;
-             }
-             minPriceValue.textContent = `₼${minPrice.value}`;
-         });
-
-         maxPrice.addEventListener("input", () => {
-             if (parseInt(maxPrice.value) < parseInt(minPrice.value)) {
-                 maxPrice.value = minPrice.value;
-             }
-             maxPriceValue.textContent = `₼${maxPrice.value}`;
-         });
 
         window.addEventListener('load', () => {
                   const scrollPosition = sessionStorage.getItem(`scrollPosition-${window.location.pathname}`);

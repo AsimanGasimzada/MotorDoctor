@@ -4,6 +4,7 @@ using MotorDoctor.Business.Dtos;
 using MotorDoctor.Business.Extensions;
 using MotorDoctor.Core.Enum;
 using MotorDoctor.Presentation.Extensions;
+using Newtonsoft.Json;
 
 namespace MotorDoctor.Presentation.Controllers;
 
@@ -48,21 +49,23 @@ public class ShopController : Controller
         var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
         shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
         shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
-        shopFilterDto.Densities=await _densityService.GetAllForProductAsync();
+        shopFilterDto.Densities = await _densityService.GetAllForProductAsync();
         shopFilterDto.Advertisements = await _advertisementService.GetAllAsync();
 
         return View(shopFilterDto);
     }
 
 
-    public IActionResult FilterProducts()
+    public async Task<IActionResult> FilterProducts(int page = 1, ShopFilterDto? dto = null)
     {
-        return RedirectToAction("Index");
-    }
+        if (dto is null)
+            dto = new();
 
-    [HttpPost]
-    public async Task<IActionResult> FilterProducts(ShopFilterDto dto, int page = 1)
-    {
+        var json = Request.Cookies["filterDto"] ?? "";
+
+        var productFilterDto = JsonConvert.DeserializeObject<ProductFilterDto>(json) ?? new();
+
+        dto.ProductFilterDto = productFilterDto;
 
         var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
         shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
@@ -71,7 +74,22 @@ public class ShopController : Controller
         shopFilterDto.Advertisements = await _advertisementService.GetAllAsync();
 
         return View("Index", shopFilterDto);
+    }
 
+    [HttpPost]
+    public async Task<IActionResult> FilterProducts(ShopFilterDto dto, int page = 1)
+    {
+        var shopFilterDto = await _productService.GetAllWithPageAsync(dto.ProductFilterDto, _language, page);
+        shopFilterDto.Categories = await _categoryService.GetParentCategoriesForFilterAsync();
+        shopFilterDto.Densities = await _densityService.GetAllForProductAsync();
+        shopFilterDto.Brands = await _brandService.GetAllForProductAsync();
+        shopFilterDto.Advertisements = await _advertisementService.GetAllAsync();
+
+        var json = JsonConvert.SerializeObject(shopFilterDto.ProductFilterDto);
+
+        Response.Cookies.Append("filterDto", json);
+
+        return View("Index", shopFilterDto);
     }
 
 

@@ -462,24 +462,45 @@
         const addToBasketButtons=document.querySelectorAll('.add-To-Basket-Button');
         const basketPartialSection=document.querySelector('.basket-sidebar');
 
-        addToBasketButtons.forEach(btn=>{
-            btn.addEventListener('click',async (e)=>{
+             addToBasketButtons.forEach(btn => {
+            btn.addEventListener('click', async (e) => {
                 e.preventDefault();
-               const response= await fetch(btn.href);
-               const basketPartial=await response.text();
-               basketPartialSection.innerHTML=basketPartial;
+
+                try {
+                    const response = await fetch(btn.href);
+                    const contentType = response.headers.get("content-type");
+                    const basketPartial = await response.text();
+
+                    if (!contentType || !contentType.includes("text/html")) {  //for global exception handler
+                        throw new Error("Server response is not valid");
+                    }
+
+
+                    basketPartialSection.innerHTML = basketPartial;
 
                     Swal.fire({
-          position: "center",
-          icon: "success",
-          showConfirmButton: false,
-          timer: 1500
+                        position: "center",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    RenderBasketCount();
+                } catch (error) {
+
+                    console.log(error);
+
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        title: error.message
+                    });
+                }
+            });
         });
 
-
-                RenderBasketCount();
-            })
-        })
     </script>
 
     <script>
